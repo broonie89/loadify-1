@@ -1,0 +1,63 @@
+# Visual Studio solution user options
+*.suo
+*.csproj.user
+
+# Resharper cache and user options
+_ReSharper.*
+*.ReSharper.user
+
+# Visual Studio Productivity Tools "tab well" cache
+*.sln.docstates
+
+# Monodevelop user prefs
+OhWidget.userprefs
+
+# Debugging database
+*.pidb
+
+# VIM temporary files
+*~
+*.swp
+
+# ctags index
+tags
+
+# Compiled Python scripts
+*.pyc
+
+# Build artefacts
+obj/
+bin/
+/build/
+/build*/
+/debian/usr
+debian/usr
+
+# Waf temporaries
+/.lock-waf*
+/waf-*-*
+/.waf-*-*
+
+# Dependencies
+/dependencies/
+
+# NUnit output
+TestResult.xml
+
+# MAX OS X XCode
+.DS_Store
+
+# UI Tests output
+proxywidgettest.xml
+webuitest.xml
+
+# NCover output
+*.nccov
+*.nccov.bkp
+
+# .widgetset files in the ohwidget root
+/*.widgetset
+
+# Eclipse and PyCharm IDE control files
+.project
+.idea

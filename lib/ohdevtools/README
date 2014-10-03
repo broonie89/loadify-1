@@ -1,0 +1,17 @@
+ohdevtools
+==========
+
+A collection of tools used by CI servers and developers working with the
+OpenHome projects. Shared by all the projects, although some tools may be
+specific to just one.
+
+---
+NOTE: (iainm), 04/08/2014:
+If receiving the following message and errors downloading packages when running go fetch with nuget on Linux:
+
+WARNING: Error getting response stream (Write: The authentication or decryption has failed.): SendFailure
+
+The solution is to run the following command:
+mozroots --import --ask-remove 
+
+Which adds some missing ssl certs to mono's certificate store.

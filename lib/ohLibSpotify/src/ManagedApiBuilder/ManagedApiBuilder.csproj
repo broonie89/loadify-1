@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D7E6E4EC-075B-43F3-8B88-C65C43C25867}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ManagedApiBuilder</RootNamespace>
+    <AssemblyName>ManagedApiBuilder</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\dependencies\nuget\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArgumentTransformers\ByteArrayArgumentTransformer.cs" />
+    <Compile Include="ArgumentTransformers\CallbackStructArgumentTransformer.cs" />
+    <Compile Include="ArgumentTransformers\FunctionPointerArgumentTransformer.cs" />
+    <Compile Include="ArgumentTransformers\HandleArgumentTransformer.cs" />
+    <Compile Include="ArgumentTransformers\HandleArrayArgumentTransformer.cs" />
+    <Compile Include="ArgumentTransformers\HandleReturnTransformer.cs" />
+    <Compile Include="ArgumentTransformers\PointerArgumentTransformer.cs" />
+    <Compile Include="ArgumentTransformers\PointerReturnTransformer.cs" />
+    <Compile Include="ArgumentTransformers\RefArgumentTransformer.cs" />
+    <Compile Include="ArgumentTransformers\RefHandleArgumentTransformer.cs" />
+    <Compile Include="ArgumentTransformers\RefStructArgumentTransformer.cs" />
+    <Compile Include="ArgumentTransformers\SimpleStringReturnTransformer.cs" />
+    <Compile Include="ArgumentTransformers\SpotifyErrorReturnTransformer.cs" />
+    <Compile Include="ArgumentTransformers\StringArgumentTransformer.cs" />
+    <Compile Include="ArgumentTransformers\StringReturnTransformer.cs" />
+    <Compile Include="ArgumentTransformers\ThisPointerArgumentTransformer.cs" />
+    <Compile Include="ArgumentTransformers\TrivialArgumentTransformer.cs" />
+    <Compile Include="ArgumentTransformers\TrivialArrayArgumentTransformer.cs" />
+    <Compile Include="ArgumentTransformers\TrivialReturnTransformer.cs" />
+    <Compile Include="ArgumentTransformers\UnknownLengthStringReturnTransformer.cs" />
+    <Compile Include="ArgumentTransformers\VoidReturnTransformer.cs" />
+    <Compile Include="ArgumentTransformers\VoidStarArgumentTransformer.cs" />
+    <Compile Include="CSharpType.cs" />
+    <Compile Include="IArgumentTransformer.cs" />
+    <Compile Include="CategorizedDeclarations.cs" />
+    <Compile Include="CSharpGenerator.cs" />
+    <Compile Include="FunctionAssembler.cs" />
+    <Compile Include="FunctionSpecificationAnalyser.cs" />
+    <Compile Include="ArgumentTransformers\VoidArgumentListTransformer.cs" />
+    <Compile Include="OrderedDictionary.cs" />
+    <Compile Include="PatternMatching.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ApiParser\ApiParser.csproj">
+      <Project>{B4D0F1CC-A5D5-416C-BB12-031E61C4A47D}</Project>
+      <Name>ApiParser</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="..\SharedSettings.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

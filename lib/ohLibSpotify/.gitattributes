@@ -1,0 +1,8 @@
+*.csproj eol=crlf
+*.sln    eol=crlf
+*.cs     text
+*.js     text
+*.css    text
+*.html   text
+*.in     text
+*.py     text

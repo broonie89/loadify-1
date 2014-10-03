@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{387D7BAA-9FE6-4E11-88DC-BA44F6FC44E2}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SpShellSharp</RootNamespace>
+    <AssemblyName>SpShellSharp</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <!-- Platform-specific stuff -->
+  <!-- The path to the spotify headers varies by platform. -->
+  <PropertyGroup Condition=" '$(Platform)' == 'Linux-x86' ">
+    <SpotifyLibraryPath>libspotify/lib/libspotify.so</SpotifyLibraryPath>
+    <PlatformTarget>x86</PlatformTarget>
+    <PlatformDefines>SYSTEM_LINUX;ARCH_X86</PlatformDefines>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'Linux-armv5' ">
+    <SpotifyLibraryPath>libspotify/lib/libspotify.so</SpotifyLibraryPath>
+    <PlatformTarget>x86</PlatformTarget>
+    <PlatformDefines>SYSTEM_LINUX;ARCH_ARM</PlatformDefines>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'Linux-armv6' ">
+    <SpotifyLibraryPath>libspotify/lib/libspotify.so</SpotifyLibraryPath>
+    <PlatformTarget>x86</PlatformTarget>
+    <PlatformDefines>SYSTEM_LINUX;ARCH_ARM</PlatformDefines>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'Linux-armv7' ">
+    <SpotifyLibraryPath>libspotify/lib/libspotify.so</SpotifyLibraryPath>
+    <PlatformTarget>x86</PlatformTarget>
+    <PlatformDefines>SYSTEM_LINUX;ARCH_ARM</PlatformDefines>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'Linux-x64' ">
+    <SpotifyLibraryPath>libspotify/lib/libspotify.so</SpotifyLibraryPath>
+    <PlatformTarget>x64</PlatformTarget>
+    <PlatformDefines>SYSTEM_LINUX;ARCH_X64</PlatformDefines>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'Windows-x86' ">
+    <SpotifyLibraryPath>libspotify/lib/libspotify.dll</SpotifyLibraryPath>
+    <PlatformTarget>x86</PlatformTarget>
+    <PlatformDefines>SYSTEM_WINDOWS;ARCH_X86</PlatformDefines>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'Mac-x86' ">
+    <SpotifyLibraryPath>libspotify/libspotify.framework/libspotify</SpotifyLibraryPath>
+    <PlatformTarget>x86</PlatformTarget>
+    <PlatformDefines>SYSTEM_MAC;ARCH_X86</PlatformDefines>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'Mac-x64' ">
+    <SpotifyLibraryPath>libspotify/libspotify.framework/libspotify</SpotifyLibraryPath>
+    <PlatformTarget>x64</PlatformTarget>
+    <PlatformDefines>SYSTEM_MAC;ARCH_X64</PlatformDefines>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'iOs-x86' ">
+    <SpotifyLibraryPath>libspotify/libspotify.framework/libspotify</SpotifyLibraryPath>
+    <PlatformTarget>x86</PlatformTarget>
+    <PlatformDefines>SYSTEM_IOS;ARCH_X86</PlatformDefines>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'iOs-armv6' ">
+    <SpotifyLibraryPath>libspotify/libspotify.framework/libspotify</SpotifyLibraryPath>
+    <PlatformTarget>x86</PlatformTarget>
+    <PlatformDefines>SYSTEM_IOS;ARCH_ARM;ARCH_ARMV6</PlatformDefines>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'iOs-armv7' ">
+    <SpotifyLibraryPath>libspotify/libspotify.framework/libspotify</SpotifyLibraryPath>
+    <PlatformTarget>x86</PlatformTarget>
+    <PlatformDefines>SYSTEM_IOS;ARCH_ARM;ARCH_ARMV7</PlatformDefines>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE;$(PlatformDefines)</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE;$(PlatformDefines)</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Browser.cs" />
+    <Compile Include="Messaging.cs" />
+    <Compile Include="PlaylistManager.cs" />
+    <Compile Include="Printing.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Searcher.cs" />
+    <Compile Include="SpShell.cs" />
+    <Compile Include="StarManager.cs" />
+    <Compile Include="TopLister.cs" />
+    <Content Include="$(MSBuildProjectDirectory)\..\..\dependencies\$(Platform)\$(SpotifyLibraryPath)">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ohLibSpotify\ohLibSpotify.csproj">
+      <Project>{39F7268A-8C23-4434-95AA-2DE39A8AEE36}</Project>
+      <Name>ohLibSpotify</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="..\SharedSettings.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

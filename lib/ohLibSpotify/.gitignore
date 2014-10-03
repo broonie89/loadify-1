@@ -1,0 +1,46 @@
+# Visual Studio solution user options
+*.suo
+*.csproj.user
+
+#aptana project files
+.project
+
+# Resharper cache and user options
+_ReSharper.*
+*.ReSharper.user
+
+# Visual Studio Productivity Tools "tab well" cache
+*.sln.docstates
+
+# Monodevelop user prefs
+*.userprefs
+
+# Debugging database
+*.pidb
+
+# VIM temporary files
+*~
+*.swp
+
+# ctags index
+tags
+
+# Compiled Python scripts
+*.pyc
+
+# Build artefacts
+obj/
+bin/
+/build/
+/build*/
+
+# Waf temporaries
+/.lock-waf*
+/waf-*-*
+/.waf-*-*
+
+# Dependencies
+/dependencies/
+
+# NUnit output
+TestResult.xml

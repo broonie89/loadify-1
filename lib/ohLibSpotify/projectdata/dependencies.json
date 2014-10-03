@@ -1,0 +1,39 @@
+[
+    {   "name": "NuGet",
+        "type": "external",
+        "version": "1.7.30402.9028",
+        "platform-specific": false,
+        "archive-filename": "${name}.${version}.tar.gz",
+        "configure-args": []
+    },
+    {
+        "name": "libspotify",
+        "type": "external",
+        "version": "12.1.51",
+        "platform-table": {
+            "Windows-x86":    {"suffix":"win32-release.zip",           "strip":0, "unpack":"libspotify/"},
+            "Linux-x86":      {"suffix":"Linux-i686-release.tar.gz",   "strip":1, "unpack":"libspotify/"},
+            "Linux-x64":      {"suffix":"Linux-x86_64-release.tar.gz", "strip":1, "unpack":"libspotify/"},
+            "Linux-armv5":    {"suffix":"Linux-armv5-release.tar.gz",  "strip":1, "unpack":"libspotify/"},
+            "Linux-armv6":    {"suffix":"Linux-armv6-release.tar.gz",  "strip":1, "unpack":"libspotify/"},
+            "Linux-armv7":    {"suffix":"Linux-armv7-release.tar.gz",  "strip":1, "unpack":"libspotify/"},
+            "Mac-x86":        {"suffix":"Darwin-universal.zip",        "strip":1, "unpack":"libspotify/"},
+            "Mac-x64":        {"suffix":"Darwin-universal.zip",        "strip":1, "unpack":"libspotify/"},
+            "iOs-x86":        {"suffix":"iOS-universal.zip",           "strip":1, "unpack":"libspotify/"},
+            "iOs-armv6":      {"suffix":"iOS-universal.zip",           "strip":1, "unpack":"libspotify/"},
+            "iOs-armv7":      {"suffix":"iOS-universal.zip",           "strip":1, "unpack":"libspotify/"}
+        },
+        "platform-settings": "${platform-table[$platform]}",
+        "archive-suffix": "${platform-settings[suffix]}",
+        "strip-archive-dirs": "${platform-settings[strip]}",
+        "archive-path": "http://developer.spotify.com/download/libspotify/libspotify-${version}-${archive-suffix}",
+        "unpack-location": "${platform-settings[unpack]}",
+        "dest": "dependencies/${archive-platform}/${unpack-location}",
+        "allow-cache": true
+    },
+    { "name":"MSBuildTasks",        "version":"1.4.0.45",    "type":"exnuget" },
+    { "name":"Moq",                 "version":"4.0.10827",   "type":"exnuget" },
+    { "name":"NUnit",               "version":"2.6.2",       "type":"exnuget" },
+    { "name":"NUnit.Runners",       "version":"2.6.1",       "type":"exnuget" },
+    { "name":"Newtonsoft.Json",     "version":"4.5.11",      "type":"exnuget" }
+]

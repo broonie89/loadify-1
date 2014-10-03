@@ -1,0 +1,8 @@
+Copyright 2011, OpenHome. All rights reserved.
+
+Unless otherwise stated, all code in this project is licensed under the 2-clause
+(Simplified) BSD license.  See LICENSE.BSD.txt for details.
+
+Files at the following locations are licensed under separate terms:
+  <none>
+
