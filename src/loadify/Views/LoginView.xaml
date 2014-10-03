@@ -4,7 +4,7 @@
                     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                     Title="Loadify - Login" Height="230" Width="278" Background="#FF282828"
                     WindowTransitionsEnabled="False"
-                    GlowBrush="{DynamicResource AccentColorBrush}"> 
+                    GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize"> 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70*"/>
