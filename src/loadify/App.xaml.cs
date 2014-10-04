@@ -19,12 +19,14 @@ namespace loadify
             // By default, Caliburn.Micro looks in the root namespace which'd be just 'loadify'
             var config = new TypeMappingConfiguration
             {
-                DefaultSubNamespaceForViews = "loadify.Views",
-                DefaultSubNamespaceForViewModels = "loadify.ViewModels"
+                DefaultSubNamespaceForViews = "loadify.View",
+                DefaultSubNamespaceForViewModels = "loadify.ViewModel"
             };
 
             ViewLocator.ConfigureTypeMappings(config);
             ViewModelLocator.ConfigureTypeMappings(config);
+
+            ShutdownMode = System.Windows.ShutdownMode.OnLastWindowClose;
         }
     }
 }
