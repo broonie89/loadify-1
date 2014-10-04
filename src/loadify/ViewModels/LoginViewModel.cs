@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Caliburn.Micro;
+using loadify.Events;
 using loadify.Model;
 using loadify.Views;
+using SpotifySharp;
 
 namespace loadify.ViewModels
 {
-    public class LoginViewModel : ViewAware
+    public class LoginViewModel : ViewModelBase, IHandle<LoginFailedEvent>, IHandle<LoginSuccessfulEvent>
     {
-        private IWindowManager _WindowManager;
-
-        private LoginModel _LoginModel = new LoginModel();
+        private LoginModel _LoginModel;
         public string Username
         {
             get { return _LoginModel.Username; }
@@ -37,19 +40,32 @@ namespace loadify.ViewModels
             }
         }
 
-        public LoginViewModel(IWindowManager windowManager)
+        public LoginViewModel(IEventAggregator eventAggregator, IWindowManager windowManager) :
+            base(eventAggregator, windowManager)
         {
-            _WindowManager = windowManager;
+            _LoginModel = new LoginModel(new LoadifySession(_EventAggregator));
         }
-
-        public LoginViewModel()
-        { }
 
         public void Login()
         {
-            // since you can't bind the passwordbox to a property, the viewmodel needs to be aware of the view to access the password entered
-            var password = (GetView() as LoginView).Password.Password;
             LoginProcessActive = true;
+            var loginView = GetView() as LoginView;
+
+            // since you can't bind the passwordbox to a property, the viewmodel needs to be aware of the view to access the password entered
+            var password = loginView.Password.Password;
+            _LoginModel.Session.Login(Username, password);          
+        }
+
+        public void Handle(LoginFailedEvent message)
+        {
+            LoginProcessActive = false;
+        }
+
+        public void Handle(LoginSuccessfulEvent message)
+        {
+            var loginView = GetView() as LoginView;
+            _WindowManager.ShowWindow(new ShellViewModel());
+            loginView.Close();
         }
     }
 }

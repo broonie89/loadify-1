@@ -25,6 +25,8 @@ namespace loadify
 
             ViewLocator.ConfigureTypeMappings(config);
             ViewModelLocator.ConfigureTypeMappings(config);
+
+            ShutdownMode = System.Windows.ShutdownMode.OnLastWindowClose;
         }
     }
 }
