@@ -18,6 +18,18 @@ namespace loadify.ViewModel
             }
         }
 
+        private StatusViewModel _StatusViewModel;
+        public StatusViewModel StatusViewModel
+        {
+            get { return _StatusViewModel; }
+            set
+            {
+                if (_StatusViewModel == value) return;
+                _StatusViewModel = value;
+                NotifyOfPropertyChange(() => StatusViewModel);
+            }
+        }
+
         public MainViewModel(LoadifySession session):
             this()
         {
@@ -27,6 +39,7 @@ namespace loadify.ViewModel
         public MainViewModel()
         {
             _MenuViewModel = new MenuViewModel();
+            _StatusViewModel = new StatusViewModel();
         }
     }
 }

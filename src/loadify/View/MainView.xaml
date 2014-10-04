@@ -8,9 +8,25 @@
         GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="32*"/>
-            <RowDefinition Height="365*"/>
+            <RowDefinition Height="16*"/>
+            <RowDefinition Height="169*"/>
+            <RowDefinition Height="13*"/>
         </Grid.RowDefinitions>
-        <local:MenuView x:Name="MenuViewModel"/>
+        <ContentControl x:Name="MenuViewModel"/>
+        <TabControl Grid.Row="1" Margin="10 5">
+            <TabItem Header="Playlists">
+                <Grid/>
+            </TabItem>
+            <TabItem Header="Tracks">
+                <Grid/>
+            </TabItem>
+            <TabItem Header="Browse">
+                <Grid/>
+            </TabItem>
+            <TabItem Header="Search">
+                <Grid/>
+            </TabItem>
+        </TabControl>
+        <ContentControl x:Name="StatusViewModel" Grid.Row="2"/>
     </Grid>
 </controls:MetroWindow>
