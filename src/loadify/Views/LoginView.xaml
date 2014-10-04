@@ -19,9 +19,9 @@
             <ColumnDefinition Width="24*"/>
             <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="Username" TextWrapping="Wrap" Text="TextBox" Margin="3" Grid.Column="1" Grid.Row="1"/>
-        <PasswordBox Grid.Column="1" Margin="3" Grid.Row="2"/>
-        <Button Content="Login" Margin="20 3" Grid.Row="4" Grid.ColumnSpan="3"/>
+        <TextBox x:Name="Username" Style="{StaticResource TextBoxGlow}" TextWrapping="Wrap" Text="" Margin="3" Grid.Column="1" Grid.Row="1"/>
+        <PasswordBox Grid.Column="1" Style="{StaticResource PasswordBoxGlow}" Margin="3" Grid.Row="2"/>
+        <Button x:Name="Login" Content="Login" Margin="20 3" Grid.Row="4" Grid.ColumnSpan="3"/>
         <Label Grid.Column="0" Content="Username:" HorizontalContentAlignment="Right" Grid.Row="1"/>
         <Label Grid.Column="0" Content="Passwort:" HorizontalContentAlignment="Right" Grid.Row="2"/>
         <Label Grid.Column="0" Content="LOADIFY" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.ColumnSpan="3" FontFamily="Segoe WP" FontSize="44"/>
