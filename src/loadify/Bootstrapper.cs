@@ -37,12 +37,12 @@ namespace loadify
 
             _Container.Singleton<IEventAggregator, EventAggregator>();
             _Container.Singleton<IWindowManager, WindowManager>();
-            _Container.PerRequest<LoginViewModel>();
+            _Container.PerRequest<MainViewModel>();
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            DisplayRootViewFor<LoginViewModel>();
+            DisplayRootViewFor<MainViewModel>();
         }
 
         protected override object GetInstance(Type service, string key)

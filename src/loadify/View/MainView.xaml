@@ -1,8 +1,16 @@
-﻿<Window x:Class="loadify.View.MainView"
+﻿<controls:MetroWindow x:Class="loadify.View.MainView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="ShellView" Height="300" Width="300">
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:loadify.View"
+        Title="Loadify" Height="425" Width="850" Background="#FF282828"
+        WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen"
+        GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32*"/>
+            <RowDefinition Height="365*"/>
+        </Grid.RowDefinitions>
+        <local:MenuView x:Name="MenuViewModel"/>
     </Grid>
-</Window>
+</controls:MetroWindow>
