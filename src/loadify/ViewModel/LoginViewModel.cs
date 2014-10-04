@@ -6,16 +6,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using Caliburn.Micro;
-using loadify.Events;
+using loadify.Event;
 using loadify.Model;
-using loadify.Views;
+using loadify.View;
+using MahApps.Metro.Controls.Dialogs;
 using SpotifySharp;
 
-namespace loadify.ViewModels
+namespace loadify.ViewModel
 {
     public class LoginViewModel : ViewModelBase, IHandle<LoginFailedEvent>, IHandle<LoginSuccessfulEvent>
     {
+        private LoadifySession _Session;
+
         private LoginModel _LoginModel;
         public string Username
         {
@@ -43,7 +47,14 @@ namespace loadify.ViewModels
         public LoginViewModel(IEventAggregator eventAggregator, IWindowManager windowManager) :
             base(eventAggregator, windowManager)
         {
-            _LoginModel = new LoginModel(new LoadifySession(_EventAggregator));
+            _LoginModel = new LoginModel();
+            _Session = new LoadifySession(_EventAggregator);
+        }
+
+        public void OnKeyUp(Key key)
+        {
+            if (key == Key.Enter)
+                Login();
         }
 
         public void Login()
@@ -53,18 +64,38 @@ namespace loadify.ViewModels
 
             // since you can't bind the passwordbox to a property, the viewmodel needs to be aware of the view to access the password entered
             var password = loginView.Password.Password;
-            _LoginModel.Session.Login(Username, password);          
+            _Session.Login(Username, password);          
         }
 
         public void Handle(LoginFailedEvent message)
         {
+            var view = GetView() as LoginView;
             LoginProcessActive = false;
+
+            switch (message.Error)
+            {
+                case SpotifyError.BadUsernameOrPassword:
+                {
+                    view.ShowMessageAsync("Login failed", "Username or password is wrong");
+                    break;
+                }
+                case SpotifyError.UnableToContactServer:
+                {
+                    view.ShowMessageAsync("Login failed", "No connection to the Spotify servers could be made");
+                    break;
+                }
+                default:
+                {
+                    view.ShowMessageAsync("Login failed", "Unknown error: " + message.Error);
+                    break;
+                }
+            }
         }
 
         public void Handle(LoginSuccessfulEvent message)
         {
             var loginView = GetView() as LoginView;
-            _WindowManager.ShowWindow(new ShellViewModel());
+            _WindowManager.ShowWindow(new MainViewModel(_Session));
             loginView.Close();
         }
     }

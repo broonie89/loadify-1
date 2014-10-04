@@ -10,11 +10,8 @@ namespace loadify.Model
     public class LoginModel
     {
         public string Username { get; set; }
-        public LoadifySession Session { get; set; }
 
-        public LoginModel(LoadifySession session)
-        {
-            Session = session;
-        }
+        public LoginModel()
+        { }
     }
 }

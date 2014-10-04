@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
-using loadify.Events;
+using loadify.Event;
 using SpotifySharp;
 
 namespace loadify
@@ -16,7 +16,7 @@ namespace loadify
     {
         private IEventAggregator _EventAggregator;
         private SpotifySession _Session { get; set; }
-        private SynchronizationContext Synchronization { get; set; }
+        private SynchronizationContext _Synchronization { get; set; }
 
         public bool Connected
         {
@@ -35,10 +35,14 @@ namespace loadify
 
         ~LoadifySession()
         {
+            Release();
+        }
+
+        public void Release()
+        {
             if (_Session == null) return;
             _Session.Logout();
             _Session.FlushCaches();
-            _Session.ForgetMe();
             _Session.Dispose();
         }
 
@@ -58,7 +62,7 @@ namespace loadify
                 Listener = this
             };
 
-            Synchronization = SynchronizationContext.Current;
+            _Synchronization = SynchronizationContext.Current;
             _Session = SpotifySession.Create(config);
         }
 
@@ -70,11 +74,14 @@ namespace loadify
 
         private void InvokeProcessEvents()
         {
-            Synchronization.Post(state =>
-            {
-                var timeout = 0;
+            _Synchronization.Post(state => ProcessEvents(), null);
+        }
+
+        void ProcessEvents()
+        {
+            int timeout = 0;
+            while (timeout == 0)
                 _Session.ProcessEvents(ref timeout);
-            }, null);
         }
 
         public override void NotifyMainThread(SpotifySession session)
@@ -91,6 +98,24 @@ namespace loadify
                 _EventAggregator.PublishOnUIThread(new LoginFailedEvent(error));
             
             base.LoggedIn(session, error);
+        }
+
+        /// <summary>
+        /// Empty callback for safe session release, don't touch.
+        /// See the answer from paddy here: http://stackoverflow.com/questions/14246304/libspotify-logging-out-or-releasing-session-causes-crash
+        /// </summary>
+        public override void OfflineStatusUpdated(SpotifySession session)
+        {
+            base.OfflineStatusUpdated(session);
+        }
+
+        /// <summary>
+        /// Empty callback for safe session release, don't touch.
+        /// See the answer from paddy here: http://stackoverflow.com/questions/14246304/libspotify-logging-out-or-releasing-session-causes-crash
+        /// </summary>
+        public override void CredentialsBlobUpdated(SpotifySession session, string blob)
+        {
+            base.CredentialsBlobUpdated(session, blob);
         }
     }
 }

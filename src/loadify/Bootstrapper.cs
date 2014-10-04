@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using Caliburn.Micro;
-using loadify.ViewModels;
+using loadify.ViewModel;
 
 namespace loadify
 {
@@ -23,6 +24,17 @@ namespace loadify
 
         protected override void Configure()
         {
+            // Callback for redirecting pressed keys to the corresponding viewmodel
+            MessageBinder.SpecialValues.Add("$pressedkey", (context) =>
+            {
+                var keyArgs = context.EventArgs as KeyEventArgs;
+
+                if (keyArgs != null)
+                    return keyArgs.Key;
+
+                return null;
+            });
+
             _Container.Singleton<IEventAggregator, EventAggregator>();
             _Container.Singleton<IWindowManager, WindowManager>();
             _Container.PerRequest<LoginViewModel>();

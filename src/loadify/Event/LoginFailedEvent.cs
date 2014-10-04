@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SpotifySharp;
 
-namespace loadify.Events
+namespace loadify.Event
 {
     public class LoginFailedEvent
     {

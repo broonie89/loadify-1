@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using Caliburn.Micro;
 
-namespace loadify.ViewModels
+namespace loadify.ViewModel
 {
     public class ViewModelBase : ViewAware
     {

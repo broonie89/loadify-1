@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 
-namespace loadify.Views
+namespace loadify.View
 {
     /// <summary>
     /// Interaction logic for LoginView.xaml
