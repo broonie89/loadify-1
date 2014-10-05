@@ -4,15 +4,15 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using loadify.Spotify;
+using loadify.Model;
 using SpotifySharp;
 
 namespace loadify.ViewModel
 {
     public class PlaylistsViewModel : ViewModelBase
     {
-        private ObservableCollection<Playlist> _Playlists = new ObservableCollection<Playlist>();
-        public ObservableCollection<Playlist> Playlists
+        private ObservableCollection<PlaylistModel> _Playlists = new ObservableCollection<PlaylistModel>();
+        public ObservableCollection<PlaylistModel> Playlists
         {
             get { return _Playlists; }
             set
@@ -23,9 +23,13 @@ namespace loadify.ViewModel
             }
         }
 
-        public PlaylistsViewModel(IEnumerable<Playlist> playlistCollection)
+        public PlaylistsViewModel(IEnumerable<PlaylistModel> playlistCollection)
         {
-            _Playlists = new ObservableCollection<Playlist>(playlistCollection);
+            _Playlists = new ObservableCollection<PlaylistModel>(playlistCollection);
         }
+
+        public PlaylistsViewModel():
+            this(new ObservableCollection<PlaylistModel>())
+        { }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using Caliburn.Micro;
-using loadify.Spotify;
 using SpotifySharp;
 
 namespace loadify.ViewModel
@@ -56,7 +55,7 @@ namespace loadify.ViewModel
         {
             _Menu = new MenuViewModel();
             _Status = new StatusViewModel();
-            _Playlists = new PlaylistsViewModel(new PlaylistCollection());
+            _Playlists = new PlaylistsViewModel();
         }
     }
 }

@@ -9,7 +9,9 @@
         <DataGrid x:Name="Playlists" IsReadOnly="True" AutoGenerateColumns="False" CanUserAddRows="False"
                   Background="#FF282828">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Tracks" Binding="{Binding Tracks.Count}"/>
+                <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
             </DataGrid.Columns>
         </DataGrid>
 

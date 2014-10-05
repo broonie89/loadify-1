@@ -114,9 +114,10 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Event\LoginFailedEvent.cs" />
     <Compile Include="Event\LoginSuccessfulEvent.cs" />
+    <Compile Include="Model\TrackModel.cs" />
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="LoadifySession.cs" />
-    <Compile Include="Spotify\PlaylistCollection.cs" />
+    <Compile Include="Model\PlaylistModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
     <Compile Include="ViewModel\PlaylistsViewModel.cs" />

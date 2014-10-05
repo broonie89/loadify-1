@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using loadify.Event;
-using loadify.Spotify;
+using loadify.Model;
 using SpotifySharp;
 
 namespace loadify
@@ -73,9 +73,19 @@ namespace loadify
             _Session.Login(username, password, true, null);
         }
 
-        public PlaylistCollection GetPlaylists()
+        public List<PlaylistModel> GetPlaylists()
         {
-            return _Session != null ? PlaylistCollection.FromPlaylistContainer(_Session.Playlistcontainer()) : new PlaylistCollection();
+            var playlists = new List<PlaylistModel>();
+            if (_Session == null) return playlists;
+
+            var container = _Session.Playlistcontainer();
+            if (container == null) return playlists;
+
+            for (int i = 0; i < container.NumPlaylists(); i++)
+                playlists.Add(new PlaylistModel(container.Playlist(i)));
+
+            container.Release();
+            return playlists;
         }
 
         private void InvokeProcessEvents()
