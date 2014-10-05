@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Caliburn.Micro;
+using loadify.Event;
 
 namespace loadify.ViewModel
 {
@@ -20,13 +22,19 @@ namespace loadify.ViewModel
             }
         }
 
-        public StatusViewModel(UserViewModel loggedInUser)
+        public StatusViewModel(UserViewModel loggedInUser, IEventAggregator eventAggregator):
+            base(eventAggregator)
         {
-            _LoggedInUser = loggedInUser;
+            LoggedInUser = loggedInUser;
         }
 
-        public StatusViewModel():
-            this(new UserViewModel())
+        public StatusViewModel(IEventAggregator eventAggregator):
+            this(new UserViewModel(), eventAggregator)
         { }
+
+        public void RefreshData()
+        {
+            _EventAggregator.PublishOnUIThread(new DataRefreshRequest());
+        }
     }
 }

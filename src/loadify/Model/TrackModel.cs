@@ -32,8 +32,8 @@ namespace loadify.Model
 
         public void Release()
         {
-            if(_UnmanagedTrack != null)
-                _UnmanagedTrack.Release();
+            if (_UnmanagedTrack == null) return;
+            _UnmanagedTrack.Release();
         }
     }
 }

@@ -84,7 +84,7 @@ namespace loadify
             for (int i = 0; i < container.NumPlaylists(); i++)
                 playlists.Add(new PlaylistModel(container.Playlist(i)));
 
-            container.Release();
+            //container.Release();
             return playlists;
         }
 

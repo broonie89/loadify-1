@@ -1,10 +1,12 @@
 ﻿using System.Collections.ObjectModel;
+using System.Runtime.InteropServices.ComTypes;
 using Caliburn.Micro;
+using loadify.Event;
 using SpotifySharp;
 
 namespace loadify.ViewModel
 {
-    public class MainViewModel : PropertyChangedBase
+    public class MainViewModel : ViewModelBase, IHandle<DataRefreshRequest>
     {
         private LoadifySession _Session;
 
@@ -44,18 +46,34 @@ namespace loadify.ViewModel
             }
         }
 
-        public MainViewModel(LoadifySession session):
-            this()
+        private UserViewModel _LoggedInUser;
+        public UserViewModel LoggedInUser
         {
-            _Session = session;
-            _Playlists = new PlaylistsViewModel(_Session.GetPlaylists());
+            get { return _LoggedInUser; }
+            set
+            {
+                if (_LoggedInUser == value) return;
+                _LoggedInUser = value;
+                NotifyOfPropertyChange(() => LoggedInUser);
+            }
         }
 
-        public MainViewModel()
+        public MainViewModel(LoadifySession session, UserViewModel loggedInUser, IEventAggregator eventAggregator):
+            base(eventAggregator)
         {
+            _Session = session;
+            _LoggedInUser = loggedInUser;
             _Menu = new MenuViewModel();
-            _Status = new StatusViewModel();
-            _Playlists = new PlaylistsViewModel();
+            _Status = new StatusViewModel(loggedInUser, _EventAggregator);
+            _Playlists = new PlaylistsViewModel(_EventAggregator);
+
+            _EventAggregator.PublishOnUIThread(new DataRefreshDisposal(_Session));
+        }
+
+        public void Handle(DataRefreshRequest message)
+        {
+            // accept all requests by default (debugging purposes)
+            _EventAggregator.PublishOnUIThread(new DataRefreshDisposal(_Session));
         }
     }
 }
