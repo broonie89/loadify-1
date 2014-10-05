@@ -13,16 +13,12 @@ namespace loadify.Model
 
         public string Name { get; set; }
         public int Duration { get; set; }
+        public List<ArtistModel> Artists { get; set; } 
 
         public TrackModel(Track unmanagedTrack)
         {
-            _UnmanagedTrack = unmanagedTrack;
-
-            if (_UnmanagedTrack != null)
-            {
-                Name = _UnmanagedTrack.Name();
-                Duration = _UnmanagedTrack.Duration();
-            }
+            _UnmanagedTrack = unmanagedTrack;      
+            Artists = new List<ArtistModel>();
         }
     }
 }

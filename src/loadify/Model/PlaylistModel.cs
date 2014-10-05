@@ -16,22 +16,12 @@ namespace loadify.Model
         public List<TrackModel> Tracks { get; set; }
         public List<string> Subscribers { get; set; }
         public string Creator { get; set; }
+        public byte[] Image { get; set; }
 
         public PlaylistModel(Playlist unmanagedPlaylist)
         {
             Tracks = new List<TrackModel>();
             _UnmanagedPlaylist = unmanagedPlaylist;
-
-            if (_UnmanagedPlaylist != null)
-            {
-                Name = _UnmanagedPlaylist.Name();
-                Subscribers = _UnmanagedPlaylist.Subscribers().ToList();
-                Creator = _UnmanagedPlaylist.Owner().DisplayName();
-                Description = _UnmanagedPlaylist.GetDescription();
-
-                for(int i = 0; i < _UnmanagedPlaylist.NumTracks(); i++)
-                    Tracks.Add(new TrackModel(_UnmanagedPlaylist.Track(i)));
-            }
         }
     }
 }

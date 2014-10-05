@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,7 +44,6 @@ namespace loadify
         {
             if (_Session == null) return;
             _Session.Playlistcontainer().Release();
-            _Session.Dispose();
         }
 
         private void Setup()
@@ -69,7 +69,7 @@ namespace loadify
         public void Login(string username, string password)
         {
             if (Connected) return;
-            _Session.Login(username, password, true, null);
+            _Session.Login(username, password, false, null);
         }
 
         public List<PlaylistModel> GetPlaylists()
@@ -80,10 +80,53 @@ namespace loadify
             var container = _Session.Playlistcontainer();
             if (container == null) return playlists;
 
-            for (int i = 0; i < container.NumPlaylists(); i++)
-                playlists.Add(new PlaylistModel(container.Playlist(i)));
+            for (var i = 0; i < container.NumPlaylists(); i++)
+            {
+                var unmanagedPlaylist = container.Playlist(i);
+                var managedPlaylistModel = new PlaylistModel(unmanagedPlaylist);
+
+                if (unmanagedPlaylist == null) continue;
+                managedPlaylistModel.Name = unmanagedPlaylist.Name();
+                managedPlaylistModel.Subscribers = unmanagedPlaylist.Subscribers().ToList();
+                managedPlaylistModel.Creator = unmanagedPlaylist.Owner().DisplayName();
+                managedPlaylistModel.Description = unmanagedPlaylist.GetDescription();
+
+                var playlistImageId = unmanagedPlaylist.GetImage();
+                if (playlistImageId != null)
+                    managedPlaylistModel.Image = GetImage(playlistImageId).Data();
+
+                for (var j = 0; j < unmanagedPlaylist.NumTracks(); j++)
+                {
+                    var unmanagedTrack = unmanagedPlaylist.Track(j);
+                    var managedTrack = new TrackModel(unmanagedTrack);
+
+                    if (unmanagedTrack == null) continue;
+                    managedTrack.Name = unmanagedTrack.Name();
+                    managedTrack.Duration = unmanagedTrack.Duration();
+
+                    for (var k = 0; k < unmanagedTrack.NumArtists(); k++)
+                    {
+                        var unmanagedArtist = unmanagedTrack.Artist(k);
+                        var managedArtist = new ArtistModel(unmanagedArtist);
+
+                        if (unmanagedArtist == null) continue;
+                        managedArtist.Name = unmanagedArtist.Name();
+
+                        managedTrack.Artists.Add(managedArtist);
+                    }
+
+                    managedPlaylistModel.Tracks.Add(managedTrack);
+                }
+
+                playlists.Add(managedPlaylistModel);
+            }
 
             return playlists;
+        }
+
+        public Image GetImage(ImageId imageId)
+        {
+            return Image.Create(_Session, imageId);
         }
 
         private void InvokeProcessEvents()
@@ -112,24 +155,6 @@ namespace loadify
                 _EventAggregator.PublishOnUIThread(new LoginFailedEvent(error));
             
             base.LoggedIn(session, error);
-        }
-
-        /// <summary>
-        /// Empty callback for safe session release, don't touch.
-        /// See the answer from paddy here: http://stackoverflow.com/questions/14246304/libspotify-logging-out-or-releasing-session-causes-crash
-        /// </summary>
-        public override void OfflineStatusUpdated(SpotifySession session)
-        {
-            base.OfflineStatusUpdated(session);
-        }
-
-        /// <summary>
-        /// Empty callback for safe session release, don't touch.
-        /// See the answer from paddy here: http://stackoverflow.com/questions/14246304/libspotify-logging-out-or-releasing-session-causes-crash
-        /// </summary>
-        public override void CredentialsBlobUpdated(SpotifySession session, string blob)
-        {
-            base.CredentialsBlobUpdated(session, blob);
         }
     }
 }
