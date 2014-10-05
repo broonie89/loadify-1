@@ -20,15 +20,15 @@ namespace loadify.ViewModel
     {
         private LoadifySession _Session;
 
-        private LoginModel _LoginModel;
-        public string Username
+        private UserViewModel _User;
+        public UserViewModel User
         {
-            get { return _LoginModel.Username; }
+            get { return _User; }
             set
             {
-                if (_LoginModel.Username == value) return;
-                _LoginModel.Username = value;
-                NotifyOfPropertyChange(() => _LoginModel.Username);
+                if (_User == value) return;
+                _User = value;
+                NotifyOfPropertyChange(() => User);
             }
         }
 
@@ -47,7 +47,7 @@ namespace loadify.ViewModel
         public LoginViewModel(IEventAggregator eventAggregator, IWindowManager windowManager) :
             base(eventAggregator, windowManager)
         {
-            _LoginModel = new LoginModel();
+            _User = new UserViewModel();
             _Session = new LoadifySession(_EventAggregator);
         }
 
@@ -64,7 +64,7 @@ namespace loadify.ViewModel
 
             // since you can't bind the passwordbox to a property, the viewmodel needs to be aware of the view to access the password entered
             var password = loginView.Password.Password;
-            _Session.Login(Username, password);          
+            _Session.Login(User.Name, password);          
         }
 
         public void Handle(LoginFailedEvent message)
@@ -76,7 +76,7 @@ namespace loadify.ViewModel
             {
                 case SpotifyError.BadUsernameOrPassword:
                 {
-                    view.ShowMessageAsync("Login failed", "Username or password is wrong");
+                    view.ShowMessageAsync("Login failed", "Name or password is wrong");
                     break;
                 }
                 case SpotifyError.UnableToContactServer:

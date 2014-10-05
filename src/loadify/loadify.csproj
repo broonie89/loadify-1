@@ -115,7 +115,6 @@
     <Compile Include="Event\LoginFailedEvent.cs" />
     <Compile Include="Event\LoginSuccessfulEvent.cs" />
     <Compile Include="Model\UserModel.cs" />
-    <Compile Include="Model\LoginModel.cs" />
     <Compile Include="LoadifySession.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />

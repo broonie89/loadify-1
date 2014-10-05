@@ -6,27 +6,27 @@ namespace loadify.ViewModel
     {
         private LoadifySession _Session;
 
-        private MenuViewModel _MenuViewModel;
-        public MenuViewModel MenuViewModel
+        private MenuViewModel _Menu;
+        public MenuViewModel Menu
         {
-            get { return _MenuViewModel; }
+            get { return _Menu; }
             set
             {
-                if (_MenuViewModel == value) return;
-                _MenuViewModel = value;
-                NotifyOfPropertyChange(() => MenuViewModel);
+                if (_Menu == value) return;
+                _Menu = value;
+                NotifyOfPropertyChange(() => Menu);
             }
         }
 
-        private StatusViewModel _StatusViewModel;
-        public StatusViewModel StatusViewModel
+        private StatusViewModel _Status;
+        public StatusViewModel Status
         {
-            get { return _StatusViewModel; }
+            get { return _Status; }
             set
             {
-                if (_StatusViewModel == value) return;
-                _StatusViewModel = value;
-                NotifyOfPropertyChange(() => StatusViewModel);
+                if (_Status == value) return;
+                _Status = value;
+                NotifyOfPropertyChange(() => Status);
             }
         }
 
@@ -38,8 +38,8 @@ namespace loadify.ViewModel
 
         public MainViewModel()
         {
-            _MenuViewModel = new MenuViewModel();
-            _StatusViewModel = new StatusViewModel();
+            _Menu = new MenuViewModel();
+            _Status = new StatusViewModel();
         }
     }
 }

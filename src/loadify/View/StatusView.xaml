@@ -11,6 +11,6 @@
             <ColumnDefinition Width="66*"/>
         </Grid.ColumnDefinitions>
         <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0 1 0 0" Grid.ColumnSpan="2"/>
-        <Label Content="{Binding UserViewModel.Name}" Foreground="#FF7D7D7D" Margin="10 0" ContentStringFormat="Connected as {0}" HorizontalContentAlignment="Right" Grid.Column="1"/>
+        <Label Content="{Binding LoggedInUser.Name}" Foreground="#FF7D7D7D" Margin="10 0" ContentStringFormat="Connected as {0}" HorizontalContentAlignment="Right" Grid.Column="1"/>
     </Grid>
 </UserControl>

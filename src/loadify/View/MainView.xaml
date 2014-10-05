@@ -12,7 +12,7 @@
             <RowDefinition Height="169*"/>
             <RowDefinition Height="13*"/>
         </Grid.RowDefinitions>
-        <ContentControl x:Name="MenuViewModel"/>
+        <ContentControl x:Name="Menu"/>
         <TabControl Grid.Row="1" Margin="10 5">
             <TabItem Header="Playlists">
                 <Grid/>
@@ -27,6 +27,6 @@
                 <Grid/>
             </TabItem>
         </TabControl>
-        <ContentControl x:Name="StatusViewModel" Grid.Row="2"/>
+        <ContentControl x:Name="Status" Grid.Row="2"/>
     </Grid>
 </controls:MetroWindow>

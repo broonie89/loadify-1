@@ -8,21 +8,21 @@ namespace loadify.ViewModel
 {
     public class StatusViewModel : ViewModelBase
     {
-        private UserViewModel _UserViewModel;
-        public UserViewModel UserViewModel
+        private UserViewModel _LoggedInUser;
+        public UserViewModel LoggedInUser
         {
-            get { return _UserViewModel; }
+            get { return _LoggedInUser; }
             set
             {
-                if (_UserViewModel == value) return;
-                _UserViewModel = value;
-                NotifyOfPropertyChange(() => UserViewModel);
+                if (_LoggedInUser == value) return;
+                _LoggedInUser = value;
+                NotifyOfPropertyChange(() => LoggedInUser);
             }
         }
 
-        public StatusViewModel(UserViewModel userViewModel)
+        public StatusViewModel(UserViewModel loggedInUser)
         {
-            _UserViewModel = userViewModel;
+            _LoggedInUser = loggedInUser;
         }
 
         public StatusViewModel():
