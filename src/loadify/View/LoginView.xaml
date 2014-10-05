@@ -24,7 +24,7 @@
             <ColumnDefinition Width="24*"/>
             <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
-        <TextBox Text="{Binding User.Name, Mode=TwoWay}" Style="{StaticResource TextBoxGlow}" TextWrapping="Wrap" TabIndex="0" Margin="3" Grid.Column="1" Grid.Row="2"/>
+        <TextBox x:Name="Username" Text="{Binding User.Name, Mode=TwoWay}" Style="{StaticResource TextBoxGlow}" TextWrapping="Wrap" TabIndex="0" Margin="3" Grid.Column="1" Grid.Row="2"/>
         <PasswordBox x:Name="Password" Grid.Column="1" Style="{StaticResource PasswordBoxGlow}" TabIndex="1" Margin="3" Grid.Row="3"/>
         <Button x:Name="Login" Content="Login" Margin="20 3" Grid.Row="5" Grid.ColumnSpan="3" TabIndex="2"/>
         <Label Grid.Column="0" Content="Username:" HorizontalContentAlignment="Right" Grid.Row="2"/>

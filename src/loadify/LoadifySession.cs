@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using loadify.Event;
+using loadify.Spotify;
 using SpotifySharp;
 
 namespace loadify
@@ -70,6 +71,11 @@ namespace loadify
         {
             if (Connected) return;
             _Session.Login(username, password, true, null);
+        }
+
+        public PlaylistCollection GetPlaylists()
+        {
+            return _Session != null ? PlaylistCollection.FromPlaylistContainer(_Session.Playlistcontainer()) : new PlaylistCollection();
         }
 
         private void InvokeProcessEvents()

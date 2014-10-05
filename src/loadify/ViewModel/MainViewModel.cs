@@ -1,4 +1,7 @@
-﻿using Caliburn.Micro;
+﻿using System.Collections.ObjectModel;
+using Caliburn.Micro;
+using loadify.Spotify;
+using SpotifySharp;
 
 namespace loadify.ViewModel
 {
@@ -30,16 +33,30 @@ namespace loadify.ViewModel
             }
         }
 
+        private PlaylistsViewModel _Playlists;
+        public PlaylistsViewModel Playlists
+        {
+            get { return _Playlists; }
+            set
+            {
+                if (_Playlists == value) return;
+                _Playlists = value;
+                NotifyOfPropertyChange(() => Playlists);
+            }
+        }
+
         public MainViewModel(LoadifySession session):
             this()
         {
             _Session = session;
+            _Playlists = new PlaylistsViewModel(_Session.GetPlaylists());
         }
 
         public MainViewModel()
         {
             _Menu = new MenuViewModel();
             _Status = new StatusViewModel();
+            _Playlists = new PlaylistsViewModel(new PlaylistCollection());
         }
     }
 }

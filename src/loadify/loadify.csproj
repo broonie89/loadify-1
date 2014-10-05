@@ -116,8 +116,10 @@
     <Compile Include="Event\LoginSuccessfulEvent.cs" />
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="LoadifySession.cs" />
+    <Compile Include="Spotify\PlaylistCollection.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
+    <Compile Include="ViewModel\PlaylistsViewModel.cs" />
     <Compile Include="ViewModel\StatusViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
@@ -130,6 +132,9 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\MenuView.xaml.cs">
       <DependentUpon>MenuView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PlaylistsView.xaml.cs">
+      <DependentUpon>PlaylistsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StatusView.xaml.cs">
       <DependentUpon>StatusView.xaml</DependentUpon>
@@ -182,6 +187,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\MenuView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PlaylistsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
