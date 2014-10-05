@@ -24,16 +24,5 @@ namespace loadify.Model
                 Duration = _UnmanagedTrack.Duration();
             }
         }
-
-        ~TrackModel()
-        {
-            Release();
-        }
-
-        public void Release()
-        {
-            if (_UnmanagedTrack == null) return;
-            _UnmanagedTrack.Release();
-        }
     }
 }

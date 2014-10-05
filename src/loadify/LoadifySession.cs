@@ -42,8 +42,7 @@ namespace loadify
         public void Release()
         {
             if (_Session == null) return;
-            _Session.Logout();
-            _Session.FlushCaches();
+            _Session.Playlistcontainer().Release();
             _Session.Dispose();
         }
 
@@ -84,7 +83,6 @@ namespace loadify
             for (int i = 0; i < container.NumPlaylists(); i++)
                 playlists.Add(new PlaylistModel(container.Playlist(i)));
 
-            //container.Release();
             return playlists;
         }
 

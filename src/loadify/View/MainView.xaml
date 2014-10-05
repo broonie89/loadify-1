@@ -16,7 +16,7 @@
         <TabControl Grid.Row="1" Margin="10 5">
             <TabItem Header="Playlists">
                 <Grid>
-                    <ContentControl x:Name="Playlists"/>
+                    <ContentControl x:Name="Playlists" Margin="0 5"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Tracks">

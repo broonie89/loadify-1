@@ -33,16 +33,5 @@ namespace loadify.Model
                     Tracks.Add(new TrackModel(_UnmanagedPlaylist.Track(i)));
             }
         }
-
-        ~PlaylistModel()
-        {
-            Release();
-        }
-
-        public void Release()
-        {
-            if (_UnmanagedPlaylist == null) return;
-            _UnmanagedPlaylist.Release();
-        }
     }
 }
