@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Caliburn.Micro;
 using loadify.Model;
 using loadify.ViewModel;
 
@@ -19,18 +20,18 @@ namespace loadify.Mock
         {
             Playlists = new List<PlaylistViewModel>
             {
-                new PlaylistViewModel()
+                new PlaylistViewModel(new EventAggregator())
                 {
                     Creator = "Mostey",
                     Description = "Test",
                     Name = "Rock",
                     Tracks = new ObservableCollection<TrackViewModel>
                     {
-                        new TrackViewModel() {Name = "Rock this Shit"},
-                        new TrackViewModel() {Name = "Could it be"}
+                        new TrackViewModel(new EventAggregator()) {Name = "Rock this Shit"},
+                        new TrackViewModel(new EventAggregator()) {Name = "Could it be"}
                     }
                 },
-                new PlaylistViewModel() {Creator = "Mostey", Description = "Test2", Name = "Hardcore"}
+                new PlaylistViewModel(new EventAggregator()) {Creator = "Mostey", Description = "Test2", Name = "Hardcore"}
             };
         }
 

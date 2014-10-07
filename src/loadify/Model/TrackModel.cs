@@ -13,7 +13,7 @@ namespace loadify.Model
 
         public string Name { get; set; }
         public int Duration { get; set; }
-        public List<ArtistModel> Artists { get; set; } 
+        public List<ArtistModel> Artists { get; set; }
 
         public TrackModel(Track unmanagedTrack):
             this()

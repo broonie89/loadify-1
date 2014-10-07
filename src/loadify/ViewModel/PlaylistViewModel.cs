@@ -4,11 +4,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Caliburn.Micro;
+using loadify.Event;
 using loadify.Model;
+using SpotifySharp;
 
 namespace loadify.ViewModel
 {
-    public class PlaylistViewModel : ViewModelBase
+    public class PlaylistViewModel : ViewModelBase, IHandle<TrackSelectedEvent>
     {
         private PlaylistModel _Playlist;
         public PlaylistModel Playlist
@@ -22,14 +25,14 @@ namespace loadify.ViewModel
             }
         }
 
+        private ObservableCollection<TrackViewModel> _Tracks;
         public ObservableCollection<TrackViewModel> Tracks
         {
-            get { return new ObservableCollection<TrackViewModel>(Playlist.Tracks.Select(track => new TrackViewModel(track))); }
+            get { return _Tracks; }
             set
             {
-                var tracksCollection = new ObservableCollection<TrackViewModel>(Playlist.Tracks.Select(track => new TrackViewModel(track)));
-                if (tracksCollection == value) return;
-                Playlist.Tracks = new List<TrackModel>(value.Select(trackViewModel => trackViewModel.Track));
+                if (_Tracks == value) return;
+                _Tracks = value;
                 NotifyOfPropertyChange(() => Tracks);
             }
         }
@@ -67,13 +70,37 @@ namespace loadify.ViewModel
             }
         }
 
-        public PlaylistViewModel(PlaylistModel playlist)
+        public bool Selected
         {
-            _Playlist = playlist;
+            get { return Tracks.All(track => track.Selected); }
+            set
+            {
+                foreach (var track in Tracks)
+                    track.Selected = value;
+
+                NotifyOfPropertyChange(() => Selected);
+            }
         }
 
-        public PlaylistViewModel():
-            this(new PlaylistModel())
+        public ObservableCollection<TrackViewModel> SelectedTracks
+        {
+            get { return new ObservableCollection<TrackViewModel>(Tracks.Where(track => track.Selected)); }
+        }
+
+        public PlaylistViewModel(PlaylistModel playlist, IEventAggregator eventAggregator):
+            base(eventAggregator)
+        {
+            _Playlist = playlist;
+            _Tracks = new ObservableCollection<TrackViewModel>(playlist.Tracks.Select(track => new TrackViewModel(track, eventAggregator)));
+        }
+
+        public PlaylistViewModel(IEventAggregator eventAggregator):
+            this(new PlaylistModel(), eventAggregator)
         { }
+
+        public void Handle(TrackSelectedEvent message)
+        {
+            NotifyOfPropertyChange(() => SelectedTracks);
+        }
     }
 }

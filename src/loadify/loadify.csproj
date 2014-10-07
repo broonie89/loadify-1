@@ -117,6 +117,7 @@
     <Compile Include="Event\LoginSuccessfulEvent.cs" />
     <Compile Include="Event\PlaylistsUpdatedEvent.cs" />
     <Compile Include="Event\DataRefreshRequest.cs" />
+    <Compile Include="Event\TrackSelectedEvent.cs" />
     <Compile Include="Mock\PlaylistsMock.cs" />
     <Compile Include="Model\ArtistModel.cs" />
     <Compile Include="Model\TrackModel.cs" />

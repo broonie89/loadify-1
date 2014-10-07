@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Caliburn.Micro;
+using loadify.Event;
 using loadify.Model;
 
 namespace loadify.ViewModel
@@ -43,13 +45,27 @@ namespace loadify.ViewModel
             }
         }
 
-        public TrackViewModel(TrackModel track)
+        private bool _Selected;
+        public bool Selected
+        {
+            get { return _Selected; }
+            set
+            {
+                if (_Selected == value) return;
+                _Selected = value;
+                NotifyOfPropertyChange(() => Selected);
+                _EventAggregator.PublishOnUIThread(new TrackSelectedEvent(this));
+            }
+        }
+
+        public TrackViewModel(TrackModel track, IEventAggregator eventAggregator):
+            base(eventAggregator)
         {
             _Track = track;
         }
 
-        public TrackViewModel() :
-            this(new TrackModel())
+        public TrackViewModel(IEventAggregator eventAggregator) :
+            this(new TrackModel(), eventAggregator)
         { }
     }
 }

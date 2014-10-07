@@ -5,25 +5,25 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewmodel="clr-namespace:loadify.ViewModel"
              xmlns:mock="clr-namespace:loadify.Mock"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
-            <Setter Property="IsExpanded" Value="{Binding IsNodeExpanded}">
-            </Setter>
-        </Style>
         <mock:PlaylistsMock x:Key="PlaylistsMock"/>
         <DataTemplate x:Key="TrackTemplate" DataType="viewmodel:TrackViewModel">
             <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding Selected, Mode=TwoWay}"/>
                 <TextBlock Text="{Binding Path=Name}" />
             </StackPanel>
         </DataTemplate>
         <HierarchicalDataTemplate x:Key="PlaylistTemplate" DataType="viewmodel:PlaylistViewModel" ItemsSource="{Binding Path=Tracks}" ItemTemplate="{StaticResource TrackTemplate}">
             <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding Selected}"/>
                 <TextBlock>
                     <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0} - {1} Tracks">
+                        <MultiBinding StringFormat="{}{0} - {1}/{2} Tracks">
                             <Binding Path="Name" />
+                            <Binding Path="SelectedTracks.Count" />
                             <Binding Path="Tracks.Count" />
                         </MultiBinding>
                     </TextBlock.Text>
