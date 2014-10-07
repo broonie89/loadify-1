@@ -13,7 +13,15 @@
         <DataTemplate x:Key="TrackTemplate" DataType="viewmodel:TrackViewModel">
             <StackPanel Orientation="Horizontal">
                 <CheckBox IsChecked="{Binding Selected, Mode=TwoWay}"/>
-                <TextBlock Text="{Binding Path=Name}" />
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{} {0} - {1}">
+                            <Binding Path="Artists"/>
+                            <Binding Path="Name"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+                
             </StackPanel>
         </DataTemplate>
         <HierarchicalDataTemplate x:Key="PlaylistTemplate" DataType="viewmodel:PlaylistViewModel" ItemsSource="{Binding Path=Tracks}" ItemTemplate="{StaticResource TrackTemplate}">
@@ -21,7 +29,7 @@
                 <CheckBox IsChecked="{Binding Selected}"/>
                 <TextBlock>
                     <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0} - {1}/{2} Tracks">
+                        <MultiBinding StringFormat="{}{0} ({1}/{2} Tracks)">
                             <Binding Path="Name" />
                             <Binding Path="SelectedTracks.Count" />
                             <Binding Path="Tracks.Count" />

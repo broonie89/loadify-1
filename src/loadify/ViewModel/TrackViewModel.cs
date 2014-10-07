@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Caliburn.Micro;
 using loadify.Event;
 using loadify.Model;
@@ -42,6 +43,22 @@ namespace loadify.ViewModel
                 if (Track.Duration == value) return;
                 Track.Duration = value;
                 NotifyOfPropertyChange(() => Duration);
+            }
+        }
+
+        public string Artists
+        {
+            get
+            {
+                var artists = "";
+                foreach (var artist in Track.Artists)
+                {
+                    artists += artist.Name;
+                    if (artist != Track.Artists.LastOrDefault())
+                        artists += ", ";
+                }
+
+                return artists;
             }
         }
 

@@ -17,5 +17,8 @@ namespace loadify.Model
         {
             _UnmanagedArtist = unmanagedArtist;
         }
+
+        public ArtistModel()
+        { }
     }
 }
