@@ -19,9 +19,6 @@
                     <ContentControl x:Name="Playlists" Margin="0 5"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Tracks">
-                <Grid/>
-            </TabItem>
             <TabItem Header="Browse">
                 <Grid/>
             </TabItem>

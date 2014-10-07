@@ -3,17 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:model="clr-namespace:loadify.Model"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <DataTemplate x:Key="TrackTemplate" DataType="model:TrackModel">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Path=Name}" />
+            </StackPanel>
+        </DataTemplate>
+        <HierarchicalDataTemplate x:Key="PlaylistTemplate" DataType="model:PlaylistModel" ItemsSource="{Binding Path=Tracks}" ItemTemplate="{StaticResource TrackTemplate}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0} - {1} Tracks">
+                            <Binding Path="Name" />
+                            <Binding Path="Tracks.Count" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+    </UserControl.Resources>
     <Grid>
-        <DataGrid x:Name="Playlists" IsReadOnly="True" AutoGenerateColumns="False" CanUserAddRows="False"
-                  Background="#FF282828">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="Tracks" Binding="{Binding Tracks.Count}"/>
-                <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-
+        <TreeView ItemsSource="{Binding Playlists}" ItemTemplate="{StaticResource PlaylistTemplate}"/>
     </Grid>
 </UserControl>
