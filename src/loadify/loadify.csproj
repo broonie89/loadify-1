@@ -119,6 +119,7 @@
     <Compile Include="Event\DataRefreshRequest.cs" />
     <Compile Include="Event\TrackSelectedEvent.cs" />
     <Compile Include="Mock\PlaylistsMock.cs" />
+    <Compile Include="Model\AlbumModel.cs" />
     <Compile Include="Model\ArtistModel.cs" />
     <Compile Include="Model\TrackModel.cs" />
     <Compile Include="Model\UserModel.cs" />

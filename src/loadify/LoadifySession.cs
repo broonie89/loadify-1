@@ -72,7 +72,7 @@ namespace loadify
             _Session.Login(username, password, false, null);
         }
 
-        public List<PlaylistModel> GetPlaylists()
+        public IEnumerable<PlaylistModel> GetPlaylists()
         {
             var playlists = new List<PlaylistModel>();
             if (_Session == null) return playlists;
@@ -98,21 +98,22 @@ namespace loadify
                 for (var j = 0; j < unmanagedPlaylist.NumTracks(); j++)
                 {
                     var unmanagedTrack = unmanagedPlaylist.Track(j);
-                    var managedTrack = new TrackModel(unmanagedTrack);
+                    var managedTrack = new TrackModel();
 
                     if (unmanagedTrack == null) continue;
                     managedTrack.Name = unmanagedTrack.Name();
                     managedTrack.Duration = unmanagedTrack.Duration();
+                    managedTrack.Rating = unmanagedTrack.Popularity();
+                    managedTrack.Album.Name = unmanagedTrack.Album().Name();
+                    managedTrack.Album.ReleaseYear = unmanagedTrack.Album().Year();
+                    managedTrack.Album.AlbumType = unmanagedTrack.Album().Type();
 
                     for (var k = 0; k < unmanagedTrack.NumArtists(); k++)
                     {
                         var unmanagedArtist = unmanagedTrack.Artist(k);
-                        var managedArtist = new ArtistModel(unmanagedArtist);
-
                         if (unmanagedArtist == null) continue;
-                        managedArtist.Name = unmanagedArtist.Name();
-
-                        managedTrack.Artists.Add(managedArtist);
+ 
+                        managedTrack.Artists.Add(new ArtistModel() { Name = unmanagedArtist.Name() });
                     }
 
                     managedPlaylistModel.Tracks.Add(managedTrack);

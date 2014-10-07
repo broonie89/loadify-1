@@ -7,12 +7,13 @@ using SpotifySharp;
 
 namespace loadify.Model
 {
-    public class ArtistModel
+    public class AlbumModel
     {
         public string Name { get; set; }
-        public byte[] Portrait { get; set; }
+        public int ReleaseYear { get; set; }
+        public AlbumType AlbumType { get; set; }
 
-        public ArtistModel()
+        public AlbumModel()
         { }
     }
 }
