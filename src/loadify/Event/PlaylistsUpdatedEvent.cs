@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using loadify.Model;
+using loadify.ViewModel;
 
 namespace loadify.Event
 {
     public class PlaylistsUpdatedEvent
     {
-        public List<PlaylistModel> Playlists { get; set; }
+        public List<PlaylistViewModel> Playlists { get; set; }
 
-        public PlaylistsUpdatedEvent(List<PlaylistModel> playlists)
+        public PlaylistsUpdatedEvent(List<PlaylistViewModel> playlists)
         {
             Playlists = playlists;
         }

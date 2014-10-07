@@ -15,9 +15,14 @@ namespace loadify.Model
         public int Duration { get; set; }
         public List<ArtistModel> Artists { get; set; } 
 
-        public TrackModel(Track unmanagedTrack)
+        public TrackModel(Track unmanagedTrack):
+            this()
         {
-            _UnmanagedTrack = unmanagedTrack;      
+            _UnmanagedTrack = unmanagedTrack;       
+        }
+
+        public TrackModel()
+        {
             Artists = new List<ArtistModel>();
         }
     }

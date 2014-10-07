@@ -13,8 +13,8 @@ namespace loadify.ViewModel
 {
     public class PlaylistsViewModel : ViewModelBase, IHandle<DataRefreshDisposal>
     {
-        private ObservableCollection<PlaylistModel> _Playlists = new ObservableCollection<PlaylistModel>();
-        public ObservableCollection<PlaylistModel> Playlists
+        private ObservableCollection<PlaylistViewModel> _Playlists = new ObservableCollection<PlaylistViewModel>();
+        public ObservableCollection<PlaylistViewModel> Playlists
         {
             get { return _Playlists; }
             set
@@ -25,20 +25,20 @@ namespace loadify.ViewModel
             }
         }
 
-        public PlaylistsViewModel(IEnumerable<PlaylistModel> playlistCollection, IEventAggregator eventAggregator):
+        public PlaylistsViewModel(IEnumerable<PlaylistViewModel> playlistCollection, IEventAggregator eventAggregator) :
             base(eventAggregator)
         {
-            _Playlists = new ObservableCollection<PlaylistModel>(playlistCollection);
+            _Playlists = new ObservableCollection<PlaylistViewModel>(playlistCollection);
         }
 
         public PlaylistsViewModel(IEventAggregator eventAggregator) :
-            this(new ObservableCollection<PlaylistModel>(), eventAggregator)
+            this(new ObservableCollection<PlaylistViewModel>(), eventAggregator)
         { }
 
         public void Handle(DataRefreshDisposal message)
         {
-            Playlists = new ObservableCollection<PlaylistModel>(message.Session.GetPlaylists());
-            _EventAggregator.PublishOnUIThread(new PlaylistsUpdatedEvent(_Playlists.ToList()));
+            Playlists = new ObservableCollection<PlaylistViewModel>(message.Session.GetPlaylists().Select(playlist => new PlaylistViewModel(playlist)));
+            _EventAggregator.PublishOnUIThread(new PlaylistsUpdatedEvent(Playlists.ToList()));
         }
     }
 }

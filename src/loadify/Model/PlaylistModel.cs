@@ -18,10 +18,15 @@ namespace loadify.Model
         public string Creator { get; set; }
         public byte[] Image { get; set; }
 
-        public PlaylistModel(Playlist unmanagedPlaylist)
+        public PlaylistModel(Playlist unmanagedPlaylist):
+            this()
+        {
+            _UnmanagedPlaylist = unmanagedPlaylist;
+        }
+
+        public PlaylistModel()
         {
             Tracks = new List<TrackModel>();
-            _UnmanagedPlaylist = unmanagedPlaylist;
         }
     }
 }

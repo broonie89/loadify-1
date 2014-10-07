@@ -117,6 +117,7 @@
     <Compile Include="Event\LoginSuccessfulEvent.cs" />
     <Compile Include="Event\PlaylistsUpdatedEvent.cs" />
     <Compile Include="Event\DataRefreshRequest.cs" />
+    <Compile Include="Mock\PlaylistsMock.cs" />
     <Compile Include="Model\ArtistModel.cs" />
     <Compile Include="Model\TrackModel.cs" />
     <Compile Include="Model\UserModel.cs" />
@@ -125,7 +126,9 @@
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
     <Compile Include="ViewModel\PlaylistsViewModel.cs" />
+    <Compile Include="ViewModel\PlaylistViewModel.cs" />
     <Compile Include="ViewModel\StatusViewModel.cs" />
+    <Compile Include="ViewModel\TrackViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="View\LoginView.xaml.cs">
