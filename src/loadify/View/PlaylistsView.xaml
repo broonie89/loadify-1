@@ -7,7 +7,7 @@
              xmlns:mock="clr-namespace:loadify.Mock"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="390" d:DesignWidth="300">
     <UserControl.Resources>
         <mock:PlaylistsMock x:Key="PlaylistsMock"/>
         <DataTemplate x:Key="TrackTemplate" DataType="viewmodel:TrackViewModel">
@@ -21,7 +21,7 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                
+
             </StackPanel>
         </DataTemplate>
         <HierarchicalDataTemplate x:Key="PlaylistTemplate" DataType="viewmodel:PlaylistViewModel" ItemsSource="{Binding Path=Tracks}" ItemTemplate="{StaticResource TrackTemplate}">
@@ -40,6 +40,18 @@
         </HierarchicalDataTemplate>
     </UserControl.Resources>
     <Grid>
-        <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}" ItemsSource="{Binding Playlists}" ItemTemplate="{StaticResource PlaylistTemplate}"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="71*"/>
+            <RowDefinition Height="7*"/>
+        </Grid.RowDefinitions>
+        <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}" Background="#FF252525" ItemsSource="{Binding Playlists}" ItemTemplate="{StaticResource PlaylistTemplate}"/>
+        <Grid Grid.Row="1" Background="#FF252525">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Remove Playlist" Margin="5 3"/>
+            <Button Content="Add Playlist" Grid.Column="1" Margin="5 3"/>
+        </Grid>
     </Grid>
 </UserControl>

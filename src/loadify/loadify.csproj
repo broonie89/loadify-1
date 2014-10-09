@@ -129,6 +129,7 @@
     <Compile Include="ViewModel\MenuViewModel.cs" />
     <Compile Include="ViewModel\PlaylistsViewModel.cs" />
     <Compile Include="ViewModel\PlaylistViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\StatusViewModel.cs" />
     <Compile Include="ViewModel\TrackViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
@@ -145,6 +146,9 @@
     </Compile>
     <Compile Include="View\PlaylistsView.xaml.cs">
       <DependentUpon>PlaylistsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\StatusView.xaml.cs">
       <DependentUpon>StatusView.xaml</DependentUpon>
@@ -201,6 +205,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\PlaylistsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

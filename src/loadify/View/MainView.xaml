@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:loadify.View"
-        Title="Loadify" Height="425" Width="850" Background="#FF282828"
+        Title="Loadify" Height="470" Width="860" Background="#FF252525"
         WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen"
         GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize">
     <Grid>
@@ -13,19 +13,35 @@
             <RowDefinition Height="13*"/>
         </Grid.RowDefinitions>
         <ContentControl x:Name="Menu"/>
-        <TabControl Grid.Row="1" Margin="10 5">
-            <TabItem Header="Playlists">
-                <Grid>
-                    <ContentControl x:Name="Playlists" Margin="0 5"/>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Browse">
-                <Grid/>
-            </TabItem>
-            <TabItem Header="Search">
-                <Grid/>
-            </TabItem>
-        </TabControl>
         <ContentControl x:Name="Status" Grid.Row="2"/>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="371*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="267*"/>
+                <ColumnDefinition Width="587*"/>
+            </Grid.ColumnDefinitions>
+            <ContentControl x:Name="Playlists" Margin="5 15 5 8" Grid.Row="1"/>
+            <ProgressBar Foreground="{StaticResource AccentColorBrush}" Background="Transparent" Height="Auto" Grid.ColumnSpan="2"/>
+            <Grid Grid.Row="1" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="326*"/>
+                    <RowDefinition Height="47*"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Column="1" Grid.RowSpan="2" BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="1 0 0 0"></Border>
+                <ContentControl x:Name="Settings"/>
+                <Grid Grid.Row="1" Margin="10 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150*"/>
+                        <ColumnDefinition Width="150*"/>
+                        <ColumnDefinition Width="324*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="Download" Margin="5 10"/>
+                    <Button Content="Reset" Margin="5 10" Grid.Column="1"/>
+                </Grid>
+            </Grid>
+        </Grid>
     </Grid>
 </controls:MetroWindow>

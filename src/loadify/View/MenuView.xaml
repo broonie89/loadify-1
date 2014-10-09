@@ -6,13 +6,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="32" d:DesignWidth="850">
     <Grid>
-        <Menu BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0 0 0 1">
-            <MenuItem Header="General" Style="{StaticResource SpotifyMenuItemHeading}">
-                <MenuItem Header="About" Style="{StaticResource SpotifyMenuItemHeading}"/>
-                <MenuItem Header="Help" Style="{StaticResource SpotifyMenuItemHeading}"/>
-            </MenuItem>
-            <MenuItem Header="Settings" Style="{StaticResource SpotifyMenuItemHeading}"/>
+        <Menu>
+            <MenuItem Header="About" Style="{StaticResource SpotifyMenuItemHeading}"/>
         </Menu>
-
     </Grid>
 </UserControl>

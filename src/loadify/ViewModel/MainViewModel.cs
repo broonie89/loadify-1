@@ -46,6 +46,18 @@ namespace loadify.ViewModel
             }
         }
 
+        private SettingsViewModel _Settings;
+        public SettingsViewModel Settings
+        {
+            get { return _Settings; }
+            set
+            {
+                if (_Settings == value) return;
+                _Settings = value;
+                NotifyOfPropertyChange(() => Settings);
+            }
+        }
+
         private UserViewModel _LoggedInUser;
         public UserViewModel LoggedInUser
         {
@@ -66,6 +78,7 @@ namespace loadify.ViewModel
             _Menu = new MenuViewModel();
             _Status = new StatusViewModel(loggedInUser, _EventAggregator);
             _Playlists = new PlaylistsViewModel(_EventAggregator);
+            _Settings = new SettingsViewModel();
 
             _EventAggregator.PublishOnUIThread(new DataRefreshDisposal(_Session));
         }
