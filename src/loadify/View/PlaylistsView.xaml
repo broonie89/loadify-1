@@ -44,7 +44,8 @@
             <RowDefinition Height="71*"/>
             <RowDefinition Height="7*"/>
         </Grid.RowDefinitions>
-        <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}" Background="#FF252525" ItemsSource="{Binding Playlists}" ItemTemplate="{StaticResource PlaylistTemplate}"/>
+        <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}" Background="#FF252525" ItemsSource="{Binding Playlists}" ItemTemplate="{StaticResource PlaylistTemplate}"
+                  Margin="0 0 0 5"/>
         <Grid Grid.Row="1" Background="#FF252525">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
