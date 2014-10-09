@@ -113,6 +113,7 @@
     </Compile>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Event\DataRefreshDisposal.cs" />
+    <Compile Include="Event\InvalidSettingEvent.cs" />
     <Compile Include="Event\LoginFailedEvent.cs" />
     <Compile Include="Event\LoginSuccessfulEvent.cs" />
     <Compile Include="Event\PlaylistsUpdatedEvent.cs" />

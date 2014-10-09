@@ -2,11 +2,13 @@
 using System.Runtime.InteropServices.ComTypes;
 using Caliburn.Micro;
 using loadify.Event;
+using loadify.View;
+using MahApps.Metro.Controls.Dialogs;
 using SpotifySharp;
 
 namespace loadify.ViewModel
 {
-    public class MainViewModel : ViewModelBase, IHandle<DataRefreshRequest>
+    public class MainViewModel : ViewModelBase, IHandle<DataRefreshRequest>, IHandle<InvalidSettingEvent>
     {
         private LoadifySession _Session;
 
@@ -78,7 +80,7 @@ namespace loadify.ViewModel
             _Menu = new MenuViewModel();
             _Status = new StatusViewModel(loggedInUser, _EventAggregator);
             _Playlists = new PlaylistsViewModel(_EventAggregator);
-            _Settings = new SettingsViewModel();
+            _Settings = new SettingsViewModel(_EventAggregator);
 
             _EventAggregator.PublishOnUIThread(new DataRefreshDisposal(_Session));
         }
@@ -87,6 +89,12 @@ namespace loadify.ViewModel
         {
             // accept all requests by default (debugging purposes)
             _EventAggregator.PublishOnUIThread(new DataRefreshDisposal(_Session));
+        }
+
+        public void Handle(InvalidSettingEvent message)
+        {
+            var view = GetView() as MainView;
+            view.ShowMessageAsync("Settings Error", message.ErrorDescription);
         }
     }
 }

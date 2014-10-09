@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="320" d:DesignWidth="500">
-    <Grid>
+    <Grid cal:Message.Attach="[Event LostFocus] = [Action Validate($eventArgs)]">
         <TabControl Margin="5">
             <TabItem Header="Directories">
                 <Grid Background="Transparent"/>
@@ -45,7 +46,7 @@
                                 <ColumnDefinition Width="47*"/>
                                 <ColumnDefinition Width="110*"/>
                             </Grid.ColumnDefinitions>
-                            <CheckBox x:Name="UseProxy" Content="Enabled" Margin="5 0"/>
+                            <CheckBox x:Name="UseProxy" IsEnabled="False" Content="Enabled" Margin="5 0"/>
                             <Label Content="IP:" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Grid.Column="1"/>
                             <TextBox x:Name="ProxyIP" controls:TextboxHelper.Watermark="192.168.101.1"
                                      Grid.Column="2" TextWrapping="Wrap" VerticalContentAlignment="Center" Margin="5"/>
