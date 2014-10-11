@@ -20,17 +20,18 @@
                 <RowDefinition Height="371*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="267*"/>
+                <ColumnDefinition Width="254*"/>
+                <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="587*"/>
             </Grid.ColumnDefinitions>
-            <ContentControl x:Name="Playlists" Margin="5 15 5 8" Grid.Row="1"/>
-            <ProgressBar Foreground="{StaticResource AccentColorBrush}" Background="Transparent" Height="Auto" Grid.ColumnSpan="2"/>
-            <Grid Grid.Row="1" Grid.Column="1">
+            <GridSplitter Grid.Column="1" Grid.Row="1" Width="5" HorizontalAlignment="Stretch" Background="{StaticResource AccentColorBrush}"/>
+            <ContentControl x:Name="Playlists" Grid.Row="1" Margin="5 15 5 8"/>
+            <ProgressBar Foreground="{StaticResource AccentColorBrush}" Background="Transparent" Height="Auto" Grid.ColumnSpan="3"/>
+            <Grid Grid.Row="1" Grid.Column="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="326*"/>
                     <RowDefinition Height="47*"/>
                 </Grid.RowDefinitions>
-                <Border Grid.Column="1" Grid.RowSpan="2" BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="1 0 0 0"></Border>
                 <ContentControl x:Name="Settings"/>
                 <Grid Grid.Row="1" Margin="10 0">
                     <Grid.ColumnDefinitions>
