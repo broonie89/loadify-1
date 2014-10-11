@@ -20,9 +20,9 @@
                 <RowDefinition Height="371*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="254*"/>
+                <ColumnDefinition Width="290*"/>
                 <ColumnDefinition Width="5"/>
-                <ColumnDefinition Width="587*"/>
+                <ColumnDefinition Width="550*"/>
             </Grid.ColumnDefinitions>
             <GridSplitter Grid.Column="1" Grid.Row="1" Width="5" HorizontalAlignment="Stretch" Background="{StaticResource AccentColorBrush}"/>
             <ContentControl x:Name="Playlists" Grid.Row="1" Margin="5 15 5 8"/>

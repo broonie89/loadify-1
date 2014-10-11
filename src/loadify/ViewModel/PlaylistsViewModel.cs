@@ -35,9 +35,10 @@ namespace loadify.ViewModel
             this(new ObservableCollection<PlaylistViewModel>(), eventAggregator)
         { }
 
-        public void Handle(DataRefreshDisposal message)
+        public async void Handle(DataRefreshDisposal message)
         {
-            Playlists = new ObservableCollection<PlaylistViewModel>(message.Session.GetPlaylists().Select(playlist => new PlaylistViewModel(playlist, _EventAggregator)));
+            var playlists = await message.Session.GetPlaylists();
+            Playlists = new ObservableCollection<PlaylistViewModel>(playlists.Select(playlist => new PlaylistViewModel(playlist, _EventAggregator)));
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -43,6 +44,7 @@ namespace loadify
         public void Release()
         {
             if (_Session == null) return;
+            _Session.Logout();
             _Session.Playlistcontainer().Release();
         }
 
@@ -72,20 +74,22 @@ namespace loadify
             _Session.Login(username, password, false, null);
         }
 
-        public IEnumerable<PlaylistModel> GetPlaylists()
+        public async Task<IEnumerable<PlaylistModel>> GetPlaylists()
         {
             var playlists = new List<PlaylistModel>();
             if (_Session == null) return playlists;
 
             var container = _Session.Playlistcontainer();
             if (container == null) return playlists;
+            await WaitForCompletion(container.IsLoaded);
 
             for (var i = 0; i < container.NumPlaylists(); i++)
             {
                 var unmanagedPlaylist = container.Playlist(i);
                 var managedPlaylistModel = new PlaylistModel(unmanagedPlaylist);
-
                 if (unmanagedPlaylist == null) continue;
+                await WaitForCompletion(unmanagedPlaylist.IsLoaded);
+
                 managedPlaylistModel.Name = unmanagedPlaylist.Name();
                 managedPlaylistModel.Subscribers = unmanagedPlaylist.Subscribers().ToList();
                 managedPlaylistModel.Creator = unmanagedPlaylist.Owner().DisplayName();
@@ -101,18 +105,26 @@ namespace loadify
                     var managedTrack = new TrackModel();
 
                     if (unmanagedTrack == null) continue;
+                    await WaitForCompletion(unmanagedTrack.IsLoaded);
+
                     managedTrack.Name = unmanagedTrack.Name();
                     managedTrack.Duration = unmanagedTrack.Duration();
                     managedTrack.Rating = unmanagedTrack.Popularity();
-                    managedTrack.Album.Name = unmanagedTrack.Album().Name();
-                    managedTrack.Album.ReleaseYear = unmanagedTrack.Album().Year();
-                    managedTrack.Album.AlbumType = unmanagedTrack.Album().Type();
+
+                    if (unmanagedTrack.Album() != null)
+                    {
+                        await WaitForCompletion(unmanagedTrack.Album().IsLoaded);
+                        managedTrack.Album.Name = unmanagedTrack.Album().Name();
+                        managedTrack.Album.ReleaseYear = unmanagedTrack.Album().Year();
+                        managedTrack.Album.AlbumType = unmanagedTrack.Album().Type();
+                    }
 
                     for (var k = 0; k < unmanagedTrack.NumArtists(); k++)
                     {
                         var unmanagedArtist = unmanagedTrack.Artist(k);
                         if (unmanagedArtist == null) continue;
- 
+                        await WaitForCompletion(unmanagedArtist.IsLoaded);
+
                         managedTrack.Artists.Add(new ArtistModel() { Name = unmanagedArtist.Name() });
                     }
 
@@ -148,14 +160,29 @@ namespace loadify
             base.NotifyMainThread(session);
         }
 
-        public override void LoggedIn(SpotifySession session, SpotifyError error)
+        public override async void LoggedIn(SpotifySession session, SpotifyError error)
         {
-            if(error == SpotifyError.Ok)
+            if (error == SpotifyError.Ok)
+            {
+                await WaitForCompletion(session.User().IsLoaded);
                 _EventAggregator.PublishOnUIThread(new LoginSuccessfulEvent());
+            }
             else
                 _EventAggregator.PublishOnUIThread(new LoginFailedEvent(error));
-            
+
             base.LoggedIn(session, error);
+        }
+
+        private Task<bool> WaitForCompletion(Func<bool> func)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                while (true)
+                {
+                    if (func())
+                        return true;
+                };
+            });
         }
     }
 }
