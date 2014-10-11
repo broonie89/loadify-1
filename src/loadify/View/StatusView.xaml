@@ -16,12 +16,6 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0 1 0 0" Grid.ColumnSpan="4"/>
-        <Label Content="{Binding LoggedInUser.Name}" Foreground="#FF7D7D7D" Margin="10 0" ContentStringFormat="Connected as {0}" HorizontalContentAlignment="Right" Grid.Column="3"/>
-        <StackPanel Orientation="Horizontal" Margin="10 0" cal:Message.Attach="[Event MouseDown] = [Action RefreshData()]">
-            <Image Source="{StaticResource RefreshIcon}" Margin="0 6" Width="Auto"/>
-            <Label Content="Refresh data" HorizontalAlignment="Left" Height="Auto" Width="Auto"
-                   Foreground="#FF7D7D7D" FontSize="12" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"
-                   />
-        </StackPanel>
+        <Label Content="{Binding LoggedInUser.Name}" Foreground="#FF7D7D7D" Margin="10 0" ContentStringFormat="Connected as {0}" HorizontalContentAlignment="Right" Grid.Column="3"/>   
     </Grid>
 </UserControl>

@@ -22,19 +22,13 @@ namespace loadify.ViewModel
             }
         }
 
-        public StatusViewModel(UserViewModel loggedInUser, IEventAggregator eventAggregator):
-            base(eventAggregator)
+        public StatusViewModel(UserViewModel loggedInUser)
         {
             LoggedInUser = loggedInUser;
         }
 
-        public StatusViewModel(IEventAggregator eventAggregator):
-            this(new UserViewModel(), eventAggregator)
+        public StatusViewModel():
+            this(new UserViewModel())
         { }
-
-        public void RefreshData()
-        {
-            _EventAggregator.PublishOnUIThread(new DataRefreshRequest());
-        }
     }
 }

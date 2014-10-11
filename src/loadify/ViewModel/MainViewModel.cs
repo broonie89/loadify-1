@@ -77,8 +77,8 @@ namespace loadify.ViewModel
         {
             _Session = session;
             _LoggedInUser = loggedInUser;
-            _Menu = new MenuViewModel();
-            _Status = new StatusViewModel(loggedInUser, _EventAggregator);
+            _Menu = new MenuViewModel(_EventAggregator);
+            _Status = new StatusViewModel(loggedInUser);
             _Playlists = new PlaylistsViewModel(_EventAggregator);
             _Settings = new SettingsViewModel(_EventAggregator);
 

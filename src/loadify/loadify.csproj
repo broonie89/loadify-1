@@ -116,7 +116,6 @@
     <Compile Include="Event\InvalidSettingEvent.cs" />
     <Compile Include="Event\LoginFailedEvent.cs" />
     <Compile Include="Event\LoginSuccessfulEvent.cs" />
-    <Compile Include="Event\PlaylistsUpdatedEvent.cs" />
     <Compile Include="Event\DataRefreshRequest.cs" />
     <Compile Include="Event\TrackSelectedEvent.cs" />
     <Compile Include="Mock\PlaylistsMock.cs" />
