@@ -10,7 +10,26 @@
     <Grid cal:Message.Attach="[Event LostFocus] = [Action Validate($eventArgs)]">
         <TabControl Margin="5">
             <TabItem Header="Directories">
-                <Grid Background="Transparent"/>
+                <Grid Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="338*"/>
+                        <ColumnDefinition Width="35*"/>
+                        <ColumnDefinition Width="89*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="33*"/>
+                        <RowDefinition Height="38*"/>
+                        <RowDefinition Height="33*"/>
+                        <RowDefinition Height="38*"/>
+                        <RowDefinition Height="118*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Download Directory" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="Directory where the downloaded files will be stored"/>
+                    <TextBox x:Name="DownloadDirectory" Grid.Row="1" TextWrapping="Wrap" Margin="6,5" Text=""/>
+                    <Button x:Name="BrowseDownloadDirectory" Content="..." Grid.Column="1" Grid.Row="1" Padding="0" MinHeight="0" Height="29" Margin="3"/>
+                    <Label Grid.Row="2" Content="Cache Directory" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="Directory where the cache and other temporary files will be stored"/>
+                    <TextBox x:Name="CacheDirectory" Grid.Row="3" TextWrapping="Wrap" Margin="6,5" Text=""/>
+                    <Button x:Name="BrowseCacheDirectory" Content="..." Grid.Column="1" Grid.Row="3" Padding="0" MinHeight="0" Height="29" Margin="3"/>
+                </Grid>
             </TabItem>
             <TabItem Header="Behavior">
                 <Grid Background="Transparent"/>

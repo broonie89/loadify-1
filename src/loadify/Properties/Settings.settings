@@ -2,8 +2,20 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="loadify.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="CachePath" Type="System.String" Scope="User">
+    <Setting Name="CacheDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)">cache</Value>
+    </Setting>
+    <Setting Name="DownloadDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">download</Value>
+    </Setting>
+    <Setting Name="UseProxy" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ProxyIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ProxyPort" Type="System.UInt16" Scope="User">
+      <Value Profile="(Default)">80</Value>
     </Setting>
   </Settings>
 </SettingsFile>

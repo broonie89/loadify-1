@@ -48,7 +48,7 @@ namespace loadify
 
         private void Setup()
         {
-            var cachePath = Properties.Settings.Default.CachePath;
+            var cachePath = Properties.Settings.Default.CacheDirectory;
             if (!Directory.Exists(cachePath))
                 Directory.CreateDirectory(cachePath);
 

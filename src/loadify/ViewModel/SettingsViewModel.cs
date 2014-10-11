@@ -6,15 +6,16 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using Caliburn.Micro;
 using loadify.Event;
 using loadify.Model;
+using loadify.Properties;
+
 namespace loadify.ViewModel
 {
     public class SettingsViewModel : ViewModelBase
     {
-        private SettingsModel _Settings;
-
         public bool UseProxy
         {
             get { return (ProxyIP == null) ? false : ProxyIP.Length != 0 && ProxyPort != 0; }
@@ -22,37 +23,73 @@ namespace loadify.ViewModel
 
         public string ProxyIP
         {
-            get { return _Settings.ProxyIP; }
+            get { return Settings.Default.ProxyIP; }
             set
             {
-                if (_Settings.ProxyIP == value) return;
-                _Settings.ProxyIP = value;
+                if (Settings.Default.ProxyIP == value) return;
+                Settings.Default.ProxyIP = value;
+                Settings.Default.Save();
                 NotifyOfPropertyChange(() => ProxyIP);
                 NotifyOfPropertyChange(() => UseProxy);
             }
         }
 
-        public uint ProxyPort
+        public ushort ProxyPort
         {
-            get { return _Settings.ProxyPort; }
+            get { return Settings.Default.ProxyPort; }
             set
             {
-                if (_Settings.ProxyPort == value) return;
-                _Settings.ProxyPort = value;
+                if (Settings.Default.ProxyPort == value) return;
+                Settings.Default.ProxyPort = value;
+                Settings.Default.Save();
                 NotifyOfPropertyChange(() => ProxyPort);
                 NotifyOfPropertyChange(() => UseProxy);
             }
         }
 
-        public SettingsViewModel(SettingsModel settings, IEventAggregator eventAggregator):
-            base(eventAggregator)
+        public string DownloadDirectory
         {
-            _Settings = settings;
+            get { return Settings.Default.DownloadDirectory; }
+            set
+            {
+                if (Settings.Default.DownloadDirectory == value) return;
+                Settings.Default.DownloadDirectory = value;
+                Settings.Default.Save();
+                NotifyOfPropertyChange(() => DownloadDirectory);
+            }
+        }
+
+        public string CacheDirectory
+        {
+            get { return Settings.Default.CacheDirectory; }
+            set
+            {
+                if (Settings.Default.CacheDirectory == value) return;
+                Settings.Default.CacheDirectory = value;
+                Settings.Default.Save();
+                NotifyOfPropertyChange(() => CacheDirectory);
+            }
         }
 
         public SettingsViewModel(IEventAggregator eventAggregator):
-            this(new SettingsModel(), eventAggregator)
+            base(eventAggregator)
         { }
+
+        public void BrowseCacheDirectory()
+        {
+            var dialog = new FolderBrowserDialog();
+            var dialogResult = dialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+                CacheDirectory = dialog.SelectedPath;
+        }
+
+        public void BrowseDownloadDirectory()
+        {
+            var dialog = new FolderBrowserDialog();
+            var dialogResult = dialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+                DownloadDirectory = dialog.SelectedPath;
+        }
 
         public void Validate(RoutedEventArgs args)
         {
@@ -64,12 +101,9 @@ namespace loadify.ViewModel
 
             if (UseProxy)
             {
-                if (!String.IsNullOrEmpty(ProxyIP))
-                {
-                    if (!Regex.IsMatch(ProxyIP,
-                        @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"))
-                        _EventAggregator.PublishOnUIThread(new InvalidSettingEvent("The proxy IP address that was entered is not a valid IP address."));
-                }
+                if (!Regex.IsMatch(ProxyIP, @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"))
+                    _EventAggregator.PublishOnUIThread(
+                        new InvalidSettingEvent("The proxy IP address that was entered is not a valid IP address."));
             }
         }
     }
