@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="loadify.View.PlaylistsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewmodel="clr-namespace:loadify.ViewModel"
+             xmlns:mock="clr-namespace:loadify.Mock"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d" 
+             d:DesignHeight="390" d:DesignWidth="300">
+    <UserControl.Resources>
+        <mock:PlaylistsMock x:Key="PlaylistsMock"/>
+        <DataTemplate x:Key="TrackTemplate" DataType="viewmodel:TrackViewModel">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding Selected, Mode=TwoWay}"/>
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{} {0} - {1}">
+                            <Binding Path="Artists"/>
+                            <Binding Path="Name"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+
+            </StackPanel>
+        </DataTemplate>
+        <HierarchicalDataTemplate x:Key="PlaylistTemplate" DataType="viewmodel:PlaylistViewModel" ItemsSource="{Binding Path=Tracks}" ItemTemplate="{StaticResource TrackTemplate}">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding Selected}"/>
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0} ({1}/{2} Tracks)">
+                            <Binding Path="Name" />
+                            <Binding Path="SelectedTracks.Count" />
+                            <Binding Path="Tracks.Count" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="71*"/>
+            <RowDefinition Height="7*"/>
+        </Grid.RowDefinitions>
+        <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}" Background="#FF252525" ItemsSource="{Binding Playlists}" ItemTemplate="{StaticResource PlaylistTemplate}"
+                  Margin="0 0 0 5"/>
+        <Grid Grid.Row="1" Background="#FF252525">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Remove Playlist" Margin="5 3"/>
+            <Button Content="Add Playlist" Grid.Column="1" Margin="5 3"/>
+        </Grid>
+    </Grid>
+</UserControl>

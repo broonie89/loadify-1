@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SpotifySharp;
 
-namespace loadify.Model
+namespace loadify.Event
 {
-    public class LoginModel
+    public class DataRefreshRequest
     {
-        public string Username { get; set; }
-
-        public LoginModel()
+        public DataRefreshRequest()
         { }
     }
 }

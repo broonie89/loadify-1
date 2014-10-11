@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="loadify.View.MenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="32" d:DesignWidth="850">
+    <UserControl.Resources>
+        <BitmapImage x:Key="RefreshIcon" UriSource="/Resources/refresh_icon.png"/>
+    </UserControl.Resources>
+    <Grid>
+        <Menu>
+            <MenuItem Header="General" Style="{StaticResource SpotifyMenuItemHeading}">
+                <MenuItem Header="About" Style="{StaticResource SpotifyMenuItemHeading}"/>
+            </MenuItem>
+            <MenuItem Header="Actions" Style="{StaticResource SpotifyMenuItemHeading}">
+                <MenuItem x:Name="RefreshData" Header="Refresh" Style="{StaticResource SpotifyMenuItemHeading}">
+                    <MenuItem.Icon>
+                        <Image Width="17" Height="17" Source="{StaticResource RefreshIcon}"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+    </Grid>
+</UserControl>
