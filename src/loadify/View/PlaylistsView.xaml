@@ -26,7 +26,7 @@
         </DataTemplate>
         <HierarchicalDataTemplate x:Key="PlaylistTemplate" DataType="viewmodel:PlaylistViewModel" ItemsSource="{Binding Path=Tracks}" ItemTemplate="{StaticResource TrackTemplate}">
             <StackPanel Orientation="Horizontal">
-                <CheckBox IsChecked="{Binding Selected}"/>
+                <CheckBox IsChecked="{Binding AllTracksSelected}"/>
                 <TextBlock>
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} ({1}/{2} Tracks)">

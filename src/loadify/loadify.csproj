@@ -113,11 +113,14 @@
     </Compile>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Event\DataRefreshDisposal.cs" />
+    <Compile Include="Event\DownloadFinishedEvent.cs" />
     <Compile Include="Event\InvalidSettingEvent.cs" />
     <Compile Include="Event\LoginFailedEvent.cs" />
     <Compile Include="Event\LoginSuccessfulEvent.cs" />
     <Compile Include="Event\DataRefreshRequest.cs" />
-    <Compile Include="Event\TrackSelectedEvent.cs" />
+    <Compile Include="Event\DownloadRequestEvent.cs" />
+    <Compile Include="Event\DownloadEvent.cs" />
+    <Compile Include="Event\TrackSelectedChangedEvent.cs" />
     <Compile Include="Mock\PlaylistsMock.cs" />
     <Compile Include="Model\AlbumModel.cs" />
     <Compile Include="Model\ArtistModel.cs" />
@@ -125,6 +128,7 @@
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="LoadifySession.cs" />
     <Compile Include="Model\PlaylistModel.cs" />
+    <Compile Include="ViewModel\DownloaderViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
     <Compile Include="ViewModel\PlaylistsViewModel.cs" />
@@ -134,6 +138,9 @@
     <Compile Include="ViewModel\TrackViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="View\DownloaderView.xaml.cs">
+      <DependentUpon>DownloaderView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -189,6 +196,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\InputGlow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DownloaderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

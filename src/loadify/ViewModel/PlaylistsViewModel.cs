@@ -11,7 +11,7 @@ using SpotifySharp;
 
 namespace loadify.ViewModel
 {
-    public class PlaylistsViewModel : ViewModelBase, IHandle<DataRefreshDisposal>
+    public class PlaylistsViewModel : ViewModelBase, IHandle<DataRefreshDisposal>, IHandle<DownloadRequestEvent>
     {
         private ObservableCollection<PlaylistViewModel> _Playlists = new ObservableCollection<PlaylistViewModel>();
         public ObservableCollection<PlaylistViewModel> Playlists
@@ -39,6 +39,11 @@ namespace loadify.ViewModel
         {
             var playlists = await message.Session.GetPlaylists();
             Playlists = new ObservableCollection<PlaylistViewModel>(playlists.Select(playlist => new PlaylistViewModel(playlist, _EventAggregator)));
+        }
+
+        public void Handle(DownloadRequestEvent message)
+        {
+            _EventAggregator.PublishOnUIThread(new DownloadEvent(message.Session, _Playlists.Where(playlist => playlist.AllTracksSelected)));
         }
     }
 }

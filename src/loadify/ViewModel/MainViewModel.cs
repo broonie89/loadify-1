@@ -78,11 +78,16 @@ namespace loadify.ViewModel
             _Session = session;
             _LoggedInUser = loggedInUser;
             _Menu = new MenuViewModel(_EventAggregator);
-            _Status = new StatusViewModel(loggedInUser);
+            _Status = new StatusViewModel(loggedInUser, _EventAggregator);
             _Playlists = new PlaylistsViewModel(_EventAggregator);
             _Settings = new SettingsViewModel(_EventAggregator);
 
             _EventAggregator.PublishOnUIThread(new DataRefreshDisposal(_Session));
+        }
+
+        public void StartDownload()
+        {
+            _EventAggregator.PublishOnUIThread(new DownloadRequestEvent(_Session));
         }
 
         public void Handle(DataRefreshRequest message)

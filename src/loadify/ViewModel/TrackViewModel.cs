@@ -71,7 +71,7 @@ namespace loadify.ViewModel
                 if (_Selected == value) return;
                 _Selected = value;
                 NotifyOfPropertyChange(() => Selected);
-                _EventAggregator.PublishOnUIThread(new TrackSelectedEvent(this));
+                _EventAggregator.PublishOnUIThread(new TrackSelectedChangedEvent(this, _Selected));
             }
         }
 
