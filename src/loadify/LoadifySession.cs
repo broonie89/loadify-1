@@ -17,9 +17,19 @@ namespace loadify
 {
     public class LoadifySession : SpotifySessionListener
     {
+        private class TrackDownloader
+        {
+            public byte[] AudioBuffer { get; set; }
+            public bool Finished { get; set; }
+
+            public TrackDownloader()
+            { }
+        }
+
         private IEventAggregator _EventAggregator;
         private SpotifySession _Session { get; set; }
         private SynchronizationContext _Synchronization { get; set; }
+        private TrackDownloader _TrackDownloader { get; set; }
 
         public bool Connected
         {
@@ -32,6 +42,7 @@ namespace loadify
 
         public LoadifySession(IEventAggregator eventAggregator)
         {
+            _TrackDownloader = new TrackDownloader();
             _EventAggregator = eventAggregator;
             Setup();
         }
@@ -102,7 +113,7 @@ namespace loadify
                 for (var j = 0; j < unmanagedPlaylist.NumTracks(); j++)
                 {
                     var unmanagedTrack = unmanagedPlaylist.Track(j);
-                    var managedTrack = new TrackModel();
+                    var managedTrack = new TrackModel(unmanagedTrack);
 
                     if (unmanagedTrack == null) continue;
                     await WaitForCompletion(unmanagedTrack.IsLoaded);
@@ -140,6 +151,24 @@ namespace loadify
         public Image GetImage(ImageId imageId)
         {
             return Image.Create(_Session, imageId);
+        }
+
+        public Task<byte[]> DownloadTrack(Track track)
+        {
+            _TrackDownloader = new TrackDownloader();
+            _TrackDownloader.Finished = true;
+            _TrackDownloader.AudioBuffer = new byte[1024];
+
+            return Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(3000);
+                return new byte[1024];
+                /*
+                 * while (true)
+                    if (_TrackDownloader.Finished)
+                        return _TrackDownloader.AudioBuffer;
+                 * */
+            });
         }
 
         private void InvokeProcessEvents()

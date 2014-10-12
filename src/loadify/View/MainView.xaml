@@ -37,7 +37,7 @@
                         <ColumnDefinition Width="150*"/>
                         <ColumnDefinition Width="324*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Content="Download" Margin="5 10"/>
+                    <Button x:Name="StartDownload" Content="Download" Margin="5 10"/>
                     <Button Content="Reset" Margin="5 10" Grid.Column="1"/>
                 </Grid>
             </Grid>

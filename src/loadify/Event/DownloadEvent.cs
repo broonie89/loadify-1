@@ -10,12 +10,12 @@ namespace loadify.Event
     public class DownloadEvent
     {
         public LoadifySession Session { get; set; }
-        public IEnumerable<PlaylistViewModel> SelectedPlaylists { get; set; }
+        public IEnumerable<TrackViewModel> SelectedTracks { get; set; }
 
-        public DownloadEvent(LoadifySession session, IEnumerable<PlaylistViewModel> selectedPlaylists)
+        public DownloadEvent(LoadifySession session, IEnumerable<TrackViewModel> selectedTracks)
         {
             Session = session;
-            SelectedPlaylists = selectedPlaylists; 
+            SelectedTracks = selectedTracks; 
         }
     }
 }

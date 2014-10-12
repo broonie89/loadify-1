@@ -84,5 +84,10 @@ namespace loadify.ViewModel
         public TrackViewModel(IEventAggregator eventAggregator) :
             this(new TrackModel(), eventAggregator)
         { }
+
+        public override string ToString()
+        {
+            return string.Format("{0} - {1}", Artists, Name);
+        }
     }
 }

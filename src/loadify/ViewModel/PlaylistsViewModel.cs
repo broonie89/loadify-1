@@ -43,7 +43,7 @@ namespace loadify.ViewModel
 
         public void Handle(DownloadRequestEvent message)
         {
-            _EventAggregator.PublishOnUIThread(new DownloadEvent(message.Session, _Playlists.Where(playlist => playlist.AllTracksSelected)));
+            _EventAggregator.PublishOnUIThread(new DownloadEvent(message.Session, _Playlists.SelectMany(playlist => playlist.SelectedTracks)));
         }
     }
 }

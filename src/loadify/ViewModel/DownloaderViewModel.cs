@@ -3,77 +3,91 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using loadify.Event;
+using loadify.Model;
 using SpotifySharp;
 
 namespace loadify.ViewModel
 {
     public class DownloaderViewModel : ViewModelBase, IHandle<DownloadEvent>
     {
-        private PlaylistViewModel _CurrentPlaylist;
-        public PlaylistViewModel CurrentPlaylist
+        private TrackViewModel _CurrentTrack;
+        public TrackViewModel CurrentTrack
         {
-            get { return _CurrentPlaylist; }
+            get { return _CurrentTrack; }
             set
             {
-                if (_CurrentPlaylist == value) return;
-                _CurrentPlaylist = value;
-                NotifyOfPropertyChange(() => CurrentPlaylist);
+                if (_CurrentTrack == value) return;
+                _CurrentTrack = value;
+                NotifyOfPropertyChange(() => CurrentTrack);
             }
         }
 
-        private ObservableCollection<PlaylistViewModel> _DownloadedPlaylists;
-        public ObservableCollection<PlaylistViewModel> DownloadedPlaylists
+        private ObservableCollection<TrackViewModel> _DownloadedTracks;
+        public ObservableCollection<TrackViewModel> DownloadedTracks
         {
-            get { return _DownloadedPlaylists; }
+            get { return _DownloadedTracks; }
             set
             {
-                if (_DownloadedPlaylists == value) return;
-                _DownloadedPlaylists = value;
-                NotifyOfPropertyChange(() => DownloadedPlaylists);
+                if (_DownloadedTracks == value) return;
+                _DownloadedTracks = value;
+                NotifyOfPropertyChange(() => DownloadedTracks);
             }
         }
 
-        private ObservableCollection<PlaylistViewModel> _RemainingPlaylists;
-        public ObservableCollection<PlaylistViewModel> RemainingPlaylists
+        private ObservableCollection<TrackViewModel> _RemainingTracks;
+        public ObservableCollection<TrackViewModel> RemainingTracks
         {
-            get { return _RemainingPlaylists; }
+            get { return _RemainingTracks; }
             set
             {
-                if (_RemainingPlaylists == value) return;
-                _RemainingPlaylists = value;
-                NotifyOfPropertyChange(() => RemainingPlaylists);
-                NotifyOfPropertyChange(() => Progress);
+                if (_RemainingTracks == value) return;
+                _RemainingTracks = value;
+                NotifyOfPropertyChange(() => RemainingTracks);
                 NotifyOfPropertyChange(() => Active);
             }
         }
 
-        public int Progress
+        public double Progress
         {
-            get { return (RemainingPlaylists.Count != 0) ? RemainingPlaylists.Count / 100 : 0; }
+            get
+            {
+                var totalTracksCount = RemainingTracks.Count + DownloadedTracks.Count();
+                return (totalTracksCount != 0) ? (double)(100 / (totalTracksCount / (double) DownloadedTracks.Count)) : 0;
+            }
         }
 
         public bool Active
         {
-            get { return _RemainingPlaylists.Count != 0; }
+            get { return RemainingTracks.Count != 0; }
         }
 
 
         public DownloaderViewModel(IEventAggregator eventAggregator):
             base(eventAggregator)
         {
-            _DownloadedPlaylists = new ObservableCollection<PlaylistViewModel>();
-            _RemainingPlaylists = new ObservableCollection<PlaylistViewModel>();
-            _CurrentPlaylist = new PlaylistViewModel(eventAggregator);
+            _DownloadedTracks = new ObservableCollection<TrackViewModel>();
+            _RemainingTracks = new ObservableCollection<TrackViewModel>();
+            _CurrentTrack = new TrackViewModel(_EventAggregator);
         }
 
-        public void Handle(DownloadEvent message)
+        public async void Handle(DownloadEvent message)
         {
-            RemainingPlaylists = new ObservableCollection<PlaylistViewModel>(message.SelectedPlaylists);
+            DownloadedTracks = new ObservableCollection<TrackViewModel>();
+            RemainingTracks = new ObservableCollection<TrackViewModel>(message.SelectedTracks);
 
-            // download init stuff
+            foreach (var track in new ObservableCollection<TrackViewModel>(RemainingTracks))
+            {
+                CurrentTrack = track;
+                var rawTrack = await message.Session.DownloadTrack(track.Track.UnmanagedTrack);
+                DownloadedTracks.Add(CurrentTrack);
+                RemainingTracks.Remove(CurrentTrack);
+
+                NotifyOfPropertyChange(() => Progress);
+            }
         }
     }
 }
