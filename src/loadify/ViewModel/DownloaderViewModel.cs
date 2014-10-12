@@ -83,7 +83,7 @@ namespace loadify.ViewModel
                 try
                 {
                     await session.DownloadTrack(track.Track.UnmanagedTrack, 
-                                                String.Format("{0}/{1}.wav", Properties.Settings.Default.DownloadDirectory, CurrentTrack.ToString()));
+                                                String.Format("{0}/{1}", Properties.Settings.Default.DownloadDirectory, CurrentTrack.ToString()));
                     DownloadedTracks.Add(CurrentTrack);
                     RemainingTracks.Remove(CurrentTrack);
                     NotifyOfPropertyChange(() => Progress);

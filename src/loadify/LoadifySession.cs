@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using loadify.Event;
 using loadify.Model;
+using NAudio.Lame;
 using NAudio.Wave;
 using SpotifySharp;
 
@@ -32,14 +33,14 @@ namespace loadify
             public bool Active { get; set; }
             public bool Finished { get; set; }
             public CancellationReason Cancellation { get; set; }
-            public int Bits { get; set; }
+            public int BitRate { get; set; }
             public int SampleRate { get; set; }
             public int Channels { get; set; }
 
             public TrackDownloader()
             {
                 Cancellation = CancellationReason.None;
-                Bits = 16;
+                BitRate = 16;
             }
         }
 
@@ -182,13 +183,17 @@ namespace loadify
                 while (true)
                 {
                     if (_TrackDownloader.Finished)
-                    {                 
-                        using (var writer = new WaveFileWriter(location, 
-                                            new WaveFormat(_TrackDownloader.SampleRate, _TrackDownloader.Bits, _TrackDownloader.Channels)))
+                    {
+                        using (var wavWriter = new WaveFileWriter(location + ".wav",
+                            new WaveFormat(_TrackDownloader.SampleRate, _TrackDownloader.BitRate,
+                                _TrackDownloader.Channels)))
                         {
-                            writer.Write(_TrackDownloader.AudioBuffer, 0, _TrackDownloader.AudioBuffer.Length);
+                            wavWriter.Write(_TrackDownloader.AudioBuffer, 0, _TrackDownloader.AudioBuffer.Length);
                         }
 
+                        using (var wavReader = new WaveFileReader(location + ".wav"))
+                            using (var mp3Writer = new LameMP3FileWriter(location + ".mp3", wavReader.WaveFormat, 128))
+                                wavReader.CopyTo(mp3Writer);
                         break;
                     }
 
