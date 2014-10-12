@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using loadify.Event;
 using loadify.Model;
+using NAudio.Lame;
+using NAudio.Wave;
 using SpotifySharp;
 
 namespace loadify
@@ -31,10 +33,14 @@ namespace loadify
             public bool Active { get; set; }
             public bool Finished { get; set; }
             public CancellationReason Cancellation { get; set; }
+            public int BitRate { get; set; }
+            public int SampleRate { get; set; }
+            public int Channels { get; set; }
 
             public TrackDownloader()
             {
                 Cancellation = CancellationReason.None;
+                BitRate = 16;
             }
         }
 
@@ -165,9 +171,9 @@ namespace loadify
             return Image.Create(_Session, imageId);
         }
 
-        public async Task<byte[]> DownloadTrack(Track track)
+        public async Task DownloadTrack(Track track, string location)
         {
-            return await Task.Run(() =>
+            await Task.Run(() =>
             {
                 _Session.PlayerLoad(track);
                 _Session.PlayerPlay(true);
@@ -177,7 +183,20 @@ namespace loadify
                 while (true)
                 {
                     if (_TrackDownloader.Finished)
-                        return _TrackDownloader.AudioBuffer;
+                    {
+                        using (var wavWriter = new WaveFileWriter(location + ".wav",
+                            new WaveFormat(_TrackDownloader.SampleRate, _TrackDownloader.BitRate,
+                                _TrackDownloader.Channels)))
+                        {
+                            wavWriter.Write(_TrackDownloader.AudioBuffer, 0, _TrackDownloader.AudioBuffer.Length);
+                        }
+
+                        using (var wavReader = new WaveFileReader(location + ".wav"))
+                            using (var mp3Writer = new LameMP3FileWriter(location + ".mp3", wavReader.WaveFormat, 128))
+                                wavReader.CopyTo(mp3Writer);
+                        break;
+                    }
+
                     if (_TrackDownloader.Cancellation == TrackDownloader.CancellationReason.PlayTokenLost)
                         throw new PlayTokenLostException("Track could not be downloaded, the play token has been lost");
                 }
@@ -218,15 +237,17 @@ namespace loadify
 
         public override int MusicDelivery(SpotifySession session, AudioFormat format, IntPtr frames, int num_frames)
         {
-            Debug.WriteLine(num_frames);
+            if (num_frames == 0) return 0;
             _TrackDownloader.Active = true;
-            if (num_frames == 0)
-            {
-                _TrackDownloader.Finished = true;
-                return 0;
-            }
+            _TrackDownloader.SampleRate = format.sample_rate;
+            _TrackDownloader.Channels = format.channels;
 
-            return base.MusicDelivery(session, format, frames, num_frames);
+            var size = num_frames * format.channels * 2;
+            var buffer = new byte[size];
+            Marshal.Copy(frames, buffer, 0, size);
+            _TrackDownloader.AudioBuffer = _TrackDownloader.AudioBuffer.Concat(buffer).ToArray();
+
+            return num_frames;
         }
 
         public override void PlayTokenLost(SpotifySession session)
@@ -236,6 +257,12 @@ namespace loadify
                 _TrackDownloader.Active = false;
                 _TrackDownloader.Cancellation = TrackDownloader.CancellationReason.PlayTokenLost;
             }
+        }
+
+        public override void EndOfTrack(SpotifySession session)
+        {
+            _Session.PlayerPlay(false);
+            _TrackDownloader.Finished = true;
         }
 
         private Task<bool> WaitForCompletion(Func<bool> func)
