@@ -112,6 +112,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="DownloadInterruptedException.cs" />
     <Compile Include="Event\DataRefreshDisposal.cs" />
     <Compile Include="Event\DownloadFinishedEvent.cs" />
     <Compile Include="Event\InvalidSettingEvent.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="LoadifySession.cs" />
     <Compile Include="Model\PlaylistModel.cs" />
+    <Compile Include="PlayTokenLostException.cs" />
     <Compile Include="ViewModel\DownloaderViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />

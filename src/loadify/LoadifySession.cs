@@ -19,11 +19,23 @@ namespace loadify
     {
         private class TrackDownloader
         {
+            public enum CancellationReason
+            {
+                None,
+                PlayTokenLost,
+                Unknown,
+                ConnectionLost
+            };
+
             public byte[] AudioBuffer { get; set; }
+            public bool Active { get; set; }
             public bool Finished { get; set; }
+            public CancellationReason Cancellation { get; set; }
 
             public TrackDownloader()
-            { }
+            {
+                Cancellation = CancellationReason.None;
+            }
         }
 
         private IEventAggregator _EventAggregator;
@@ -153,21 +165,24 @@ namespace loadify
             return Image.Create(_Session, imageId);
         }
 
-        public Task<byte[]> DownloadTrack(Track track)
+        public async Task<byte[]> DownloadTrack(Track track)
         {
+            _Session.PlayerLoad(track);
+            _Session.PlayerPlay(true);
             _TrackDownloader = new TrackDownloader();
-            _TrackDownloader.Finished = true;
             _TrackDownloader.AudioBuffer = new byte[1024];
 
-            return Task.Factory.StartNew(() =>
+            return await Task.Factory.StartNew(() =>
             {
-                Thread.Sleep(3000);
-                return new byte[1024];
-                /*
-                 * while (true)
+                while (true)
+                {
                     if (_TrackDownloader.Finished)
                         return _TrackDownloader.AudioBuffer;
-                 * */
+                    if(_TrackDownloader.Cancellation == TrackDownloader.CancellationReason.PlayTokenLost)
+                        throw new PlayTokenLostException("Track could not be downloaded, the play token has been lost");
+
+                    Thread.Sleep(100);
+                }
             });
         }
 
@@ -194,12 +209,35 @@ namespace loadify
             if (error == SpotifyError.Ok)
             {
                 await WaitForCompletion(session.User().IsLoaded);
+                _Session.PreferredBitrate(BitRate._320k);
                 _EventAggregator.PublishOnUIThread(new LoginSuccessfulEvent());
             }
             else
                 _EventAggregator.PublishOnUIThread(new LoginFailedEvent(error));
 
             base.LoggedIn(session, error);
+        }
+
+        public override int MusicDelivery(SpotifySession session, AudioFormat format, IntPtr frames, int num_frames)
+        {
+            Debug.WriteLine(num_frames);
+            _TrackDownloader.Active = true;
+            if (num_frames == 0)
+            {
+                _TrackDownloader.Finished = true;
+                return 0;
+            }
+
+            return base.MusicDelivery(session, format, frames, num_frames);
+        }
+
+        public override void PlayTokenLost(SpotifySession session)
+        {
+            if (_TrackDownloader.Active)
+            {
+                _TrackDownloader.Active = false;
+                _TrackDownloader.Cancellation = TrackDownloader.CancellationReason.PlayTokenLost;
+            }
         }
 
         private Task<bool> WaitForCompletion(Func<bool> func)

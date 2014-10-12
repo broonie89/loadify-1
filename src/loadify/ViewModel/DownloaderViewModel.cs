@@ -82,10 +82,16 @@ namespace loadify.ViewModel
             foreach (var track in new ObservableCollection<TrackViewModel>(RemainingTracks))
             {
                 CurrentTrack = track;
-                var rawTrack = await message.Session.DownloadTrack(track.Track.UnmanagedTrack);
+
+                try
+                {
+                    var rawTrack = await message.Session.DownloadTrack(track.Track.UnmanagedTrack);
+                }
+                catch (PlayTokenLostException)
+                { }
+                
                 DownloadedTracks.Add(CurrentTrack);
                 RemainingTracks.Remove(CurrentTrack);
-
                 NotifyOfPropertyChange(() => Progress);
             }
         }
