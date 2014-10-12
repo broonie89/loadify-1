@@ -12,7 +12,7 @@ using SpotifySharp;
 
 namespace loadify.ViewModel
 {
-    public class DownloaderViewModel : ViewModelBase, IHandle<DownloadEvent>
+    public class DownloaderViewModel : ViewModelBase, IHandle<DownloadEvent>, IHandle<DownloadResumedEvent>
     {
         private TrackViewModel _CurrentTrack;
         public TrackViewModel CurrentTrack
@@ -74,26 +74,38 @@ namespace loadify.ViewModel
             _CurrentTrack = new TrackViewModel(_EventAggregator);
         }
 
-        public async void Handle(DownloadEvent message)
+        public async void StartDownload(LoadifySession session)
         {
-            DownloadedTracks = new ObservableCollection<TrackViewModel>();
-            RemainingTracks = new ObservableCollection<TrackViewModel>(message.SelectedTracks);
-
             foreach (var track in new ObservableCollection<TrackViewModel>(RemainingTracks))
             {
                 CurrentTrack = track;
 
                 try
                 {
-                    var rawTrack = await message.Session.DownloadTrack(track.Track.UnmanagedTrack);
+                    var rawTrack = await session.DownloadTrack(track.Track.UnmanagedTrack);
+                    DownloadedTracks.Add(CurrentTrack);
+                    RemainingTracks.Remove(CurrentTrack);
+                    NotifyOfPropertyChange(() => Progress);
                 }
-                catch (PlayTokenLostException)
-                { }
-                
-                DownloadedTracks.Add(CurrentTrack);
-                RemainingTracks.Remove(CurrentTrack);
-                NotifyOfPropertyChange(() => Progress);
+                catch (Exception)
+                {
+                    _EventAggregator.PublishOnUIThread(new DownloadPausedEvent(
+                                                            String.Format("{0} could not be downloaded because the logged-in Spotify account is in use",
+                                                            CurrentTrack.ToString())));
+                }
             }
+        }
+
+        public void Handle(DownloadEvent message)
+        {
+            DownloadedTracks = new ObservableCollection<TrackViewModel>();
+            RemainingTracks = new ObservableCollection<TrackViewModel>(message.SelectedTracks);
+            StartDownload(message.Session);
+        }
+
+        public void Handle(DownloadResumedEvent message)
+        {
+            StartDownload(message.Session);
         }
     }
 }

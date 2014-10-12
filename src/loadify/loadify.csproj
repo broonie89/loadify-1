@@ -114,7 +114,9 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="DownloadInterruptedException.cs" />
     <Compile Include="Event\DataRefreshDisposal.cs" />
+    <Compile Include="Event\DownloadResumedEvent.cs" />
     <Compile Include="Event\DownloadFinishedEvent.cs" />
+    <Compile Include="Event\DownloadPausedEvent.cs" />
     <Compile Include="Event\InvalidSettingEvent.cs" />
     <Compile Include="Event\LoginFailedEvent.cs" />
     <Compile Include="Event\LoginSuccessfulEvent.cs" />

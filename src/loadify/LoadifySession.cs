@@ -167,21 +167,19 @@ namespace loadify
 
         public async Task<byte[]> DownloadTrack(Track track)
         {
-            _Session.PlayerLoad(track);
-            _Session.PlayerPlay(true);
-            _TrackDownloader = new TrackDownloader();
-            _TrackDownloader.AudioBuffer = new byte[1024];
-
-            return await Task.Factory.StartNew(() =>
+            return await Task.Run(() =>
             {
+                _Session.PlayerLoad(track);
+                _Session.PlayerPlay(true);
+                _TrackDownloader = new TrackDownloader();
+                _TrackDownloader.AudioBuffer = new byte[1024];
+
                 while (true)
                 {
                     if (_TrackDownloader.Finished)
                         return _TrackDownloader.AudioBuffer;
-                    if(_TrackDownloader.Cancellation == TrackDownloader.CancellationReason.PlayTokenLost)
+                    if (_TrackDownloader.Cancellation == TrackDownloader.CancellationReason.PlayTokenLost)
                         throw new PlayTokenLostException("Track could not be downloaded, the play token has been lost");
-
-                    Thread.Sleep(100);
                 }
             });
         }

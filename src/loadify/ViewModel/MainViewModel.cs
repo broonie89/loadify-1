@@ -8,7 +8,9 @@ using SpotifySharp;
 
 namespace loadify.ViewModel
 {
-    public class MainViewModel : ViewModelBase, IHandle<DataRefreshRequest>, IHandle<InvalidSettingEvent>
+    public class MainViewModel : ViewModelBase, IHandle<DataRefreshRequest>, 
+                                                IHandle<InvalidSettingEvent>,
+                                                IHandle<DownloadPausedEvent>
     {
         private LoadifySession _Session;
 
@@ -100,6 +102,14 @@ namespace loadify.ViewModel
         {
             var view = GetView() as MainView;
             view.ShowMessageAsync("Settings Error", message.ErrorDescription);
+        }
+
+        public async void Handle(DownloadPausedEvent message)
+        {
+            var view = GetView() as MainView;
+            await view.ShowMessageAsync("Download Error", message.Reason 
+                                        + "\nPlease resolve this error before continuing downloading");
+            _EventAggregator.PublishOnUIThread(new DownloadResumedEvent(_Session));
         }
     }
 }
