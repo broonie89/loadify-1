@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using loadify.Event;
 using loadify.Model;
+using loadify.Spotify;
 using SpotifySharp;
 
 namespace loadify.ViewModel
@@ -82,8 +83,9 @@ namespace loadify.ViewModel
 
                 try
                 {
-                    await session.DownloadTrack(track.Track.UnmanagedTrack, 
-                                                String.Format("{0}/{1}", Properties.Settings.Default.DownloadDirectory, CurrentTrack.ToString()));
+                    await session.DownloadTrack(track.Track, 
+                                                new TrackDownloader(new WaveAudioProcessor(Properties.Settings.Default.DownloadDirectory, track.Name),
+                                                                    new WaveToMp3Converter()));
                     DownloadedTracks.Add(CurrentTrack);
                     RemainingTracks.Remove(CurrentTrack);
                     NotifyOfPropertyChange(() => Progress);

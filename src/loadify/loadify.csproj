@@ -138,6 +138,12 @@
     <Compile Include="LoadifySession.cs" />
     <Compile Include="Model\PlaylistModel.cs" />
     <Compile Include="PlayTokenLostException.cs" />
+    <Compile Include="Spotify\AudioData.cs" />
+    <Compile Include="Spotify\AudioProcessor.cs" />
+    <Compile Include="Spotify\IAudioConverter.cs" />
+    <Compile Include="Spotify\TrackDownloader.cs" />
+    <Compile Include="Spotify\WaveAudioProcessor.cs" />
+    <Compile Include="Spotify\WaveToMp3Converter.cs" />
     <Compile Include="ViewModel\DownloaderViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />

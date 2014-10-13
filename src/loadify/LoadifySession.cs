@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using loadify.Event;
 using loadify.Model;
+using loadify.Spotify;
 using NAudio.Lame;
 using NAudio.Wave;
 using SpotifySharp;
@@ -19,7 +20,7 @@ namespace loadify
 {
     public class LoadifySession : SpotifySessionListener
     {
-        private class TrackDownloader
+        private class AudioService
         {
             public enum CancellationReason
             {
@@ -37,17 +38,39 @@ namespace loadify
             public int SampleRate { get; set; }
             public int Channels { get; set; }
 
-            public TrackDownloader()
+            public AudioService()
             {
                 Cancellation = CancellationReason.None;
                 BitRate = 16;
+            }
+
+            public void ProcessInput(AudioFormat format, IntPtr frames, int num_frames)
+            {
+                SampleRate = format.sample_rate;
+                Channels = format.channels;
+
+                var size = num_frames * format.channels * 2;
+                var buffer = new byte[size];
+                Marshal.Copy(frames, buffer, 0, size);
+                AudioBuffer = AudioBuffer.Concat(buffer).ToArray();
+            }
+
+            public void Reset()
+            {
+                AudioBuffer = new byte[1024];
+                Active = false;
+                Finished = false;
+                Cancellation = CancellationReason.None;
+                BitRate = 16;
+                SampleRate = 0;
+                Channels = 0;
             }
         }
 
         private IEventAggregator _EventAggregator;
         private SpotifySession _Session { get; set; }
         private SynchronizationContext _Synchronization { get; set; }
-        private TrackDownloader _TrackDownloader { get; set; }
+        private AudioService _AudioService { get; set; }
 
         public bool Connected
         {
@@ -60,7 +83,7 @@ namespace loadify
 
         public LoadifySession(IEventAggregator eventAggregator)
         {
-            _TrackDownloader = new TrackDownloader();
+            _AudioService = new AudioService();
             _EventAggregator = eventAggregator;
             Setup();
         }
@@ -171,33 +194,26 @@ namespace loadify
             return Image.Create(_Session, imageId);
         }
 
-        public async Task DownloadTrack(Track track, string location)
+        public async Task DownloadTrack(TrackModel track, TrackDownloader trackDownloader)
         {
             await Task.Run(() =>
             {
-                _Session.PlayerLoad(track);
+                _Session.PlayerLoad(track.UnmanagedTrack);
                 _Session.PlayerPlay(true);
-                _TrackDownloader = new TrackDownloader();
-                _TrackDownloader.AudioBuffer = new byte[1024];
+                _AudioService.Reset();
 
                 while (true)
                 {
-                    if (_TrackDownloader.Finished)
+                    if (_AudioService.Finished)
                     {
-                        using (var wavWriter = new WaveFileWriter(location + ".wav",
-                            new WaveFormat(_TrackDownloader.SampleRate, _TrackDownloader.BitRate,
-                                _TrackDownloader.Channels)))
-                        {
-                            wavWriter.Write(_TrackDownloader.AudioBuffer, 0, _TrackDownloader.AudioBuffer.Length);
-                        }
-
-                        using (var wavReader = new WaveFileReader(location + ".wav"))
-                            using (var mp3Writer = new LameMP3FileWriter(location + ".mp3", wavReader.WaveFormat, 128))
-                                wavReader.CopyTo(mp3Writer);
+                        trackDownloader.Download(track.UnmanagedTrack, new AudioData(_AudioService.AudioBuffer,
+                                                                                _AudioService.SampleRate,
+                                                                                _AudioService.BitRate,
+                                                                                _AudioService.Channels));
                         break;
                     }
 
-                    if (_TrackDownloader.Cancellation == TrackDownloader.CancellationReason.PlayTokenLost)
+                    if (_AudioService.Cancellation == AudioService.CancellationReason.PlayTokenLost)
                         throw new PlayTokenLostException("Track could not be downloaded, the play token has been lost");
                 }
             });
@@ -237,32 +253,28 @@ namespace loadify
 
         public override int MusicDelivery(SpotifySession session, AudioFormat format, IntPtr frames, int num_frames)
         {
-            if (num_frames == 0) return 0;
-            _TrackDownloader.Active = true;
-            _TrackDownloader.SampleRate = format.sample_rate;
-            _TrackDownloader.Channels = format.channels;
-
-            var size = num_frames * format.channels * 2;
-            var buffer = new byte[size];
-            Marshal.Copy(frames, buffer, 0, size);
-            _TrackDownloader.AudioBuffer = _TrackDownloader.AudioBuffer.Concat(buffer).ToArray();
+            if (num_frames != 0)
+            {
+                _AudioService.Active = true;
+                _AudioService.ProcessInput(format, frames, num_frames);
+            }
 
             return num_frames;
         }
 
         public override void PlayTokenLost(SpotifySession session)
         {
-            if (_TrackDownloader.Active)
+            if (_AudioService.Active)
             {
-                _TrackDownloader.Active = false;
-                _TrackDownloader.Cancellation = TrackDownloader.CancellationReason.PlayTokenLost;
+                _AudioService.Active = false;
+                _AudioService.Cancellation = AudioService.CancellationReason.PlayTokenLost;
             }
         }
 
         public override void EndOfTrack(SpotifySession session)
         {
             _Session.PlayerPlay(false);
-            _TrackDownloader.Finished = true;
+            _AudioService.Finished = true;
         }
 
         private Task<bool> WaitForCompletion(Func<bool> func)
