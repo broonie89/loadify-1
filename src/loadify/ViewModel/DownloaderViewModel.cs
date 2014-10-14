@@ -29,6 +29,11 @@ namespace loadify.ViewModel
             }
         }
 
+        public int CurrentTrackIndex
+        {
+            get { return DownloadedTracks.Count + 1; }
+        }
+
         private ObservableCollection<TrackViewModel> _DownloadedTracks;
         public ObservableCollection<TrackViewModel> DownloadedTracks
         {
@@ -38,6 +43,8 @@ namespace loadify.ViewModel
                 if (_DownloadedTracks == value) return;
                 _DownloadedTracks = value;
                 NotifyOfPropertyChange(() => DownloadedTracks);
+                NotifyOfPropertyChange(() => TotalTracks);
+                NotifyOfPropertyChange(() => CurrentTrackIndex);
             }
         }
 
@@ -50,8 +57,15 @@ namespace loadify.ViewModel
                 if (_RemainingTracks == value) return;
                 _RemainingTracks = value;
                 NotifyOfPropertyChange(() => RemainingTracks);
+                NotifyOfPropertyChange(() => TotalTracks);
+                NotifyOfPropertyChange(() => CurrentTrackIndex);
                 NotifyOfPropertyChange(() => Active);
             }
+        }
+
+        public ObservableCollection<TrackViewModel> TotalTracks
+        {
+            get { return new ObservableCollection<TrackViewModel>(RemainingTracks.Concat(DownloadedTracks)); }
         }
 
         public double TotalProgress
@@ -103,6 +117,9 @@ namespace loadify.ViewModel
                     RemainingTracks.Remove(CurrentTrack);
                     NotifyOfPropertyChange(() => TotalProgress);
                     NotifyOfPropertyChange(() => Active);
+                    NotifyOfPropertyChange(() => DownloadedTracks);
+                    NotifyOfPropertyChange(() => RemainingTracks);
+                    NotifyOfPropertyChange(() => CurrentTrackIndex);
                 }
                 catch (Exception)
                 {

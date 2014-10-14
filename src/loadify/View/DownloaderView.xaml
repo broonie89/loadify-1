@@ -16,6 +16,19 @@
         <ProgressBar x:Name="Progress" Visibility="{Binding Active, Converter={StaticResource BoolToVisiblityConverter}}"
                      Foreground="{StaticResource AccentColorBrush}" Background="Transparent" Height="Auto" Margin="10 8"
                      Value="{Binding TrackProgress}"/>
-        <Label x:Name="CurrentTrack" Grid.Column="1" Visibility="{Binding Active, Converter={StaticResource BoolToVisiblityConverter}}" Foreground="#FF7D7D7D"/>
+        <Label Grid.Column="1" Visibility="{Binding Active, Converter={StaticResource BoolToVisiblityConverter}}" Foreground="#FF7D7D7D">
+            <Label.Content>
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{} Downloading {0} ({1}/{2})">
+                            <Binding Path="CurrentTrack"/>
+                            <Binding Path="CurrentTrackIndex"/>
+                            <Binding Path="TotalTracks.Count"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </Label.Content>
+            
+        </Label>
     </Grid>
 </UserControl>
