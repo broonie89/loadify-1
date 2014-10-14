@@ -13,7 +13,9 @@ using SpotifySharp;
 
 namespace loadify.ViewModel
 {
-    public class DownloaderViewModel : ViewModelBase, IHandle<DownloadEvent>, IHandle<DownloadResumedEvent>
+    public class DownloaderViewModel : ViewModelBase, IHandle<DownloadEvent>, 
+                                                      IHandle<DownloadResumedEvent>,
+                                                      IHandle<DownloadProgressUpdatedEvent>
     {
         private TrackViewModel _CurrentTrack;
         public TrackViewModel CurrentTrack
@@ -52,12 +54,24 @@ namespace loadify.ViewModel
             }
         }
 
-        public double Progress
+        public double TotalProgress
         {
             get
             {
                 var totalTracksCount = RemainingTracks.Count + DownloadedTracks.Count();
                 return (totalTracksCount != 0) ? (double)(100 / (totalTracksCount / (double) DownloadedTracks.Count)) : 0;
+            }
+        }
+
+        private double _TrackProgress = 0;
+        public double TrackProgress
+        {
+            get { return _TrackProgress; }
+            set
+            {
+                if (_TrackProgress == value) return;
+                _TrackProgress = value;
+                NotifyOfPropertyChange(() => TrackProgress);
             }
         }
 
@@ -83,12 +97,12 @@ namespace loadify.ViewModel
 
                 try
                 {
-                    await session.DownloadTrack(track.Track, 
-                                                new TrackDownloader(new WaveAudioProcessor(Properties.Settings.Default.DownloadDirectory, track.Name),
-                                                                    new WaveToMp3Converter()));
+                    await session.DownloadTrack(track.Track, new TrackRenderer(new WaveAudioProcessor(Properties.Settings.Default.DownloadDirectory, track.Name),
+                                                                                new WaveToMp3Converter()));
                     DownloadedTracks.Add(CurrentTrack);
                     RemainingTracks.Remove(CurrentTrack);
-                    NotifyOfPropertyChange(() => Progress);
+                    NotifyOfPropertyChange(() => TotalProgress);
+                    NotifyOfPropertyChange(() => Active);
                 }
                 catch (Exception)
                 {
@@ -109,6 +123,11 @@ namespace loadify.ViewModel
         public void Handle(DownloadResumedEvent message)
         {
             StartDownload(message.Session);
+        }
+
+        public void Handle(DownloadProgressUpdatedEvent message)
+        {
+            TrackProgress = message.Progress;
         }
     }
 }

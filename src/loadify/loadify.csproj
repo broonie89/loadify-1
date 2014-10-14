@@ -118,7 +118,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="DownloadInterruptedException.cs" />
+    <Compile Include="Event\DownloadProgressUpdatedEvent.cs" />
+    <Compile Include="Spotify\DownloadInterruptedException.cs" />
     <Compile Include="Event\DataRefreshDisposal.cs" />
     <Compile Include="Event\DownloadResumedEvent.cs" />
     <Compile Include="Event\DownloadFinishedEvent.cs" />
@@ -135,13 +136,13 @@
     <Compile Include="Model\ArtistModel.cs" />
     <Compile Include="Model\TrackModel.cs" />
     <Compile Include="Model\UserModel.cs" />
-    <Compile Include="LoadifySession.cs" />
+    <Compile Include="Spotify\LoadifySession.cs" />
     <Compile Include="Model\PlaylistModel.cs" />
-    <Compile Include="PlayTokenLostException.cs" />
+    <Compile Include="Spotify\PlayTokenLostException.cs" />
     <Compile Include="Spotify\AudioData.cs" />
     <Compile Include="Spotify\AudioProcessor.cs" />
     <Compile Include="Spotify\IAudioConverter.cs" />
-    <Compile Include="Spotify\TrackDownloader.cs" />
+    <Compile Include="Spotify\TrackRenderer.cs" />
     <Compile Include="Spotify\WaveAudioProcessor.cs" />
     <Compile Include="Spotify\WaveToMp3Converter.cs" />
     <Compile Include="ViewModel\DownloaderViewModel.cs" />

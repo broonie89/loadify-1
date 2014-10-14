@@ -10,6 +10,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using loadify.Event;
 using loadify.Model;
+using loadify.Spotify;
 using loadify.View;
 using MahApps.Metro.Controls.Dialogs;
 using SpotifySharp;

@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices.ComTypes;
 using Caliburn.Micro;
 using loadify.Event;
+using loadify.Spotify;
 using loadify.View;
 using MahApps.Metro.Controls.Dialogs;
 using SpotifySharp;

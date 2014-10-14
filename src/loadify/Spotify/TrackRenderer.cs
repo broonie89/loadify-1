@@ -8,16 +8,16 @@ using SpotifySharp;
 
 namespace loadify.Spotify
 {
-    public class TrackDownloader
+    public class TrackRenderer
     {
         public AudioProcessor AudioProcessor { get; set; }
         public IAudioConverter AudioConverter { get; set; }
 
-        public TrackDownloader(AudioProcessor audioProcessor)
+        public TrackRenderer(AudioProcessor audioProcessor)
             : this(audioProcessor, null)
         { }
 
-        public TrackDownloader(AudioProcessor audioProcessor, IAudioConverter audioConverter)
+        public TrackRenderer(AudioProcessor audioProcessor, IAudioConverter audioConverter)
         {
             AudioProcessor = audioProcessor;
             AudioConverter = audioConverter;

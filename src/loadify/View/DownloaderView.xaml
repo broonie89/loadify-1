@@ -15,7 +15,7 @@
         </Grid.ColumnDefinitions>
         <ProgressBar x:Name="Progress" Visibility="{Binding Active, Converter={StaticResource BoolToVisiblityConverter}}"
                      Foreground="{StaticResource AccentColorBrush}" Background="Transparent" Height="Auto" Margin="10 8"
-                     Value="{Binding Progress, Mode=OneWay}"/>
+                     Value="{Binding TrackProgress}"/>
         <Label x:Name="CurrentTrack" Grid.Column="1" Visibility="{Binding Active, Converter={StaticResource BoolToVisiblityConverter}}" Foreground="#FF7D7D7D"/>
     </Grid>
 </UserControl>
