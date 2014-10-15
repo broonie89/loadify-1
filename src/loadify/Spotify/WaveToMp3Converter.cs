@@ -9,17 +9,15 @@ using NAudio.Wave;
 
 namespace loadify.Spotify
 {
-    public class WaveToMp3Converter : IAudioConverter
+    public class WaveToMp3Converter : AudioConverter
     {
-        public WaveToMp3Converter()
+        public WaveToMp3Converter(string outputDirectory, string outputFileName):
+            base(outputDirectory, outputFileName)
         { }
 
-        public string Convert(string inputFilePath, string outputDirectory, string outputFileName)
+        public override string Convert(string inputFilePath)
         {
-            if (!Directory.Exists(outputDirectory))
-                Directory.CreateDirectory(outputDirectory);
-
-            var outputFilePath = String.Format("{0}/{1}.mp3", outputDirectory, outputFileName);
+            var outputFilePath = String.Format("{0}/{1}.mp3", OutputDirectory, OutputFileName);
 
             using (var wavReader = new WaveFileReader(inputFilePath))
             using (var mp3Writer = new LameMP3FileWriter(outputFilePath, wavReader.WaveFormat, 128))

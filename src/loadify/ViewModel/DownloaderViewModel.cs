@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using loadify.Event;
 using loadify.Model;
+using loadify.Properties;
 using loadify.Spotify;
 using SpotifySharp;
 
@@ -65,7 +67,7 @@ namespace loadify.ViewModel
 
         public ObservableCollection<TrackViewModel> TotalTracks
         {
-            get { return new ObservableCollection<TrackViewModel>(RemainingTracks.Concat(DownloadedTracks)); }
+            get { return new ObservableCollection<TrackViewModel>(DownloadedTracks.Concat(RemainingTracks)); }
         }
 
         public double TotalProgress
@@ -73,7 +75,7 @@ namespace loadify.ViewModel
             get
             {
                 var totalTracksCount = RemainingTracks.Count + DownloadedTracks.Count();
-                return (totalTracksCount != 0) ? (double)(100 / (totalTracksCount / (double) DownloadedTracks.Count)) : 0;
+                return (totalTracksCount != 0) ? (100 / (totalTracksCount / (double) DownloadedTracks.Count)) : 0;
             }
         }
 
@@ -103,16 +105,42 @@ namespace loadify.ViewModel
             _CurrentTrack = new TrackViewModel(_EventAggregator);
         }
 
-        public async void StartDownload(LoadifySession session)
+        public async void StartDownload(LoadifySession session, int startIndex = 0)
         {
-            foreach (var track in new ObservableCollection<TrackViewModel>(RemainingTracks))
+            try
+            {
+                if (!Directory.Exists(Settings.Default.DownloadDirectory))
+                    Directory.CreateDirectory(Settings.Default.DownloadDirectory);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                _EventAggregator.PublishOnUIThread(new DownloadPausedEvent(
+                                                       String.Format("{0} could not be downloaded because the application is not " +
+                                                                     "authorized to create the download directory",
+                                                       CurrentTrack.ToString()),
+                                                       RemainingTracks.IndexOf(CurrentTrack)));
+                return;
+            }
+            catch (IOException)
+            {
+                _EventAggregator.PublishOnUIThread(new DownloadPausedEvent(
+                                                       String.Format("{0} could not be downloaded because the path to " +
+                                                                     "the download directory is not valid",
+                                                       CurrentTrack.ToString()),
+                                                       RemainingTracks.IndexOf(CurrentTrack)));
+                return;
+            }
+
+
+            foreach(var track in new ObservableCollection<TrackViewModel>(RemainingTracks.Skip(startIndex)))
             {
                 CurrentTrack = track;
 
                 try
                 {
-                    await session.DownloadTrack(track.Track, new TrackRenderer(new WaveAudioProcessor(Properties.Settings.Default.DownloadDirectory, track.Name),
-                                                                                new WaveToMp3Converter()));
+                    await session.DownloadTrack(CurrentTrack.Track,
+                                                new WaveAudioProcessor(Properties.Settings.Default.DownloadDirectory, CurrentTrack.Name),
+                                                new WaveToMp3Converter(Properties.Settings.Default.DownloadDirectory, CurrentTrack.Name));
                     DownloadedTracks.Add(CurrentTrack);
                     RemainingTracks.Remove(CurrentTrack);
                     NotifyOfPropertyChange(() => TotalProgress);
@@ -121,13 +149,16 @@ namespace loadify.ViewModel
                     NotifyOfPropertyChange(() => RemainingTracks);
                     NotifyOfPropertyChange(() => CurrentTrackIndex);
                 }
-                catch (Exception)
+                catch (PlayTokenLostException)
                 {
                     _EventAggregator.PublishOnUIThread(new DownloadPausedEvent(
-                                                            String.Format("{0} could not be downloaded because the logged-in Spotify account is in use",
-                                                            CurrentTrack.ToString())));
-                }
-            }
+                                                            String.Format("{0} could not be downloaded because the logged-in" +
+                                                                          " Spotify account is in use",
+                                                            CurrentTrack.ToString()),
+                                                            RemainingTracks.IndexOf(CurrentTrack)));
+                    break;
+                }       
+            }   
         }
 
         public void Handle(DownloadEvent message)
@@ -139,7 +170,7 @@ namespace loadify.ViewModel
 
         public void Handle(DownloadResumedEvent message)
         {
-            StartDownload(message.Session);
+            StartDownload(message.Session, message.DownloadIndex);
         }
 
         public void Handle(DownloadProgressUpdatedEvent message)

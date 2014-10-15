@@ -15,7 +15,7 @@ namespace loadify.Spotify
 {
     public class LoadifySession : SpotifySessionListener
     {
-        private class AudioCaptureService
+        private class TrackCaptureService
         {
             private class CaptureStatistic
             {
@@ -38,50 +38,46 @@ namespace loadify.Spotify
                 ConnectionLost
             };
 
-            public byte[] AudioBuffer { get; set; }
             public bool Active { get; set; }
             public bool Finished { get; set; }
             public CancellationReason Cancellation { get; set; }
-            public int BitRate { get; set; }
-            public int SampleRate { get; set; }
-            public int Channels { get; set; }
+            public AudioMetaData AudioMetaData { get; set; }
+            public AudioProcessor AudioProcessor { get; set; }
             private CaptureStatistic _Statistic = new CaptureStatistic();
 
             public double Progress
             {
-                get
-                {
-                    return (double)100 / _Statistic.TargetDuration * (46.4 * _Statistic.Processings);
-                }
+                get { return (double)100 / _Statistic.TargetDuration * (46.4 * _Statistic.Processings); }
             }
 
-            public AudioCaptureService()
+            public TrackCaptureService()
             {
-                AudioBuffer = new byte[] {};
                 Cancellation = CancellationReason.None;
-                BitRate = 16;
+                AudioMetaData = new AudioMetaData();
             }
 
-            public void Start(TrackModel track)
+            public void Start(TrackModel track, AudioProcessor audioProcessor)
             {
                 _Statistic = new CaptureStatistic(track.Duration);
+                AudioProcessor = audioProcessor;
                 Active = true;
             }
 
             public void Stop()
             {
+                AudioProcessor.Release();
                 Active = false;
             }
 
             public void ProcessInput(AudioFormat format, IntPtr frames, int num_frames)
             {
-                SampleRate = format.sample_rate;
-                Channels = format.channels;
+                AudioMetaData.SampleRate = format.sample_rate;
+                AudioMetaData.Channels = format.channels;
 
                 var size = num_frames * format.channels * 2;
                 var buffer = new byte[size];
                 Marshal.Copy(frames, buffer, 0, size);
-                AudioBuffer = AudioBuffer.Concat(buffer).ToArray();
+                AudioProcessor.Process(buffer);
 
                 _Statistic.Processings++;
                 _Statistic.AverageFrameSize = (_Statistic.AverageFrameSize + size) / 2;
@@ -91,7 +87,7 @@ namespace loadify.Spotify
         private IEventAggregator _EventAggregator;
         private SpotifySession _Session { get; set; }
         private SynchronizationContext _Synchronization { get; set; }
-        private AudioCaptureService _AudioCaptureService { get; set; }
+        private TrackCaptureService _TrackCaptureService { get; set; }
 
         public bool Connected
         {
@@ -104,7 +100,7 @@ namespace loadify.Spotify
 
         public LoadifySession(IEventAggregator eventAggregator)
         {
-            _AudioCaptureService = new AudioCaptureService();
+            _TrackCaptureService = new TrackCaptureService();
             _EventAggregator = eventAggregator;
             Setup();
         }
@@ -215,27 +211,25 @@ namespace loadify.Spotify
             return Image.Create(_Session, imageId);
         }
 
-        public async Task DownloadTrack(TrackModel track, TrackRenderer trackRenderer)
+        public async Task DownloadTrack(TrackModel track, AudioProcessor audioProcessor, AudioConverter audioConverter)
         {
             await Task.Run(() =>
             {
-                _AudioCaptureService = new AudioCaptureService();
-                _AudioCaptureService.Start(track);
+                _TrackCaptureService = new TrackCaptureService();
+                _TrackCaptureService.Start(track, audioProcessor);
                 _Session.PlayerLoad(track.UnmanagedTrack);
                 _Session.PlayerPlay(true);
 
                 while (true)
                 {
-                    if (_AudioCaptureService.Finished)
+                    if (_TrackCaptureService.Finished)
                     {
-                        trackRenderer.Download(track.UnmanagedTrack, new AudioData(_AudioCaptureService.AudioBuffer,
-                                                                                _AudioCaptureService.SampleRate,
-                                                                                _AudioCaptureService.BitRate,
-                                                                                _AudioCaptureService.Channels));
+                        if (audioConverter != null)
+                            audioConverter.Convert(_TrackCaptureService.AudioProcessor.OutputFilePath);
                         break;
                     }
 
-                    if (_AudioCaptureService.Cancellation == AudioCaptureService.CancellationReason.PlayTokenLost)
+                    if (_TrackCaptureService.Cancellation == TrackCaptureService.CancellationReason.PlayTokenLost)
                         throw new PlayTokenLostException("Track could not be downloaded, the play token has been lost");
                 }
             });
@@ -275,10 +269,10 @@ namespace loadify.Spotify
 
         public override int MusicDelivery(SpotifySession session, AudioFormat format, IntPtr frames, int num_frames)
         {
-            if (num_frames != 0 && _AudioCaptureService.Active)
+            if (num_frames != 0 && _TrackCaptureService.Active)
             {
-                _AudioCaptureService.ProcessInput(format, frames, num_frames);
-                _EventAggregator.PublishOnUIThread(new DownloadProgressUpdatedEvent(_AudioCaptureService.Progress));
+                _TrackCaptureService.ProcessInput(format, frames, num_frames);
+                _EventAggregator.PublishOnUIThread(new DownloadProgressUpdatedEvent(_TrackCaptureService.Progress));
             }
 
             return num_frames;
@@ -286,18 +280,18 @@ namespace loadify.Spotify
 
         public override void PlayTokenLost(SpotifySession session)
         {
-            if (_AudioCaptureService.Active)
+            if (_TrackCaptureService.Active)
             {
-                _AudioCaptureService.Stop();
-                _AudioCaptureService.Cancellation = AudioCaptureService.CancellationReason.PlayTokenLost;
+                _TrackCaptureService.Stop();
+                _TrackCaptureService.Cancellation = TrackCaptureService.CancellationReason.PlayTokenLost;
             }
         }
 
         public override void EndOfTrack(SpotifySession session)
         {
             _Session.PlayerPlay(false);
-            _AudioCaptureService.Finished = true;
-            _AudioCaptureService.Stop();
+            _TrackCaptureService.Stop();
+            _TrackCaptureService.Finished = true;
         }
 
         private Task<bool> WaitForCompletion(Func<bool> func)

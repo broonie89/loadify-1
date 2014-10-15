@@ -6,16 +6,14 @@ using System.Threading.Tasks;
 
 namespace loadify.Spotify
 {
-    public struct AudioData
+    public class AudioMetaData
     {
-        public byte[] Data;
-        public int SampleRate;
-        public int BitRate;
-        public int Channels;
+        public int SampleRate { get; set; }
+        public int BitRate { get; set; }
+        public int Channels { get; set; }
 
-        public AudioData(byte[] data, int sampleRate, int bitRate, int channels)
+        public AudioMetaData(int sampleRate = 44000, int bitRate = 16, int channels = 2)
         {
-            Data = data;
             SampleRate = sampleRate;
             BitRate = bitRate;
             Channels = channels;

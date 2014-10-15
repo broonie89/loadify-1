@@ -10,22 +10,28 @@ namespace loadify.Spotify
 {
     public class WaveAudioProcessor : AudioProcessor
     {
-        public WaveAudioProcessor(string outputDirectory, string outputFileName) :
-            base(outputDirectory, outputFileName)
+        private WaveFileWriter _WaveFileWriter;
+
+        public WaveAudioProcessor(string outputDirectory, string outputFileName, AudioMetaData audioMetaData) :
+            base(outputDirectory, outputFileName, audioMetaData)
+        {
+            OutputFilePath = String.Format("{0}/{1}.wav", OutputDirectory, OutputFileName);
+            _WaveFileWriter = new WaveFileWriter(OutputFilePath, new WaveFormat(audioMetaData.SampleRate, audioMetaData.BitRate, audioMetaData.Channels));
+        }
+
+         public WaveAudioProcessor(string outputDirectory, string outputFileName) :
+             this(outputDirectory, outputFileName, new AudioMetaData())
         { }
 
-        public override string Process(AudioData audioData)
+        public override void Process(byte[] audioData)
         {
-            if (!Directory.Exists(OutputDirectory))
-                Directory.CreateDirectory(OutputDirectory);
+            if (_WaveFileWriter != null)
+                _WaveFileWriter.Write(audioData, 0, audioData.Length);
+        }
 
-            var outputFilePath = String.Format("{0}/{1}.wav", OutputDirectory, OutputFileName);
-            using (var wavWriter = new WaveFileWriter(outputFilePath, new WaveFormat(audioData.SampleRate, audioData.BitRate, audioData.Channels)))
-            {
-                wavWriter.Write(audioData.Data, 0, audioData.Data.Length);
-            }
-
-            return outputFilePath;
+        public override void Release()
+        {
+            _WaveFileWriter.Dispose();
         }
     }
 }
