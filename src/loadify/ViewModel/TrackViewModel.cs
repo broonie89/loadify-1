@@ -75,6 +75,18 @@ namespace loadify.ViewModel
             }
         }
 
+        private bool _Expanded;
+        public bool Expanded
+        {
+            get { return _Expanded; }
+            set
+            {
+                if (_Expanded == value) return;
+                _Expanded = value;
+                NotifyOfPropertyChange(() => Expanded);
+            }
+        }
+
         public TrackViewModel(TrackModel track, IEventAggregator eventAggregator):
             base(eventAggregator)
         {

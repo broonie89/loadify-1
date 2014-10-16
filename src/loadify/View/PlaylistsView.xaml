@@ -23,7 +23,6 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-
             </StackPanel>
         </DataTemplate>
         <HierarchicalDataTemplate x:Key="PlaylistTemplate" DataType="viewmodel:PlaylistViewModel" ItemsSource="{Binding Path=Tracks}" ItemTemplate="{StaticResource TrackTemplate}">
@@ -47,7 +46,13 @@
             <RowDefinition Height="329*"/>
             <RowDefinition Height="35*"/>
         </Grid.RowDefinitions>
-        <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}" Background="#FF252525" ItemsSource="{Binding MatchingPlaylists}" ItemTemplate="{StaticResource PlaylistTemplate}" Grid.Row="1"/>
+        <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}" Background="#FF252525" ItemsSource="{Binding MatchingPlaylists}" ItemTemplate="{StaticResource PlaylistTemplate}" Grid.Row="1">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}">
+                    <Setter Property="IsExpanded" Value="{Binding Expanded, Mode=TwoWay}" />
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
         <Grid Grid.Row="2" Background="#FF252525">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" MinWidth="140"/>

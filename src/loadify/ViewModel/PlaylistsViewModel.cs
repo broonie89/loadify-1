@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using loadify.Event;
 using loadify.Model;
+using loadify.View;
 using SpotifySharp;
 
 namespace loadify.ViewModel
@@ -42,7 +43,7 @@ namespace loadify.ViewModel
                                                                 .Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)));
                     if (matchingTracks.Count != 0)
                     {
-                        matchingPlaylists.Add(new PlaylistViewModel(playlist.Playlist, _EventAggregator)
+                        matchingPlaylists.Add(new PlaylistViewModel(playlist)
                         {
                             Tracks = matchingTracks
                         });

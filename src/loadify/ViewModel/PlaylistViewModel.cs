@@ -82,6 +82,18 @@ namespace loadify.ViewModel
             }
         }
 
+        private bool _Expanded;
+        public bool Expanded
+        {
+            get { return _Expanded; }
+            set
+            {
+                if (_Expanded == value) return;
+                _Expanded = value;
+                NotifyOfPropertyChange(() => Expanded);
+            }
+        }
+
         public bool Selected
         {
             get { return Tracks.Any(track => track.Selected); }
@@ -102,6 +114,15 @@ namespace loadify.ViewModel
         public PlaylistViewModel(IEventAggregator eventAggregator):
             this(new PlaylistModel(), eventAggregator)
         { }
+
+        public PlaylistViewModel(PlaylistViewModel playlistViewModel)
+        {
+            _EventAggregator = playlistViewModel._EventAggregator;
+            _Tracks = new ObservableCollection<TrackViewModel>(playlistViewModel.Tracks);
+            Playlist = new PlaylistModel(playlistViewModel.Playlist);
+            AllTracksSelected = playlistViewModel.AllTracksSelected;
+            Expanded = playlistViewModel.Expanded;
+        }
 
         public void Handle(TrackSelectedChangedEvent message)
         {
