@@ -71,7 +71,7 @@ namespace loadify.ViewModel
                 if (_Selected == value) return;
                 _Selected = value;
                 NotifyOfPropertyChange(() => Selected);
-                _EventAggregator.PublishOnUIThread(new TrackSelectedEvent(this));
+                _EventAggregator.PublishOnUIThread(new TrackSelectedChangedEvent(this, _Selected));
             }
         }
 
@@ -84,5 +84,10 @@ namespace loadify.ViewModel
         public TrackViewModel(IEventAggregator eventAggregator) :
             this(new TrackModel(), eventAggregator)
         { }
+
+        public override string ToString()
+        {
+            return string.Format("{0} - {1}", Artists, Name);
+        }
     }
 }

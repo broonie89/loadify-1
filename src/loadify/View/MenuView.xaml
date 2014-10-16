@@ -9,7 +9,7 @@
         <BitmapImage x:Key="RefreshIcon" UriSource="/Resources/refresh_icon.png"/>
     </UserControl.Resources>
     <Grid>
-        <Menu>
+        <Menu BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="0 0 0 1">
             <MenuItem Header="General" Style="{StaticResource SpotifyMenuItemHeading}">
                 <MenuItem Header="About" Style="{StaticResource SpotifyMenuItemHeading}"/>
             </MenuItem>

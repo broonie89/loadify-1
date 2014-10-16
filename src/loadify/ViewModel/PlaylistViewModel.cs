@@ -11,7 +11,7 @@ using SpotifySharp;
 
 namespace loadify.ViewModel
 {
-    public class PlaylistViewModel : ViewModelBase, IHandle<TrackSelectedEvent>
+    public class PlaylistViewModel : ViewModelBase, IHandle<TrackSelectedChangedEvent>
     {
         private PlaylistModel _Playlist;
         public PlaylistModel Playlist
@@ -70,7 +70,7 @@ namespace loadify.ViewModel
             }
         }
 
-        public bool Selected
+        public bool AllTracksSelected
         {
             get { return Tracks.All(track => track.Selected); }
             set
@@ -78,8 +78,13 @@ namespace loadify.ViewModel
                 foreach (var track in Tracks)
                     track.Selected = value;
 
-                NotifyOfPropertyChange(() => Selected);
+                NotifyOfPropertyChange(() => AllTracksSelected);
             }
+        }
+
+        public bool Selected
+        {
+            get { return Tracks.Any(track => track.Selected); }
         }
 
         public ObservableCollection<TrackViewModel> SelectedTracks
@@ -98,7 +103,7 @@ namespace loadify.ViewModel
             this(new PlaylistModel(), eventAggregator)
         { }
 
-        public void Handle(TrackSelectedEvent message)
+        public void Handle(TrackSelectedChangedEvent message)
         {
             NotifyOfPropertyChange(() => SelectedTracks);
         }

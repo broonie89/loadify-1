@@ -12,10 +12,11 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="580*"/>
+            <ColumnDefinition Width="73*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0 1 0 0" Grid.ColumnSpan="4"/>
-        <Label Content="{Binding LoggedInUser.Name}" Foreground="#FF7D7D7D" Margin="10 0" ContentStringFormat="Connected as {0}" HorizontalContentAlignment="Right" Grid.Column="3"/>   
+        <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0 1 0 0" Grid.ColumnSpan="3"/>
+        <ContentControl Grid.Column="0" x:Name="Downloader"/>
+        <Label Content="{Binding LoggedInUser.Name}" Foreground="#FF7D7D7D" Margin="10 0" ContentStringFormat="Connected as {0}" HorizontalContentAlignment="Right" Grid.Column="2"/>
     </Grid>
 </UserControl>

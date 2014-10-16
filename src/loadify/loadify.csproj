@@ -78,9 +78,15 @@
     <Reference Include="MahApps.Metro">
       <HintPath>..\..\lib\MahApps.Metro.0.14.0.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="NAudio">
+      <HintPath>..\..\lib\NAudio.1.7.1\lib\net35\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio.Lame">
+      <HintPath>..\..\lib\NAudio.Lame.1.0.2\lib\net20\NAudio.Lame.dll</HintPath>
+    </Reference>
     <Reference Include="ohLibSpotify, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\ohLibSpotify\x86\ohLibSpotify.dll</HintPath>
+      <HintPath>..\..\lib\ohLibSpotify\net45_x86\ohLibSpotify.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -112,19 +118,33 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Event\DownloadProgressUpdatedEvent.cs" />
+    <Compile Include="Spotify\DownloadInterruptedException.cs" />
     <Compile Include="Event\DataRefreshDisposal.cs" />
+    <Compile Include="Event\DownloadResumedEvent.cs" />
+    <Compile Include="Event\DownloadFinishedEvent.cs" />
+    <Compile Include="Event\DownloadPausedEvent.cs" />
     <Compile Include="Event\InvalidSettingEvent.cs" />
     <Compile Include="Event\LoginFailedEvent.cs" />
     <Compile Include="Event\LoginSuccessfulEvent.cs" />
     <Compile Include="Event\DataRefreshRequest.cs" />
-    <Compile Include="Event\TrackSelectedEvent.cs" />
+    <Compile Include="Event\DownloadRequestEvent.cs" />
+    <Compile Include="Event\DownloadEvent.cs" />
+    <Compile Include="Event\TrackSelectedChangedEvent.cs" />
     <Compile Include="Mock\PlaylistsMock.cs" />
     <Compile Include="Model\AlbumModel.cs" />
     <Compile Include="Model\ArtistModel.cs" />
     <Compile Include="Model\TrackModel.cs" />
     <Compile Include="Model\UserModel.cs" />
-    <Compile Include="LoadifySession.cs" />
+    <Compile Include="Spotify\LoadifySession.cs" />
     <Compile Include="Model\PlaylistModel.cs" />
+    <Compile Include="Spotify\PlayTokenLostException.cs" />
+    <Compile Include="Spotify\AudioMetaData.cs" />
+    <Compile Include="Spotify\AudioProcessor.cs" />
+    <Compile Include="Spotify\AudioConverter.cs" />
+    <Compile Include="Spotify\WaveAudioProcessor.cs" />
+    <Compile Include="Spotify\WaveToMp3Converter.cs" />
+    <Compile Include="ViewModel\DownloaderViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MenuViewModel.cs" />
     <Compile Include="ViewModel\PlaylistsViewModel.cs" />
@@ -134,6 +154,9 @@
     <Compile Include="ViewModel\TrackViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="View\DownloaderView.xaml.cs">
+      <DependentUpon>DownloaderView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -192,6 +215,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\DownloaderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -219,6 +246,14 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\refresh_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="libmp3lame.32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libmp3lame.64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

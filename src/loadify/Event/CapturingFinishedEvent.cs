@@ -7,13 +7,13 @@ using loadify.Spotify;
 
 namespace loadify.Event
 {
-    public class DataRefreshDisposal
+    public class CapturingFinishedEvent
     {
-        public LoadifySession Session { get; set; }
+        public AudioData AudioData { get; set; }
 
-        public DataRefreshDisposal(LoadifySession session)
+        public CapturingFinishedEvent(AudioData audioData)
         {
-            Session = session;
+            AudioData = audioData;
         }
     }
 }
