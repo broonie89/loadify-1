@@ -117,8 +117,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Behavior\InputBindingsManager.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Event\DownloadProgressUpdatedEvent.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Spotify\DownloadInterruptedException.cs" />
     <Compile Include="Event\DataRefreshDisposal.cs" />
     <Compile Include="Event\DownloadResumedEvent.cs" />

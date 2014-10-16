@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewmodel="clr-namespace:loadify.ViewModel"
              xmlns:mock="clr-namespace:loadify.Mock"
+             xmlns:b="clr-namespace:loadify.Behavior"
              xmlns:cal="http://www.caliburnproject.org"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="390" d:DesignWidth="300">
     <UserControl.Resources>
@@ -41,12 +43,12 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="71*"/>
-            <RowDefinition Height="7*"/>
+            <RowDefinition Height="26*"/>
+            <RowDefinition Height="329*"/>
+            <RowDefinition Height="35*"/>
         </Grid.RowDefinitions>
-        <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}" Background="#FF252525" ItemsSource="{Binding Playlists}" ItemTemplate="{StaticResource PlaylistTemplate}"
-                  Margin="0 0 0 5"/>
-        <Grid Grid.Row="1" Background="#FF252525">
+        <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}" Background="#FF252525" ItemsSource="{Binding MatchingPlaylists}" ItemTemplate="{StaticResource PlaylistTemplate}" Grid.Row="1"/>
+        <Grid Grid.Row="2" Background="#FF252525">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -54,5 +56,8 @@
             <Button Content="Remove Playlist" Margin="5 3"/>
             <Button Content="Add Playlist" Grid.Column="1" Margin="5 3"/>
         </Grid>
+        <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=Explicit, Mode=TwoWay}" 
+                 b:InputBindingsManager.UpdateSourceWhenEnterPressed="TextBox.Text"
+                 TextWrapping="Wrap" Padding="2 0" BorderThickness="0" controls:TextboxHelper.Watermark="Search..."/>
     </Grid>
 </UserControl>
