@@ -35,7 +35,7 @@ namespace loadify.ViewModel
             }
         }
 
-        public int Duration
+        public TimeSpan Duration
         {
             get { return Track.Duration; }
             set

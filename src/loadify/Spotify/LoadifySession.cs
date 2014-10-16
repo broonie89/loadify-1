@@ -19,14 +19,18 @@ namespace loadify.Spotify
         {
             private class CaptureStatistic
             {
-                public int TargetDuration { get; set; }
+                public TimeSpan TargetDuration { get; set; }
                 public uint Processings { get; set; }
                 public double AverageFrameSize { get; set; }
 
-                public CaptureStatistic(int targetDuration = 0)
+                public CaptureStatistic(TimeSpan targetDuration)
                 {
                     TargetDuration = targetDuration;
                 }
+
+                public CaptureStatistic()
+                    : this(new TimeSpan())
+                { }
             }
 
 
@@ -47,7 +51,7 @@ namespace loadify.Spotify
 
             public double Progress
             {
-                get { return (double)100 / _Statistic.TargetDuration * (46.4 * _Statistic.Processings); }
+                get { return (double)100 / _Statistic.TargetDuration.Milliseconds * (46.4 * _Statistic.Processings); }
             }
 
             public TrackCaptureService()
@@ -177,7 +181,7 @@ namespace loadify.Spotify
                     await WaitForCompletion(unmanagedTrack.IsLoaded);
 
                     managedTrack.Name = unmanagedTrack.Name();
-                    managedTrack.Duration = unmanagedTrack.Duration();
+                    managedTrack.Duration = TimeSpan.FromMilliseconds(unmanagedTrack.Duration());
                     managedTrack.Rating = unmanagedTrack.Popularity();
 
                     if (unmanagedTrack.Album() != null)

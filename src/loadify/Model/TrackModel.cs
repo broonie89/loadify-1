@@ -11,7 +11,7 @@ namespace loadify.Model
     {
         public Track UnmanagedTrack { get; set; }
         public string Name { get; set; }
-        public int Duration { get; set; }
+        public TimeSpan Duration { get; set; }
         public List<ArtistModel> Artists { get; set; }
         public int Rating { get; set; }
         public AlbumModel Album { get; set; }

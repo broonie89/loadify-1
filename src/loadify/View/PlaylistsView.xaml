@@ -14,6 +14,9 @@
         <mock:PlaylistsMock x:Key="PlaylistsMock"/>
         <DataTemplate x:Key="TrackTemplate" DataType="viewmodel:TrackViewModel">
             <StackPanel Orientation="Horizontal">
+                <StackPanel.ToolTip>
+                    <TextBlock Text="{Binding Duration, StringFormat=Duration: {0}}"/>
+                </StackPanel.ToolTip>
                 <CheckBox IsChecked="{Binding Selected, Mode=TwoWay}"/>
                 <TextBlock>
                     <TextBlock.Text>
