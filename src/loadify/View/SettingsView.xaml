@@ -13,14 +13,14 @@
                 <Grid Background="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="338*"/>
-                        <ColumnDefinition Width="35*"/>
+                        <ColumnDefinition Width="Auto" MinWidth="35"/>
                         <ColumnDefinition Width="89*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="33*"/>
-                        <RowDefinition Height="38*"/>
-                        <RowDefinition Height="33*"/>
-                        <RowDefinition Height="38*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="118*"/>
                     </Grid.RowDefinitions>
                     <Label Content="Download Directory" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="Directory where the downloaded files will be stored"/>

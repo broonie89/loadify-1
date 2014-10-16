@@ -50,8 +50,8 @@
         <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}" Background="#FF252525" ItemsSource="{Binding MatchingPlaylists}" ItemTemplate="{StaticResource PlaylistTemplate}" Grid.Row="1"/>
         <Grid Grid.Row="2" Background="#FF252525">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto" MinWidth="140"/>
+                <ColumnDefinition Width="Auto" MinWidth="140"/>
             </Grid.ColumnDefinitions>
             <Button Content="Remove Playlist" Margin="5 3"/>
             <Button Content="Add Playlist" Grid.Column="1" Margin="5 3"/>
