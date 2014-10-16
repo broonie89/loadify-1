@@ -10,6 +10,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using loadify.Event;
 using loadify.Model;
+using loadify.Properties;
 using loadify.Spotify;
 using loadify.View;
 using MahApps.Metro.Controls.Dialogs;
@@ -17,7 +18,8 @@ using SpotifySharp;
 
 namespace loadify.ViewModel
 {
-    public class LoginViewModel : ViewModelBase, IHandle<LoginFailedEvent>, IHandle<LoginSuccessfulEvent>
+    public class LoginViewModel : ViewModelBase, IHandle<LoginFailedEvent>,
+                                                 IHandle<LoginSuccessfulEvent>
     {
         private LoadifySession _Session;
 
@@ -45,11 +47,42 @@ namespace loadify.ViewModel
             }
         }
 
+        private bool _RememberMe = false;
+        public bool RememberMe
+        {
+            get { return _RememberMe; }
+            set
+            {
+                if (_RememberMe == value) return;
+                _RememberMe = value;
+                NotifyOfPropertyChange(() => RememberMe);
+            }
+        }
+
         public LoginViewModel(IEventAggregator eventAggregator, IWindowManager windowManager) :
             base(eventAggregator, windowManager)
         {
             _User = new UserViewModel();
             _Session = new LoadifySession(_EventAggregator);
+        }
+
+
+        public void Login()
+        {
+            LoginProcessActive = true;
+
+            // since you can't bind the passwordbox to a property, the viewmodel needs to be aware of the view to access the password entered
+            var loginView = GetView() as LoginView;
+            var password = loginView.Password.Password;
+
+            if (RememberMe)
+            {
+                Settings.Default.Username = User.Name;
+                Settings.Default.Password = loginView.Password.Password;
+                Settings.Default.Save();
+            }
+
+            _Session.Login(User.Name, password);          
         }
 
         public void OnKeyUp(Key key)
@@ -58,14 +91,15 @@ namespace loadify.ViewModel
                 Login();
         }
 
-        public void Login()
+        protected override void OnViewLoaded(object view)
         {
-            LoginProcessActive = true;
-            var loginView = GetView() as LoginView;
-
-            // since you can't bind the passwordbox to a property, the viewmodel needs to be aware of the view to access the password entered
-            var password = loginView.Password.Password;
-            _Session.Login(User.Name, password);          
+            if (!String.IsNullOrEmpty(Settings.Default.Username) || !String.IsNullOrEmpty(Settings.Default.Password))
+            {
+                var loginView = GetView() as LoginView;
+                RememberMe = true;
+                User.Name = Settings.Default.Username;
+                loginView.Password.Password = Settings.Default.Password;
+            }        
         }
 
         public void Handle(LoginFailedEvent message)

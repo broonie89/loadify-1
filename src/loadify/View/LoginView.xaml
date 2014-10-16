@@ -4,20 +4,20 @@
                     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:cal="http://www.caliburnproject.org"
-                    Title="Loadify - Login" Height="230" Width="278" Background="#FF282828"
+                    Title="Loadify - Login" Height="250" Width="278" Background="#FF282828"
                     WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen"
                     GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize"
                     cal:Message.Attach="[Event KeyUp] = [Action OnKeyUp($pressedkey)]"
                     FocusManager.FocusedElement="{Binding ElementName=Username}">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="56*"/>
-            <RowDefinition Height="21*"/>
-            <RowDefinition Height="33*"/>
-            <RowDefinition Height="33*"/>
-            <RowDefinition Height="11*"/>
-            <RowDefinition Height="33*"/>
-            <RowDefinition Height="14*"/>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="28*"/>
+            <RowDefinition Height="12*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="13*"/>
@@ -33,5 +33,6 @@
         <Label Grid.Column="0" Content="Passwort:" HorizontalContentAlignment="Right" Grid.Row="3"/>
         <Label Grid.Column="0" Content="LOADIFY" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.ColumnSpan="3" FontFamily="Segoe WP" FontSize="40"/>
         <controls:MetroProgressBar IsIndeterminate="{Binding LoginProcessActive}" Foreground="{StaticResource AccentColorBrush}" Background="Transparent" Margin="3" Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Stretch"/>
+        <CheckBox x:Name="RememberMe" Margin="22 0" Content="Remember me" ToolTip="Password is stored unencrypted, please use with caution" Grid.Row="4" Grid.ColumnSpan="2"/>
     </Grid>
 </controls:MetroWindow>

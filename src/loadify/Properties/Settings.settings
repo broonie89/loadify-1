@@ -17,5 +17,11 @@
     <Setting Name="ProxyPort" Type="System.UInt16" Scope="User">
       <Value Profile="(Default)">80</Value>
     </Setting>
+    <Setting Name="Username" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Password" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
