@@ -18,26 +18,14 @@ namespace loadify.ViewModel
         private ObservableCollection<PlaylistViewModel> _Playlists = new ObservableCollection<PlaylistViewModel>();
         public ObservableCollection<PlaylistViewModel> Playlists
         {
-            get { return _Playlists; }
-            set
-            {
-                if (_Playlists == value) return;
-                _Playlists = value;
-                NotifyOfPropertyChange(() => Playlists);
-                NotifyOfPropertyChange(() => MatchingPlaylists);
-            }
-        }
-
-        public ObservableCollection<PlaylistViewModel> MatchingPlaylists
-        {
             get
             {
-                if (SearchTerm.Length == 0) return Playlists;
+                if (SearchTerm.Length == 0) return _Playlists;
 
                 var matchingPlaylists = new ObservableCollection<PlaylistViewModel>();
-                foreach (var playlist in Playlists)
+                foreach (var playlist in _Playlists)
                 {
-                    var matchingTracks = 
+                    var matchingTracks =
                         new ObservableCollection<TrackViewModel>(playlist.Tracks
                                                                 .Where(track => track.ToString()
                                                                 .Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)));
@@ -52,6 +40,12 @@ namespace loadify.ViewModel
 
                 return matchingPlaylists;
             }
+            set
+            {
+                if (_Playlists == value) return;
+                _Playlists = value;
+                NotifyOfPropertyChange(() => Playlists);
+            }
         }
 
         private string _SearchTerm = "";
@@ -63,7 +57,7 @@ namespace loadify.ViewModel
                 if (_SearchTerm == value) return;
                 _SearchTerm = value;
                 NotifyOfPropertyChange(() => SearchTerm);
-                NotifyOfPropertyChange(() => MatchingPlaylists);
+                NotifyOfPropertyChange(() => Playlists);
             }
         }
 
