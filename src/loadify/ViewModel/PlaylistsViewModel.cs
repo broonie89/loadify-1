@@ -103,17 +103,29 @@ namespace loadify.ViewModel
 
         public async void Handle(AddPlaylistReplyEvent message)
         {
-            try
+            if (String.IsNullOrEmpty(message.Url)) return;
+
+            var invalidUrlEvent = new ErrorOcurredEvent("Add Playlist",
+                                                        "The playlist could not be added because the url" +
+                                                        " does not point to a valid Spotify playlist." +
+                                                        "\n" +
+                                                        " Url: " + message.Url);
+            if (!Regex.IsMatch(message.Url,
+                @"((?:(?:http|https)://open.spotify.com/user/[a-zA-Z]+/playlist/[a-zA-Z0-9]+)|(?:spotify:user:[a-zA-Z]+:playlist:[a-zA-Z0-9]+))"))
             {
-                var playlist = await message.Session.GetPlaylist(message.Url);
-                Playlists.Add(new PlaylistViewModel(playlist, _EventAggregator));
+                _EventAggregator.PublishOnUIThread(invalidUrlEvent);
             }
-            catch (InvalidPlaylistUrlException)
+            else
             {
-                _EventAggregator.PublishOnUIThread(new ErrorOcurredEvent("Add Playlist", "The playlist could not be added because the url" +
-                                                                                         " does not point to a valid Spotify playlist." +
-                                                                                         "\n" +
-                                                                                         " Url: " + message.Url));
+                try
+                {
+                    var playlist = await message.Session.GetPlaylist(message.Url);
+                    Playlists.Add(new PlaylistViewModel(playlist, _EventAggregator));
+                }
+                catch (InvalidPlaylistUrlException)
+                {
+                    _EventAggregator.PublishOnUIThread(invalidUrlEvent);
+                }
             }
         }
     }
