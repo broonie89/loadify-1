@@ -62,7 +62,7 @@
                 <ColumnDefinition Width="Auto" MinWidth="140"/>
             </Grid.ColumnDefinitions>
             <Button Content="Remove Playlist" Margin="5 3"/>
-            <Button Content="Add Playlist" Grid.Column="1" Margin="5 3"/>
+            <Button x:Name="AddPlaylist" Content="Add Playlist" Grid.Column="1" Margin="5 3"/>
         </Grid>
         <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=Explicit, Mode=TwoWay}" 
                  b:InputBindingsManager.UpdateSourceWhenEnterPressed="TextBox.Text"

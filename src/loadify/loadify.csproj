@@ -119,6 +119,9 @@
     </Compile>
     <Compile Include="Behavior\InputBindingsManager.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Event\AddPlaylistEvent.cs" />
+    <Compile Include="Event\AddPlaylistFailedEvent.cs" />
+    <Compile Include="Event\AddPlaylistReplyEvent.cs" />
     <Compile Include="Event\DownloadProgressUpdatedEvent.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Spotify\DownloadInterruptedException.cs" />
@@ -138,6 +141,7 @@
     <Compile Include="Model\ArtistModel.cs" />
     <Compile Include="Model\TrackModel.cs" />
     <Compile Include="Model\UserModel.cs" />
+    <Compile Include="Spotify\InvalidPlaylistUrlException.cs" />
     <Compile Include="Spotify\LoadifySession.cs" />
     <Compile Include="Model\PlaylistModel.cs" />
     <Compile Include="Spotify\PlayTokenLostException.cs" />

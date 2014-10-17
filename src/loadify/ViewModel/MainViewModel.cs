@@ -11,7 +11,9 @@ namespace loadify.ViewModel
 {
     public class MainViewModel : ViewModelBase, IHandle<DataRefreshRequest>, 
                                                 IHandle<InvalidSettingEvent>,
-                                                IHandle<DownloadPausedEvent>
+                                                IHandle<DownloadPausedEvent>,
+                                                IHandle<AddPlaylistEvent>, 
+                                                IHandle<AddPlaylistFailedEvent>
     {
         private LoadifySession _Session;
 
@@ -111,6 +113,21 @@ namespace loadify.ViewModel
             await view.ShowMessageAsync("Download Error", message.Reason 
                                         + "\nPlease resolve this error before continuing downloading");
             _EventAggregator.PublishOnUIThread(new DownloadResumedEvent(_Session));
+        }
+
+        public async void Handle(AddPlaylistEvent message)
+        {
+            var view = GetView() as MainView;
+            var response = await view.ShowInputAsync("Add Playlist", "Please insert the link to your playlist");
+
+            _EventAggregator.PublishOnUIThread(new AddPlaylistReplyEvent(response, _Session));
+        }
+
+        public async void Handle(AddPlaylistFailedEvent message)
+        {
+            var view = GetView() as MainView;
+            await view.ShowMessageAsync("Add Playlist", "\nThe playlist could not be added because the url" +
+                                                        " does not point to a valid Spotify playlist. Url: " + message.Url);
         }
     }
 }

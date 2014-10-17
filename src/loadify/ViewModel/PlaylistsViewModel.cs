@@ -8,12 +8,15 @@ using System.Threading.Tasks;
 using Caliburn.Micro;
 using loadify.Event;
 using loadify.Model;
+using loadify.Spotify;
 using loadify.View;
 using SpotifySharp;
 
 namespace loadify.ViewModel
 {
-    public class PlaylistsViewModel : ViewModelBase, IHandle<DataRefreshDisposal>, IHandle<DownloadRequestEvent>
+    public class PlaylistsViewModel : ViewModelBase, IHandle<DataRefreshDisposal>,
+                                                     IHandle<DownloadRequestEvent>,
+                                                     IHandle<AddPlaylistReplyEvent>
     {
         private ObservableCollection<PlaylistViewModel> _Playlists = new ObservableCollection<PlaylistViewModel>();
         public ObservableCollection<PlaylistViewModel> Playlists
@@ -71,6 +74,11 @@ namespace loadify.ViewModel
             this(new ObservableCollection<PlaylistViewModel>(), eventAggregator)
         { }
 
+        public void AddPlaylist()
+        {
+            _EventAggregator.PublishOnUIThread(new AddPlaylistEvent());
+        }
+
         public async void Handle(DataRefreshDisposal message)
         {
             var playlists = await message.Session.GetPlaylists();
@@ -80,6 +88,19 @@ namespace loadify.ViewModel
         public void Handle(DownloadRequestEvent message)
         {
             _EventAggregator.PublishOnUIThread(new DownloadEvent(message.Session, _Playlists.SelectMany(playlist => playlist.SelectedTracks)));
+        }
+
+        public async void Handle(AddPlaylistReplyEvent message)
+        {
+            try
+            {
+                var playlist = await message.Session.GetPlaylist(message.Url);
+                Playlists.Add(new PlaylistViewModel(playlist, _EventAggregator));
+            }
+            catch (InvalidPlaylistUrlException)
+            {
+                _EventAggregator.PublishOnUIThread(new AddPlaylistFailedEvent(message.Url));
+            }
         }
     }
 }

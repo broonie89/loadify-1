@@ -239,6 +239,20 @@ namespace loadify.Spotify
             });
         }
 
+        public async Task<PlaylistModel> GetPlaylist(string url)
+        {
+            var link = Link.CreateFromString(url);
+            if (link == null) throw new InvalidPlaylistUrlException(url);
+            var unmanagedPlaylist = Playlist.Create(_Session, link);
+            if (unmanagedPlaylist == null) throw new InvalidPlaylistUrlException(url);
+
+            await WaitForCompletion(unmanagedPlaylist.IsLoaded);
+            for (var i = 0; i < unmanagedPlaylist.NumTracks(); i++)
+                await WaitForCompletion(unmanagedPlaylist.Track(i).IsLoaded);
+
+            return new PlaylistModel(unmanagedPlaylist);
+        }
+
         private void InvokeProcessEvents()
         {
             _Synchronization.Post(state => ProcessEvents(), null);
