@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using loadify.Spotify;
 using SpotifySharp;
 
 namespace loadify.Model
@@ -10,6 +11,7 @@ namespace loadify.Model
     public class TrackModel
     {
         public Track UnmanagedTrack { get; set; }
+
         public string Name { get; set; }
         public TimeSpan Duration { get; set; }
         public List<ArtistModel> Artists { get; set; }
@@ -26,6 +28,18 @@ namespace loadify.Model
         {
             Artists = new List<ArtistModel>();
             Album = new AlbumModel();
+        }
+
+        public static async Task<TrackModel> FromLibrary(Track unmanagedTrack, LoadifySession session)
+        {
+            var trackModel = new TrackModel(unmanagedTrack);
+            if (unmanagedTrack == null) return trackModel;
+            await SpotifyObject.WaitForInitialization(unmanagedTrack.IsLoaded);
+
+            trackModel.Name = unmanagedTrack.Name();
+            trackModel.Duration = TimeSpan.FromMilliseconds(unmanagedTrack.Duration());
+            trackModel.Rating = unmanagedTrack.Popularity();
+            return trackModel;
         }
     }
 }

@@ -148,6 +148,7 @@
     <Compile Include="Spotify\AudioMetaData.cs" />
     <Compile Include="Spotify\AudioProcessor.cs" />
     <Compile Include="Spotify\AudioConverter.cs" />
+    <Compile Include="Spotify\SpotifyObject.cs" />
     <Compile Include="Spotify\WaveAudioProcessor.cs" />
     <Compile Include="Spotify\WaveToMp3Converter.cs" />
     <Compile Include="ViewModel\DownloaderViewModel.cs" />

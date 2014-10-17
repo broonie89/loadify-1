@@ -160,56 +160,14 @@ namespace loadify.Spotify
 
             var container = _Session.Playlistcontainer();
             if (container == null) return playlists;
-            await WaitForCompletion(container.IsLoaded);
+            await SpotifyObject.WaitForInitialization(container.IsLoaded);
 
             for (var i = 0; i < container.NumPlaylists(); i++)
             {
                 var unmanagedPlaylist = container.Playlist(i);
-                var managedPlaylistModel = new PlaylistModel(unmanagedPlaylist);
                 if (unmanagedPlaylist == null) continue;
-                await WaitForCompletion(unmanagedPlaylist.IsLoaded);
 
-                managedPlaylistModel.Name = unmanagedPlaylist.Name();
-                managedPlaylistModel.Subscribers = unmanagedPlaylist.Subscribers().ToList();
-                managedPlaylistModel.Creator = unmanagedPlaylist.Owner().DisplayName();
-                managedPlaylistModel.Description = unmanagedPlaylist.GetDescription();
-
-                var playlistImageId = unmanagedPlaylist.GetImage();
-                if (playlistImageId != null)
-                    managedPlaylistModel.Image = GetImage(playlistImageId).Data();
-
-                for (var j = 0; j < unmanagedPlaylist.NumTracks(); j++)
-                {
-                    var unmanagedTrack = unmanagedPlaylist.Track(j);
-                    var managedTrack = new TrackModel(unmanagedTrack);
-
-                    if (unmanagedTrack == null) continue;
-                    await WaitForCompletion(unmanagedTrack.IsLoaded);
-
-                    managedTrack.Name = unmanagedTrack.Name();
-                    managedTrack.Duration = TimeSpan.FromMilliseconds(unmanagedTrack.Duration());
-                    managedTrack.Rating = unmanagedTrack.Popularity();
-
-                    if (unmanagedTrack.Album() != null)
-                    {
-                        await WaitForCompletion(unmanagedTrack.Album().IsLoaded);
-                        managedTrack.Album.Name = unmanagedTrack.Album().Name();
-                        managedTrack.Album.ReleaseYear = unmanagedTrack.Album().Year();
-                        managedTrack.Album.AlbumType = unmanagedTrack.Album().Type();
-                    }
-
-                    for (var k = 0; k < unmanagedTrack.NumArtists(); k++)
-                    {
-                        var unmanagedArtist = unmanagedTrack.Artist(k);
-                        if (unmanagedArtist == null) continue;
-                        await WaitForCompletion(unmanagedArtist.IsLoaded);
-
-                        managedTrack.Artists.Add(new ArtistModel() { Name = unmanagedArtist.Name() });
-                    }
-
-                    managedPlaylistModel.Tracks.Add(managedTrack);
-                }
-
+                var managedPlaylistModel = await PlaylistModel.FromLibrary(unmanagedPlaylist, this);
                 playlists.Add(managedPlaylistModel);
             }
 
@@ -249,14 +207,12 @@ namespace loadify.Spotify
         {
             var link = Link.CreateFromString(url);
             if (link == null) throw new InvalidPlaylistUrlException(url);
+
             var unmanagedPlaylist = Playlist.Create(_Session, link);
             if (unmanagedPlaylist == null) throw new InvalidPlaylistUrlException(url);
 
-            await WaitForCompletion(unmanagedPlaylist.IsLoaded);
-            for (var i = 0; i < unmanagedPlaylist.NumTracks(); i++)
-                await WaitForCompletion(unmanagedPlaylist.Track(i).IsLoaded);
-
-            return new PlaylistModel(unmanagedPlaylist);
+            var managedPlaylist = await PlaylistModel.FromLibrary(unmanagedPlaylist, this);
+            return managedPlaylist;
         }
 
         private void InvokeProcessEvents()
@@ -281,7 +237,7 @@ namespace loadify.Spotify
         {
             if (error == SpotifyError.Ok)
             {
-                await WaitForCompletion(session.User().IsLoaded);
+                await SpotifyObject.WaitForInitialization(session.User().IsLoaded);
                 _Session.PreferredBitrate(BitRate._320k);
                 _EventAggregator.PublishOnUIThread(new LoginSuccessfulEvent());
             }
@@ -316,18 +272,6 @@ namespace loadify.Spotify
             _Session.PlayerPlay(false);
             _TrackCaptureService.Stop();
             _TrackCaptureService.Finished = true;
-        }
-
-        private Task<bool> WaitForCompletion(Func<bool> func)
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                while (true)
-                {
-                    if (func())
-                        return true;
-                };
-            });
         }
     }
 }
