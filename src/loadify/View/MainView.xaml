@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:loadify.View"
-        Title="Loadify" Height="470" Width="880" Background="#FF252525"
+        Title="Loadify" Height="470" Width="880"
         WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen"
         GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize">
     <Grid>
@@ -23,7 +23,7 @@
                 <ColumnDefinition Width="12"/>
                 <ColumnDefinition Width="550*"/>
             </Grid.ColumnDefinitions>
-            <GridSplitter Style="{StaticResource DottedGridSplitter}" Background="{StaticResource AccentColorBrush}" Grid.Column="1" HorizontalAlignment="Stretch"/>
+            <GridSplitter Background="{StaticResource AccentColorBrush}" Grid.Column="1" HorizontalAlignment="Stretch"/>
             <ContentControl x:Name="Playlists" Grid.Row="1" Margin="5 0 5 8"/>
             <Grid Grid.Row="1" Grid.Column="2">
                 <Grid.RowDefinitions>

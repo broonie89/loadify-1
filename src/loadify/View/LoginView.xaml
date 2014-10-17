@@ -1,14 +1,14 @@
-﻿<controls:MetroWindow  x:Class="loadify.View.LoginView"
-                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                    xmlns:cal="http://www.caliburnproject.org"
-                    Title="Loadify - Login" Height="250" Width="278" Background="#FF282828"
-                    WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen"
-                    GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize"
-                    cal:Message.Attach="[Event KeyUp] = [Action OnKeyUp($pressedkey)]"
-                    FocusManager.FocusedElement="{Binding ElementName=Username}">
+﻿<controls:MetroWindow   x:Class="loadify.View.LoginView"
+                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                        xmlns:cal="http://www.caliburnproject.org"
+                        Title="Loadify - Login" Height="250" Width="278"
+                        WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen"
+                        GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize"
+                        cal:Message.Attach="[Event KeyUp] = [Action OnKeyUp($pressedkey)]"
+                        FocusManager.FocusedElement="{Binding ElementName=Username}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50*"/>
@@ -25,13 +25,15 @@
             <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
         <TextBox x:Name="Username" Text="{Binding User.Name, Mode=TwoWay}" controls:TextboxHelper.Watermark="Spotify username" 
-                 Style="{StaticResource TextBoxGlow}" TextWrapping="Wrap" TabIndex="0" Margin="3" Grid.Column="1" Grid.Row="2"/>
-        <PasswordBox x:Name="Password" Grid.Column="1" Style="{StaticResource PasswordBoxGlow}" 
-                     controls:TextboxHelper.Watermark="Spotify password"  TabIndex="1" Margin="3" Grid.Row="3"/>
+                 TextWrapping="Wrap" VerticalContentAlignment="Center" TabIndex="0" Margin="3" Grid.Column="1" Grid.Row="2"/>
+        <PasswordBox x:Name="Password" Grid.Column="1"
+                     controls:TextboxHelper.Watermark="Spotify password" VerticalContentAlignment="Center" TabIndex="1"
+                     Margin="3" Grid.Row="3"/>
         <Button x:Name="Login" Content="Login" Margin="20 3" Grid.Row="5" Grid.ColumnSpan="3" TabIndex="2"/>
         <Label Grid.Column="0" Content="Username:" HorizontalContentAlignment="Right" Grid.Row="2"/>
         <Label Grid.Column="0" Content="Passwort:" HorizontalContentAlignment="Right" Grid.Row="3"/>
-        <Label Grid.Column="0" Content="LOADIFY" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Grid.ColumnSpan="3" FontFamily="Segoe WP" FontSize="40"/>
+        <Label Grid.Column="0" Content="LOADIFY" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+               Grid.ColumnSpan="3" FontFamily="Segoe WP" FontSize="40"/>
         <controls:MetroProgressBar IsIndeterminate="{Binding LoginProcessActive}" Foreground="{StaticResource AccentColorBrush}" Background="Transparent" Margin="3" Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Stretch"/>
         <CheckBox x:Name="RememberMe" Margin="22 0" Content="Remember me" ToolTip="Password is stored unencrypted, please use with caution" Grid.Row="4" Grid.ColumnSpan="2"/>
     </Grid>

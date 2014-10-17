@@ -29,7 +29,9 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-        <HierarchicalDataTemplate x:Key="PlaylistTemplate" DataType="viewmodel:PlaylistViewModel" ItemsSource="{Binding Path=Tracks}" ItemTemplate="{StaticResource TrackTemplate}">
+        <HierarchicalDataTemplate x:Key="PlaylistTemplate" DataType="viewmodel:PlaylistViewModel" 
+                                  ItemsSource="{Binding Path=Tracks}"
+                                  ItemTemplate="{StaticResource TrackTemplate}">
             <StackPanel Orientation="Horizontal" Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
                 <StackPanel.ContextMenu>
                     <ContextMenu>
@@ -58,7 +60,7 @@
             <RowDefinition Height="329*"/>
         </Grid.RowDefinitions>
         <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}" 
-                  Background="#FF252525" ItemsSource="{Binding Playlists}" 
+                  ItemsSource="{Binding Playlists}" 
                   ItemTemplate="{StaticResource PlaylistTemplate}" 
                   Grid.Row="1"
                   Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">

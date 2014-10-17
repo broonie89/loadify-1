@@ -77,12 +77,12 @@ namespace loadify.ViewModel
             }
         }
 
-        public MainViewModel(LoadifySession session, UserViewModel loggedInUser, IEventAggregator eventAggregator):
-            base(eventAggregator)
+        public MainViewModel(LoadifySession session, UserViewModel loggedInUser, IEventAggregator eventAggregator, IWindowManager windowManager):
+            base(eventAggregator, windowManager)
         {
             _Session = session;
             _LoggedInUser = loggedInUser;
-            _Menu = new MenuViewModel(_EventAggregator);
+            _Menu = new MenuViewModel(_EventAggregator, _WindowManager);
             _Status = new StatusViewModel(loggedInUser, _EventAggregator);
             _Playlists = new PlaylistsViewModel(_EventAggregator);
             _Settings = new SettingsViewModel(_EventAggregator);

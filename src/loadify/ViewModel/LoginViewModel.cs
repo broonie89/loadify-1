@@ -130,7 +130,7 @@ namespace loadify.ViewModel
         public void Handle(LoginSuccessfulEvent message)
         {
             var loginView = GetView() as LoginView;
-            _WindowManager.ShowWindow(new MainViewModel(_Session, _User, _EventAggregator));
+            _WindowManager.ShowWindow(new MainViewModel(_Session, _User, _EventAggregator, _WindowManager));
             loginView.Close();
         }
     }
