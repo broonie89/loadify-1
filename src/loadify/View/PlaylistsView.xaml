@@ -5,9 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewmodel="clr-namespace:loadify.ViewModel"
              xmlns:mock="clr-namespace:loadify.Mock"
-             xmlns:b="clr-namespace:loadify.Behavior"
+             xmlns:behavior="clr-namespace:loadify.Behavior"
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="390" d:DesignWidth="300">
     <UserControl.Resources>
@@ -33,7 +34,7 @@
                 <StackPanel.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Remove" cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                  cal:Message.Attach="[Event Click] = [Action RemovePlaylist()]"/>
+                                                  cal:Message.Attach="[Event Click] = [Action RemovePlaylist($dataContext)]"/>
                     </ContextMenu>
                 </StackPanel.ContextMenu>
                 <CheckBox IsChecked="{Binding AllTracksSelected}"/>
@@ -80,7 +81,7 @@
             </TreeView.ContextMenu>
         </TreeView>
         <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=Explicit, Mode=TwoWay}" 
-                 b:InputBindingsManager.UpdateSourceWhenEnterPressed="TextBox.Text"
+                 behavior:InputBindingsManager.UpdateSourceWhenEnterPressed="TextBox.Text"
                  TextWrapping="Wrap" Padding="2 0" BorderThickness="0" controls:TextboxHelper.Watermark="Search..."/>
     </Grid>
 </UserControl>

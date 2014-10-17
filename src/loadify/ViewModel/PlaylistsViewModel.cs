@@ -79,9 +79,10 @@ namespace loadify.ViewModel
             _EventAggregator.PublishOnUIThread(new AddPlaylistEvent());
         }
 
-        public void RemovePlaylist()
+        public void RemovePlaylist(object dataContext)
         {
-            
+            var playlist = (dataContext as PlaylistViewModel);
+            Playlists.Remove(playlist);
         }
 
         public void RefreshData()
