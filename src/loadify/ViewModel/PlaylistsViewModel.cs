@@ -79,6 +79,16 @@ namespace loadify.ViewModel
             _EventAggregator.PublishOnUIThread(new AddPlaylistEvent());
         }
 
+        public void RemovePlaylist()
+        {
+            
+        }
+
+        public void RefreshData()
+        {
+            _EventAggregator.PublishOnUIThread(new DataRefreshRequestEvent());
+        }
+
         public async void Handle(DataRefreshAuthorizedEvent message)
         {
             var playlists = await message.Session.GetPlaylists();

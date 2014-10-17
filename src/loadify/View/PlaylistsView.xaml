@@ -29,7 +29,13 @@
             </StackPanel>
         </DataTemplate>
         <HierarchicalDataTemplate x:Key="PlaylistTemplate" DataType="viewmodel:PlaylistViewModel" ItemsSource="{Binding Path=Tracks}" ItemTemplate="{StaticResource TrackTemplate}">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
+                <StackPanel.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Remove" cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                  cal:Message.Attach="[Event Click] = [Action RemovePlaylist()]"/>
+                    </ContextMenu>
+                </StackPanel.ContextMenu>
                 <CheckBox IsChecked="{Binding AllTracksSelected}"/>
                 <TextBlock>
                     <TextBlock.Text>
@@ -47,23 +53,32 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="26*"/>
             <RowDefinition Height="329*"/>
-            <RowDefinition Height="35*"/>
         </Grid.RowDefinitions>
-        <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}" Background="#FF252525" ItemsSource="{Binding Playlists}" ItemTemplate="{StaticResource PlaylistTemplate}" Grid.Row="1">
+        <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}" 
+                  Background="#FF252525" ItemsSource="{Binding Playlists}" 
+                  ItemTemplate="{StaticResource PlaylistTemplate}" 
+                  Grid.Row="1"
+                  Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}">
                     <Setter Property="IsExpanded" Value="{Binding Expanded, Mode=TwoWay}" />
                 </Style>
             </TreeView.ItemContainerStyle>
+            <TreeView.ContextMenu>
+                <ContextMenu x:Name="PlaylistAreaContextMenu">
+                    <MenuItem Header="Refresh"
+                              cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                              cal:Message.Attach="[Event Click] = [Action RefreshData()]">
+                        <MenuItem.Icon>
+                            <Image Height="18" Width="18" Source="/Resources/refresh_icon.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Add Playlist from Link"
+                              cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                              cal:Message.Attach="[Event Click] = [Action AddPlaylist()]" />
+                </ContextMenu>
+            </TreeView.ContextMenu>
         </TreeView>
-        <Grid Grid.Row="2" Background="#FF252525">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" MinWidth="140"/>
-                <ColumnDefinition Width="Auto" MinWidth="140"/>
-            </Grid.ColumnDefinitions>
-            <Button Content="Remove Playlist" Margin="5 3"/>
-            <Button x:Name="AddPlaylist" Content="Add Playlist" Grid.Column="1" Margin="5 3"/>
-        </Grid>
         <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=Explicit, Mode=TwoWay}" 
                  b:InputBindingsManager.UpdateSourceWhenEnterPressed="TextBox.Text"
                  TextWrapping="Wrap" Padding="2 0" BorderThickness="0" controls:TextboxHelper.Watermark="Search..."/>

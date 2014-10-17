@@ -13,10 +13,5 @@ namespace loadify.ViewModel
         public MenuViewModel(IEventAggregator eventAggregator):
             base(eventAggregator)
         { }
-
-        public void RefreshData()
-        {
-            _EventAggregator.PublishOnUIThread(new DataRefreshRequestEvent());
-        }
     }
 }
