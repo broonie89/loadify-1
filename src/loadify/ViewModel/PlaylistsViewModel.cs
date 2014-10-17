@@ -14,7 +14,7 @@ using SpotifySharp;
 
 namespace loadify.ViewModel
 {
-    public class PlaylistsViewModel : ViewModelBase, IHandle<DataRefreshDisposal>,
+    public class PlaylistsViewModel : ViewModelBase, IHandle<DataRefreshAuthorizedEvent>,
                                                      IHandle<DownloadRequestEvent>,
                                                      IHandle<AddPlaylistReplyEvent>
     {
@@ -79,7 +79,7 @@ namespace loadify.ViewModel
             _EventAggregator.PublishOnUIThread(new AddPlaylistEvent());
         }
 
-        public async void Handle(DataRefreshDisposal message)
+        public async void Handle(DataRefreshAuthorizedEvent message)
         {
             var playlists = await message.Session.GetPlaylists();
             Playlists = new ObservableCollection<PlaylistViewModel>(playlists.Select(playlist => new PlaylistViewModel(playlist, _EventAggregator)));
@@ -87,7 +87,7 @@ namespace loadify.ViewModel
 
         public void Handle(DownloadRequestEvent message)
         {
-            _EventAggregator.PublishOnUIThread(new DownloadEvent(message.Session, _Playlists.SelectMany(playlist => playlist.SelectedTracks)));
+            _EventAggregator.PublishOnUIThread(new DownloadStartedEvent(message.Session, _Playlists.SelectMany(playlist => playlist.SelectedTracks)));
         }
 
         public async void Handle(AddPlaylistReplyEvent message)
@@ -99,7 +99,10 @@ namespace loadify.ViewModel
             }
             catch (InvalidPlaylistUrlException)
             {
-                _EventAggregator.PublishOnUIThread(new AddPlaylistFailedEvent(message.Url));
+                _EventAggregator.PublishOnUIThread(new ErrorOcurredEvent("Add Playlist", "The playlist could not be added because the url" +
+                                                                                         " does not point to a valid Spotify playlist." +
+                                                                                         "\n" +
+                                                                                         " Url: " + message.Url));
             }
         }
     }

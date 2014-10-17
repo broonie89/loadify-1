@@ -8,14 +8,13 @@ using loadify.Spotify;
 
 namespace loadify.Event
 {
-    public class DownloadResumedEvent
+    public class DownloadResumedEvent : SessionEvent
     {
-        public LoadifySession Session { get; set; }
         public int DownloadIndex { get; set; }
 
-        public DownloadResumedEvent(LoadifySession session, int downloadIndex = 0)
+        public DownloadResumedEvent(LoadifySession session, int downloadIndex = 0):
+            base(session)
         {
-            Session = session;
             DownloadIndex = downloadIndex;
         }
     }

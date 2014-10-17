@@ -15,7 +15,7 @@ using SpotifySharp;
 
 namespace loadify.ViewModel
 {
-    public class DownloaderViewModel : ViewModelBase, IHandle<DownloadEvent>, 
+    public class DownloaderViewModel : ViewModelBase, IHandle<DownloadStartedEvent>, 
                                                       IHandle<DownloadResumedEvent>,
                                                       IHandle<DownloadProgressUpdatedEvent>
     {
@@ -161,7 +161,7 @@ namespace loadify.ViewModel
             }   
         }
 
-        public void Handle(DownloadEvent message)
+        public void Handle(DownloadStartedEvent message)
         {
             DownloadedTracks = new ObservableCollection<TrackViewModel>();
             RemainingTracks = new ObservableCollection<TrackViewModel>(message.SelectedTracks);

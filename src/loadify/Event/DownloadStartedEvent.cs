@@ -8,14 +8,13 @@ using loadify.ViewModel;
 
 namespace loadify.Event
 {
-    public class DownloadEvent
+    public class DownloadStartedEvent : SessionEvent
     {
-        public LoadifySession Session { get; set; }
         public IEnumerable<TrackViewModel> SelectedTracks { get; set; }
 
-        public DownloadEvent(LoadifySession session, IEnumerable<TrackViewModel> selectedTracks)
+        public DownloadStartedEvent(LoadifySession session, IEnumerable<TrackViewModel> selectedTracks) :
+            base(session)
         {
-            Session = session;
             SelectedTracks = selectedTracks; 
         }
     }

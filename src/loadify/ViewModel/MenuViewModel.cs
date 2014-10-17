@@ -16,7 +16,7 @@ namespace loadify.ViewModel
 
         public void RefreshData()
         {
-            _EventAggregator.PublishOnUIThread(new DataRefreshRequest());
+            _EventAggregator.PublishOnUIThread(new DataRefreshRequestEvent());
         }
     }
 }

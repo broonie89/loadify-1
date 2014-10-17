@@ -51,7 +51,13 @@ namespace loadify.Spotify
 
             public double Progress
             {
-                get { return (double)100 / _Statistic.TargetDuration.Milliseconds * (46.4 * _Statistic.Processings); }
+                get
+                {
+                    var trackDuration = _Statistic.TargetDuration.TotalMilliseconds;
+                    return (trackDuration != 0)
+                            ? (double) 100/_Statistic.TargetDuration.TotalMilliseconds*(46.4*_Statistic.Processings)
+                            : 100;
+                }
             }
 
             public TrackCaptureService()

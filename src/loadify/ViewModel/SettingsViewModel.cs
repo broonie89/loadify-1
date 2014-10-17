@@ -103,7 +103,7 @@ namespace loadify.ViewModel
             {
                 if (!Regex.IsMatch(ProxyIP, @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"))
                     _EventAggregator.PublishOnUIThread(
-                        new InvalidSettingEvent("The proxy IP address that was entered is not a valid IP address."));
+                        new ErrorOcurredEvent("Settings Error", "The proxy IP address that was entered is not a valid IP address."));
             }
         }
     }

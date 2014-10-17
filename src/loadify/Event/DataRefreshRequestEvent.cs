@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace loadify.Event
 {
-    public class DataRefreshRequest
+    public class DataRefreshRequestEvent
     {
-        public DataRefreshRequest()
+        public DataRefreshRequestEvent()
         { }
     }
 }

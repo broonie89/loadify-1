@@ -7,10 +7,10 @@ using loadify.Spotify;
 
 namespace loadify.Event
 {
-    public class DownloadRequestEvent : SessionEvent
+    public class DataRefreshAuthorizedEvent : SessionEvent
     {
-        public DownloadRequestEvent(LoadifySession session)
-            : base(session)
+        public DataRefreshAuthorizedEvent(LoadifySession session) :
+            base(session)
         { }
     }
 }

@@ -9,11 +9,10 @@ using SpotifySharp;
 
 namespace loadify.ViewModel
 {
-    public class MainViewModel : ViewModelBase, IHandle<DataRefreshRequest>, 
-                                                IHandle<InvalidSettingEvent>,
+    public class MainViewModel : ViewModelBase, IHandle<DataRefreshRequestEvent>, 
                                                 IHandle<DownloadPausedEvent>,
                                                 IHandle<AddPlaylistEvent>, 
-                                                IHandle<AddPlaylistFailedEvent>
+                                                IHandle<ErrorOcurredEvent>
     {
         private LoadifySession _Session;
 
@@ -87,7 +86,7 @@ namespace loadify.ViewModel
             _Playlists = new PlaylistsViewModel(_EventAggregator);
             _Settings = new SettingsViewModel(_EventAggregator);
 
-            _EventAggregator.PublishOnUIThread(new DataRefreshDisposal(_Session));
+            _EventAggregator.PublishOnUIThread(new DataRefreshAuthorizedEvent(_Session));
         }
 
         public void StartDownload()
@@ -95,16 +94,10 @@ namespace loadify.ViewModel
             _EventAggregator.PublishOnUIThread(new DownloadRequestEvent(_Session));
         }
 
-        public void Handle(DataRefreshRequest message)
+        public void Handle(DataRefreshRequestEvent message)
         {
             // accept all requests by default (debugging purposes)
-            _EventAggregator.PublishOnUIThread(new DataRefreshDisposal(_Session));
-        }
-
-        public void Handle(InvalidSettingEvent message)
-        {
-            var view = GetView() as MainView;
-            view.ShowMessageAsync("Settings Error", message.ErrorDescription);
+            _EventAggregator.PublishOnUIThread(new DataRefreshAuthorizedEvent(_Session));
         }
 
         public async void Handle(DownloadPausedEvent message)
@@ -123,11 +116,10 @@ namespace loadify.ViewModel
             _EventAggregator.PublishOnUIThread(new AddPlaylistReplyEvent(response, _Session));
         }
 
-        public async void Handle(AddPlaylistFailedEvent message)
+        public async void Handle(ErrorOcurredEvent message)
         {
             var view = GetView() as MainView;
-            await view.ShowMessageAsync("Add Playlist", "\nThe playlist could not be added because the url" +
-                                                        " does not point to a valid Spotify playlist. Url: " + message.Url);
+            await view.ShowMessageAsync(message.Title, message.Content);
         }
     }
 }

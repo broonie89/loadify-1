@@ -7,11 +7,11 @@ using loadify.Spotify;
 
 namespace loadify.Event
 {
-    public class DataRefreshDisposal
+    public class SessionEvent
     {
         public LoadifySession Session { get; set; }
 
-        public DataRefreshDisposal(LoadifySession session)
+        public SessionEvent(LoadifySession session)
         {
             Session = session;
         }

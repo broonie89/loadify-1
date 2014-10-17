@@ -7,15 +7,14 @@ using loadify.Spotify;
 
 namespace loadify.Event
 {
-    public class AddPlaylistReplyEvent
+    public class AddPlaylistReplyEvent : SessionEvent
     {
         public string Url { get; set; }
-        public LoadifySession Session { get; set; }
 
-        public AddPlaylistReplyEvent(string url, LoadifySession session)
+        public AddPlaylistReplyEvent(string url, LoadifySession session):
+            base(session)
         {
             Url = url;
-            Session = session;
         }
     }
 }
