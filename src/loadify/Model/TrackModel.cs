@@ -39,6 +39,17 @@ namespace loadify.Model
             trackModel.Name = unmanagedTrack.Name();
             trackModel.Duration = TimeSpan.FromMilliseconds(unmanagedTrack.Duration());
             trackModel.Rating = unmanagedTrack.Popularity();
+
+            trackModel.Album = await AlbumModel.FromLibrary(unmanagedTrack.Album(), session);
+
+            for (var j = 0; j < unmanagedTrack.NumArtists(); j++)
+            {
+                var unmanagedArtist = unmanagedTrack.Artist(j);
+                if (unmanagedArtist == null) continue;
+
+                trackModel.Artists.Add(await ArtistModel.FromLibrary(unmanagedArtist, session));
+            }
+
             return trackModel;
         }
     }

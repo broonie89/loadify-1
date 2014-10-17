@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace loadify.Event
 {
-    public class AddPlaylistEvent
+    public class AddPlaylistRequestEvent : UserInputRequestEvent
     {
-        public AddPlaylistEvent()
+        public AddPlaylistRequestEvent(string title, string content):
+            base(title, content)
         { }
     }
 }

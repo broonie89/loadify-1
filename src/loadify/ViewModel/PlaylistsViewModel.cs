@@ -16,7 +16,8 @@ namespace loadify.ViewModel
 {
     public class PlaylistsViewModel : ViewModelBase, IHandle<DataRefreshAuthorizedEvent>,
                                                      IHandle<DownloadRequestEvent>,
-                                                     IHandle<AddPlaylistReplyEvent>
+                                                     IHandle<AddPlaylistReplyEvent>,
+                                                     IHandle<AddTrackReplyEvent>
     {
         private ObservableCollection<PlaylistViewModel> _Playlists = new ObservableCollection<PlaylistViewModel>();
         public ObservableCollection<PlaylistViewModel> Playlists
@@ -76,13 +77,23 @@ namespace loadify.ViewModel
 
         public void AddPlaylist()
         {
-            _EventAggregator.PublishOnUIThread(new AddPlaylistEvent());
+            _EventAggregator.PublishOnUIThread(new AddPlaylistRequestEvent("Add Playlist", "Please insert the link to the Spotify playlist"));
         }
 
         public void RemovePlaylist(object dataContext)
         {
             var playlist = (dataContext as PlaylistViewModel);
             Playlists.Remove(playlist);
+        }
+
+        public void AddTrack(object dataContext)
+        {
+            var playlist = (dataContext as PlaylistViewModel);
+            if (playlist == null) return;
+
+            _EventAggregator.PublishOnUIThread(
+                new AddTrackRequestEvent(String.Format("Add Track to Playlist {0}", playlist.Name),
+                    "Please insert the link to the Spotify track", playlist));
         }
 
         public void RefreshData()
@@ -103,14 +114,14 @@ namespace loadify.ViewModel
 
         public async void Handle(AddPlaylistReplyEvent message)
         {
-            if (String.IsNullOrEmpty(message.Url)) return;
+            if (String.IsNullOrEmpty(message.Content)) return;
 
             var invalidUrlEvent = new ErrorOcurredEvent("Add Playlist",
                                                         "The playlist could not be added because the url" +
                                                         " does not point to a valid Spotify playlist." +
                                                         "\n" +
-                                                        " Url: " + message.Url);
-            if (!Regex.IsMatch(message.Url,
+                                                        " Url: " + message.Content);
+            if (!Regex.IsMatch(message.Content,
                 @"((?:(?:http|https)://open.spotify.com/user/[a-zA-Z]+/playlist/[a-zA-Z0-9]+)|(?:spotify:user:[a-zA-Z]+:playlist:[a-zA-Z0-9]+))"))
             {
                 _EventAggregator.PublishOnUIThread(invalidUrlEvent);
@@ -119,10 +130,38 @@ namespace loadify.ViewModel
             {
                 try
                 {
-                    var playlist = await message.Session.GetPlaylist(message.Url);
+                    var playlist = await message.Session.GetPlaylist(message.Content);
                     Playlists.Add(new PlaylistViewModel(playlist, _EventAggregator));
                 }
-                catch (InvalidPlaylistUrlException)
+                catch (InvalidSpotifyUrlException)
+                {
+                    _EventAggregator.PublishOnUIThread(invalidUrlEvent);
+                }
+            }
+        }
+
+        public async void Handle(AddTrackReplyEvent message)
+        {
+            if (String.IsNullOrEmpty(message.Content)) return;
+
+            var invalidUrlEvent = new ErrorOcurredEvent("Add Track",
+                                                        "The track could not be added because the url" +
+                                                        " does not point to a valid Spotify track." +
+                                                        "\n" +
+                                                        " Url: " + message.Content);
+            if (!Regex.IsMatch(message.Content,
+                @"((?:(?:http|https)://open.spotify.com/track/[a-zA-Z0-9]+)|(?:spotify:track:[a-zA-Z0-9]+))"))
+            {
+                _EventAggregator.PublishOnUIThread(invalidUrlEvent);
+            }
+            else
+            {
+                try
+                {
+                    var track = await message.Session.GetTrack(message.Content);
+                    message.Playlist.Tracks.Add(new TrackViewModel(track, _EventAggregator));
+                }
+                catch (InvalidSpotifyUrlException)
                 {
                     _EventAggregator.PublishOnUIThread(invalidUrlEvent);
                 }

@@ -33,6 +33,8 @@
             <StackPanel Orientation="Horizontal" Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
                 <StackPanel.ContextMenu>
                     <ContextMenu>
+                        <MenuItem Header="Add Track from Link" cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                  cal:Message.Attach="[Event Click] = [Action AddTrack($dataContext)]"/>
                         <MenuItem Header="Remove" cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                                   cal:Message.Attach="[Event Click] = [Action RemovePlaylist($dataContext)]"/>
                     </ContextMenu>

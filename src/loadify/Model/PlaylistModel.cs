@@ -40,16 +40,7 @@ namespace loadify.Model
                 var unmanagedTrack = unmanagedPlaylist.Track(i);
                 if (unmanagedTrack == null) continue;
                 var managedTrack = await TrackModel.FromLibrary(unmanagedTrack, session);
-                managedTrack.Album = await AlbumModel.FromLibrary(unmanagedTrack.Album(), session);
                
-                for (var j = 0; j < unmanagedTrack.NumArtists(); j++)
-                {
-                    var unmanagedArtist = unmanagedTrack.Artist(j);
-                    if (unmanagedArtist == null) continue;
-
-                    managedTrack.Artists.Add(await ArtistModel.FromLibrary(unmanagedArtist, session));
-                }
-
                 playlistModel.Tracks.Add(managedTrack);
             }
 

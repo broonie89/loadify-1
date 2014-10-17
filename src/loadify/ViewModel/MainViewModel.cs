@@ -11,8 +11,9 @@ namespace loadify.ViewModel
 {
     public class MainViewModel : ViewModelBase, IHandle<DataRefreshRequestEvent>, 
                                                 IHandle<DownloadPausedEvent>,
-                                                IHandle<AddPlaylistEvent>, 
-                                                IHandle<ErrorOcurredEvent>
+                                                IHandle<AddPlaylistRequestEvent>, 
+                                                IHandle<ErrorOcurredEvent>,
+                                                IHandle<AddTrackRequestEvent>
     {
         private LoadifySession _Session;
 
@@ -108,10 +109,10 @@ namespace loadify.ViewModel
             _EventAggregator.PublishOnUIThread(new DownloadResumedEvent(_Session));
         }
 
-        public async void Handle(AddPlaylistEvent message)
+        public async void Handle(AddPlaylistRequestEvent message)
         {
             var view = GetView() as MainView;
-            var response = await view.ShowInputAsync("Add Playlist", "Please insert the link to your playlist");
+            var response = await view.ShowInputAsync(message.Title, message.Content);
 
             _EventAggregator.PublishOnUIThread(new AddPlaylistReplyEvent(response, _Session));
         }
@@ -120,6 +121,14 @@ namespace loadify.ViewModel
         {
             var view = GetView() as MainView;
             await view.ShowMessageAsync(message.Title, message.Content);
+        }
+
+        public async void Handle(AddTrackRequestEvent message)
+        {
+            var view = GetView() as MainView;
+            var response = await view.ShowInputAsync(message.Title, message.Content);
+
+            _EventAggregator.PublishOnUIThread(new AddTrackReplyEvent(response, message.Playlist, _Session));
         }
     }
 }

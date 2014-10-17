@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:loadify.View"
-        Title="Loadify" Height="470" Width="860" Background="#FF252525"
+        Title="Loadify" Height="470" Width="880" Background="#FF252525"
         WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen"
         GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize">
     <Grid>
@@ -19,7 +19,7 @@
                 <RowDefinition Height="371*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="290*"/>
+                <ColumnDefinition Width="330*"/>
                 <ColumnDefinition Width="5"/>
                 <ColumnDefinition Width="550*"/>
             </Grid.ColumnDefinitions>

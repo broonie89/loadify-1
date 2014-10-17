@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace loadify.Event
 {
-    public class ErrorOcurredEvent : DialogRequestEvent
+    public class UserInputRequestEvent : DialogRequestEvent
     {
-        public ErrorOcurredEvent(string title, string content)
-            : base(title, content)
+        public UserInputRequestEvent(string title, string content):
+            base(title, content)
         { }
     }
 }
