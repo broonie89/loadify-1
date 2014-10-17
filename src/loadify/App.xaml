@@ -16,6 +16,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
                 <ResourceDictionary Source="Styles/InputGlow.xaml"/>
                 <ResourceDictionary Source="Styles/SpotifyMenu.xaml"/>
+                <ResourceDictionary Source="Styles/DottedGridSplitter.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

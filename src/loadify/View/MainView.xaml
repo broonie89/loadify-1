@@ -20,10 +20,10 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="330*"/>
-                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="12"/>
                 <ColumnDefinition Width="550*"/>
             </Grid.ColumnDefinitions>
-            <GridSplitter Grid.Column="1" Grid.RowSpan="1" Width="5" HorizontalAlignment="Stretch" Background="{StaticResource AccentColorBrush}"/>
+            <GridSplitter Style="{StaticResource DottedGridSplitter}" Background="{StaticResource AccentColorBrush}" Grid.Column="1" HorizontalAlignment="Stretch"/>
             <ContentControl x:Name="Playlists" Grid.Row="1" Margin="5 0 5 8"/>
             <Grid Grid.Row="1" Grid.Column="2">
                 <Grid.RowDefinitions>
