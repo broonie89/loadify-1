@@ -75,6 +75,9 @@
     <Reference Include="Caliburn.Micro.Platform">
       <HintPath>..\..\lib\Caliburn.Micro.2.0.1\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="Id3">
+      <HintPath>..\..\lib\ID3.0.3.0\lib\net40\Id3.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro">
       <HintPath>..\..\lib\MahApps.Metro.0.14.0.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
