@@ -75,6 +75,9 @@
     <Reference Include="Caliburn.Micro.Platform">
       <HintPath>..\..\lib\Caliburn.Micro.2.0.1\lib\net45\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="Id3">
+      <HintPath>..\..\lib\ID3.0.3.0\lib\net40\Id3.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro">
       <HintPath>..\..\lib\MahApps.Metro.0.14.0.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -130,6 +133,7 @@
     <Compile Include="Event\UserInputReplyEvent.cs" />
     <Compile Include="Event\UserInputRequestEvent.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Spotify\AudioFileMetaData.cs" />
     <Compile Include="Spotify\DownloadInterruptedException.cs" />
     <Compile Include="Event\DataRefreshAuthorizedEvent.cs" />
     <Compile Include="Event\DownloadResumedEvent.cs" />
@@ -146,9 +150,11 @@
     <Compile Include="Model\ArtistModel.cs" />
     <Compile Include="Model\TrackModel.cs" />
     <Compile Include="Model\UserModel.cs" />
+    <Compile Include="Spotify\AudioFileDescriptor.cs" />
     <Compile Include="Spotify\InvalidSpotifyUrlException.cs" />
     <Compile Include="Spotify\LoadifySession.cs" />
     <Compile Include="Model\PlaylistModel.cs" />
+    <Compile Include="Spotify\Mp3FileDescriptor.cs" />
     <Compile Include="Spotify\PlayTokenLostException.cs" />
     <Compile Include="Spotify\AudioMetaData.cs" />
     <Compile Include="Spotify\AudioProcessor.cs" />

@@ -46,6 +46,17 @@ namespace loadify.ViewModel
             }
         }
 
+        public AlbumModel Album
+        {
+            get { return Track.Album; }
+            set
+            {
+                if (Track.Album == value) return;
+                _Track.Album = value;
+                NotifyOfPropertyChange(() => Album);
+            }
+        }
+
         public string Artists
         {
             get

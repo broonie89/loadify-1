@@ -140,7 +140,16 @@ namespace loadify.ViewModel
                 {
                     await session.DownloadTrack(CurrentTrack.Track,
                                                 new WaveAudioProcessor(Properties.Settings.Default.DownloadDirectory, CurrentTrack.Name),
-                                                new WaveToMp3Converter(Properties.Settings.Default.DownloadDirectory, CurrentTrack.Name));
+                                                new WaveToMp3Converter(Properties.Settings.Default.DownloadDirectory, CurrentTrack.Name),
+                                                new Mp3FileDescriptor(new AudioFileMetaData() 
+                                                { 
+                                                    Title = CurrentTrack.Name,
+                                                    Artists = CurrentTrack.Artists,
+                                                    Album = CurrentTrack.Album.Name,
+                                                    Year = CurrentTrack.Album.ReleaseYear,
+                                                    Cover = CurrentTrack.Album.Cover
+                                                 }));
+
                     DownloadedTracks.Add(CurrentTrack);
                     RemainingTracks.Remove(CurrentTrack);
                     NotifyOfPropertyChange(() => TotalProgress);

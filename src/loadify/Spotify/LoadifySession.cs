@@ -179,7 +179,7 @@ namespace loadify.Spotify
             return Image.Create(_Session, imageId);
         }
 
-        public async Task DownloadTrack(TrackModel track, AudioProcessor audioProcessor, AudioConverter audioConverter)
+        public async Task DownloadTrack(TrackModel track, AudioProcessor audioProcessor, AudioConverter audioConverter, AudioFileDescriptor audioFileDescriptor)
         {
             await Task.Run(() =>
             {
@@ -192,8 +192,13 @@ namespace loadify.Spotify
                 {
                     if (_TrackCaptureService.Finished)
                     {
+                        var outputFilePath = audioProcessor.OutputFilePath;
                         if (audioConverter != null)
-                            audioConverter.Convert(_TrackCaptureService.AudioProcessor.OutputFilePath);
+                            outputFilePath = audioConverter.Convert(_TrackCaptureService.AudioProcessor.OutputFilePath);
+
+                        if(audioFileDescriptor != null)
+                            audioFileDescriptor.Write(outputFilePath);
+
                         break;
                     }
 
@@ -201,6 +206,16 @@ namespace loadify.Spotify
                         throw new PlayTokenLostException("Track could not be downloaded, the play token has been lost");
                 }
             });
+        }
+
+        public async Task DownloadTrack(TrackModel track, AudioProcessor audioProcessor, AudioConverter audioConverter)
+        {
+            await DownloadTrack(track, audioProcessor, audioConverter, null);
+        }
+
+        public async Task DownloadTrack(TrackModel track, AudioProcessor audioProcessor)
+        {
+            await DownloadTrack(track, audioProcessor, null, null);
         }
 
         public async Task<PlaylistModel> GetPlaylist(string url)
