@@ -146,7 +146,8 @@ namespace loadify.ViewModel
                                                     Title = CurrentTrack.Name,
                                                     Artists = CurrentTrack.Artists,
                                                     Album = CurrentTrack.Album.Name,
-                                                    Year = CurrentTrack.Album.ReleaseYear
+                                                    Year = CurrentTrack.Album.ReleaseYear,
+                                                    Cover = CurrentTrack.Album.Cover
                                                  }));
 
                     DownloadedTracks.Add(CurrentTrack);

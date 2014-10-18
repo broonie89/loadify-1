@@ -27,6 +27,7 @@ namespace loadify.Spotify
                     id3Tag.Artists.Value = Data.Artists;
                     id3Tag.Album.Value = Data.Album;
                     id3Tag.Year.Value = Data.Year.ToString();
+                    id3Tag.Pictures.Add(new PictureFrame() { EncodingType = Id3TextEncoding.Iso8859_1, MimeType = "image/png", PictureType = PictureType.FrontCover, PictureData = Data.Cover });
                     mp3.WriteTag(id3Tag, 1, 0, WriteConflictAction.NoAction);
                 }
             }
