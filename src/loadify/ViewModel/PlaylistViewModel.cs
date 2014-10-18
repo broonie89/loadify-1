@@ -70,13 +70,27 @@ namespace loadify.ViewModel
             }
         }
 
-        public bool AllTracksSelected
+        public bool? AllTracksSelected
         {
-            get { return Tracks.All(track => track.Selected); }
+            get 
+            {
+                if ( Tracks.All(track => (bool)track.Selected) )
+                    return true;
+                else
+                {
+                    if ( Tracks.Any(track => (bool)track.Selected ) )
+                        return null;
+                    else
+                        return false;
+                } 
+            }
             set
             {
+                if (value == null)
+                    value = false;
+
                 foreach (var track in Tracks)
-                    track.Selected = value;
+                    track.Selected = (bool) value;
 
                 NotifyOfPropertyChange(() => AllTracksSelected);
             }
@@ -94,14 +108,9 @@ namespace loadify.ViewModel
             }
         }
 
-        public bool Selected
-        {
-            get { return Tracks.Any(track => track.Selected); }
-        }
-
         public ObservableCollection<TrackViewModel> SelectedTracks
         {
-            get { return new ObservableCollection<TrackViewModel>(Tracks.Where(track => track.Selected)); }
+            get { return new ObservableCollection<TrackViewModel>(Tracks.Where(track => (bool) track.Selected)); }
         }
 
         public PlaylistViewModel(PlaylistModel playlist, IEventAggregator eventAggregator):
@@ -127,6 +136,7 @@ namespace loadify.ViewModel
         public void Handle(TrackSelectedChangedEvent message)
         {
             NotifyOfPropertyChange(() => SelectedTracks);
+            NotifyOfPropertyChange(() => AllTracksSelected);
         }
     }
 }

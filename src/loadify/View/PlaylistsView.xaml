@@ -41,7 +41,7 @@
                                                   cal:Message.Attach="[Event Click] = [Action RemovePlaylist($dataContext)]"/>
                     </ContextMenu>
                 </StackPanel.ContextMenu>
-                <CheckBox IsChecked="{Binding AllTracksSelected}"/>
+                <CheckBox IsChecked="{Binding AllTracksSelected}" IsThreeState="True"/>
                 <TextBlock>
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} ({1}/{2} Tracks)">
