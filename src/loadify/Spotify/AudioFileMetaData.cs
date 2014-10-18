@@ -8,13 +8,12 @@ namespace loadify.Spotify
 {
     public class AudioFileMetaData
     {
-        public string TrackName { get; set; }
-        public string ArtistName { get; set; }
+        public string Title { get; set; }
+        public string Artists { get; set; }
+        public string Album { get; set; }
+        public int Year { get; set; }
 
-        public AudioFileMetaData(string trackName, string artistName)
-        {
-            TrackName = trackName;
-            ArtistName = artistName;
-        }
+        public AudioFileMetaData()
+        { }
     }
 }
