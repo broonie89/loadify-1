@@ -106,5 +106,17 @@ namespace loadify.Properties {
                 this["Password"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Overwrite")]
+        public string WriteConflictAction {
+            get {
+                return ((string)(this["WriteConflictAction"]));
+            }
+            set {
+                this["WriteConflictAction"] = value;
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using Caliburn.Micro;
+using loadify.Audio;
 using loadify.Event;
 using loadify.Model;
 using loadify.Properties;
@@ -69,6 +70,23 @@ namespace loadify.ViewModel
                 Settings.Default.Save();
                 NotifyOfPropertyChange(() => CacheDirectory);
             }
+        }
+
+        public WriteConflictAction WriteConflictAction
+        {
+            get { return (WriteConflictAction) Enum.Parse(typeof(WriteConflictAction), Settings.Default.WriteConflictAction); }
+            set
+            {
+                if (Settings.Default.WriteConflictAction == value.ToString()) return;
+                Settings.Default.WriteConflictAction = value.ToString();
+                Settings.Default.Save();
+                NotifyOfPropertyChange(() => WriteConflictAction);
+            }
+        }
+
+        public List<WriteConflictAction> WriteConflictActions
+        {
+            get { return Enum.GetValues(typeof(WriteConflictAction)).Cast<WriteConflictAction>().ToList(); }
         }
 
         public SettingsViewModel(IEventAggregator eventAggregator):

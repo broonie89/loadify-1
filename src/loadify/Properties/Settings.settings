@@ -23,5 +23,8 @@
     <Setting Name="Password" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="WriteConflictAction" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Overwrite</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

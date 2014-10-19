@@ -27,7 +27,7 @@ namespace loadify.Audio
                     id3Tag.Year.Value = Data.Year.ToString();
                     id3Tag.Pictures.Add(new PictureFrame() { PictureType = PictureType.FrontCover, PictureData = Data.Cover });
 
-                    mp3.WriteTag(id3Tag, 2, 3, WriteConflictAction.NoAction);
+                    mp3.WriteTag(id3Tag, 2, 3, Id3.WriteConflictAction.NoAction);
                 }
             }
         }
