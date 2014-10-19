@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.VisualStyles;
+using loadify.Spotify;
 
 namespace loadify.Event
 {
-    public class DownloadPausedEvent
+    public class DownloadContractResumedEvent : SessionEvent
     {
-        public string Reason { get; set; }
         public int DownloadIndex { get; set; }
 
-        public DownloadPausedEvent(string reason = null, int downloadIndex = 0)
+        public DownloadContractResumedEvent(LoadifySession session, int downloadIndex = 0):
+            base(session)
         {
-            Reason = reason;
             DownloadIndex = downloadIndex;
         }
     }

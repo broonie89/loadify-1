@@ -15,8 +15,8 @@ using SpotifySharp;
 
 namespace loadify.ViewModel
 {
-    public class DownloaderViewModel : ViewModelBase, IHandle<DownloadStartedEvent>, 
-                                                      IHandle<DownloadResumedEvent>,
+    public class DownloaderViewModel : ViewModelBase, IHandle<DownloadContractStartedEvent>, 
+                                                      IHandle<DownloadContractResumedEvent>,
                                                       IHandle<DownloadProgressUpdatedEvent>
     {
         private TrackViewModel _CurrentTrack;
@@ -114,7 +114,7 @@ namespace loadify.ViewModel
             }
             catch (UnauthorizedAccessException)
             {
-                _EventAggregator.PublishOnUIThread(new DownloadPausedEvent(
+                _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(
                                                        String.Format("{0} could not be downloaded because the application is not " +
                                                                      "authorized to create the download directory",
                                                        CurrentTrack.ToString()),
@@ -123,14 +123,13 @@ namespace loadify.ViewModel
             }
             catch (IOException)
             {
-                _EventAggregator.PublishOnUIThread(new DownloadPausedEvent(
+                _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(
                                                        String.Format("{0} could not be downloaded because the path to " +
                                                                      "the download directory is not valid",
                                                        CurrentTrack.ToString()),
                                                        RemainingTracks.IndexOf(CurrentTrack)));
                 return;
             }
-
 
             foreach(var track in new ObservableCollection<TrackViewModel>(RemainingTracks.Skip(startIndex)))
             {
@@ -160,7 +159,7 @@ namespace loadify.ViewModel
                 }
                 catch (PlayTokenLostException)
                 {
-                    _EventAggregator.PublishOnUIThread(new DownloadPausedEvent(
+                    _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(
                                                             String.Format("{0} could not be downloaded because the logged-in" +
                                                                           " Spotify account is in use",
                                                             CurrentTrack.ToString()),
@@ -168,16 +167,18 @@ namespace loadify.ViewModel
                     break;
                 }       
             }   
+
+            _EventAggregator.PublishOnUIThread(new DownloadContractCompletedEvent());
         }
 
-        public void Handle(DownloadStartedEvent message)
+        public void Handle(DownloadContractStartedEvent message)
         {
             DownloadedTracks = new ObservableCollection<TrackViewModel>();
             RemainingTracks = new ObservableCollection<TrackViewModel>(message.SelectedTracks);
             StartDownload(message.Session);
         }
 
-        public void Handle(DownloadResumedEvent message)
+        public void Handle(DownloadContractResumedEvent message)
         {
             StartDownload(message.Session, message.DownloadIndex);
         }

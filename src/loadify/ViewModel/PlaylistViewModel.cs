@@ -72,17 +72,14 @@ namespace loadify.ViewModel
 
         public bool? AllTracksSelected
         {
-            get 
+            get
             {
                 if ( Tracks.All(track => (bool)track.Selected) )
                     return true;
-                else
-                {
-                    if ( Tracks.Any(track => (bool)track.Selected ) )
-                        return null;
-                    else
-                        return false;
-                } 
+                if ( Tracks.Any(track => (bool)track.Selected ) )
+                    return null;
+
+                return false;
             }
             set
             {
@@ -135,8 +132,12 @@ namespace loadify.ViewModel
 
         public void Handle(TrackSelectedChangedEvent message)
         {
+            if (!Tracks.Contains(message.Track)) return;
+
             NotifyOfPropertyChange(() => SelectedTracks);
             NotifyOfPropertyChange(() => AllTracksSelected);
+
+            _EventAggregator.PublishOnUIThread(new DownloadPossibleEvent(SelectedTracks.Count != 0));
         }
     }
 }

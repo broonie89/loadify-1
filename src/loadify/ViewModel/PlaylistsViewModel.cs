@@ -15,9 +15,10 @@ using SpotifySharp;
 namespace loadify.ViewModel
 {
     public class PlaylistsViewModel : ViewModelBase, IHandle<DataRefreshAuthorizedEvent>,
-                                                     IHandle<DownloadRequestEvent>,
+                                                     IHandle<DownloadContractRequestEvent>,
                                                      IHandle<AddPlaylistReplyEvent>,
-                                                     IHandle<AddTrackReplyEvent>
+                                                     IHandle<AddTrackReplyEvent>,
+                                                     IHandle<DownloadContractCompletedEvent>
     {
         private ObservableCollection<PlaylistViewModel> _Playlists = new ObservableCollection<PlaylistViewModel>();
         public ObservableCollection<PlaylistViewModel> Playlists
@@ -65,6 +66,18 @@ namespace loadify.ViewModel
             }
         }
 
+        private bool _Enabled = true;
+        public bool Enabled
+        {
+            get { return _Enabled; }
+            set
+            {
+                if (_Enabled == value) return;
+                _Enabled = value;
+                NotifyOfPropertyChange(() => Enabled);
+            }
+        }
+
         public PlaylistsViewModel(IEnumerable<PlaylistViewModel> playlistCollection, IEventAggregator eventAggregator) :
             base(eventAggregator)
         {
@@ -107,9 +120,11 @@ namespace loadify.ViewModel
             Playlists = new ObservableCollection<PlaylistViewModel>(playlists.Select(playlist => new PlaylistViewModel(playlist, _EventAggregator)));
         }
 
-        public void Handle(DownloadRequestEvent message)
+        public void Handle(DownloadContractRequestEvent message)
         {
-            _EventAggregator.PublishOnUIThread(new DownloadStartedEvent(message.Session, _Playlists.SelectMany(playlist => playlist.SelectedTracks)));
+            _EventAggregator.PublishOnUIThread(new DownloadContractStartedEvent(message.Session, _Playlists.SelectMany(playlist => playlist.SelectedTracks)));
+            Enabled = false;
+            _EventAggregator.PublishOnUIThread(new DownloadPossibleEvent(false));
         }
 
         public async void Handle(AddPlaylistReplyEvent message)
@@ -166,6 +181,12 @@ namespace loadify.ViewModel
                     _EventAggregator.PublishOnUIThread(invalidUrlEvent);
                 }
             }
+        }
+
+        public void Handle(DownloadContractCompletedEvent message)
+        {
+            Enabled = true;
+            _EventAggregator.PublishOnUIThread(new DownloadPossibleEvent(true));
         }
     }
 }

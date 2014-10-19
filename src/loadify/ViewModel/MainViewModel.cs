@@ -10,10 +10,11 @@ using SpotifySharp;
 namespace loadify.ViewModel
 {
     public class MainViewModel : ViewModelBase, IHandle<DataRefreshRequestEvent>, 
-                                                IHandle<DownloadPausedEvent>,
+                                                IHandle<DownloadContractPausedEvent>,
                                                 IHandle<AddPlaylistRequestEvent>, 
                                                 IHandle<ErrorOcurredEvent>,
-                                                IHandle<AddTrackRequestEvent>
+                                                IHandle<AddTrackRequestEvent>,
+                                                IHandle<DownloadPossibleEvent>
     {
         private LoadifySession _Session;
 
@@ -77,6 +78,24 @@ namespace loadify.ViewModel
             }
         }
 
+        private bool _CanStartDownload;
+        public bool CanStartDownload
+        {
+            get { return _CanStartDownload; }
+            set
+            {
+                if(_CanStartDownload == value) return;
+                _CanStartDownload = value;
+                NotifyOfPropertyChange(() => CanStartDownload);
+                NotifyOfPropertyChange(() => CanCancelDownload);
+            }
+        }
+
+        public bool CanCancelDownload
+        {
+            get { return !CanStartDownload; }
+        }
+
         public MainViewModel(LoadifySession session, UserViewModel loggedInUser, IEventAggregator eventAggregator, IWindowManager windowManager):
             base(eventAggregator, windowManager)
         {
@@ -92,7 +111,12 @@ namespace loadify.ViewModel
 
         public void StartDownload()
         {
-            _EventAggregator.PublishOnUIThread(new DownloadRequestEvent(_Session));
+            _EventAggregator.PublishOnUIThread(new DownloadContractRequestEvent(_Session));
+        }
+
+        public void CancelDownload()
+        {
+            
         }
 
         public void Handle(DataRefreshRequestEvent message)
@@ -101,12 +125,12 @@ namespace loadify.ViewModel
             _EventAggregator.PublishOnUIThread(new DataRefreshAuthorizedEvent(_Session));
         }
 
-        public async void Handle(DownloadPausedEvent message)
+        public async void Handle(DownloadContractPausedEvent message)
         {
             var view = GetView() as MainView;
             await view.ShowMessageAsync("Download Error", message.Reason 
                                         + "\nPlease resolve this error before continuing downloading");
-            _EventAggregator.PublishOnUIThread(new DownloadResumedEvent(_Session));
+            _EventAggregator.PublishOnUIThread(new DownloadContractResumedEvent(_Session));
         }
 
         public async void Handle(AddPlaylistRequestEvent message)
@@ -129,6 +153,11 @@ namespace loadify.ViewModel
             var response = await view.ShowInputAsync(message.Title, message.Content);
 
             _EventAggregator.PublishOnUIThread(new AddTrackReplyEvent(response, message.Playlist, _Session));
+        }
+
+        public void Handle(DownloadPossibleEvent message)
+        {
+            CanStartDownload = message.Possible;
         }
     }
 }

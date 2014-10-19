@@ -35,10 +35,12 @@
             <StackPanel Orientation="Horizontal" Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
                 <StackPanel.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Add Track from Link" cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                  cal:Message.Attach="[Event Click] = [Action AddTrack($dataContext)]"/>
-                        <MenuItem Header="Remove" cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                                  cal:Message.Attach="[Event Click] = [Action RemovePlaylist($dataContext)]"/>
+                        <MenuItem Header="Add Track from Link" 
+                                  cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                  cal:Message.Attach="[Event Click] = [Action AddTrack($dataContext)]"/>
+                        <MenuItem Header="Remove"
+                                  cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                  cal:Message.Attach="[Event Click] = [Action RemovePlaylist($dataContext)]"/>
                     </ContextMenu>
                 </StackPanel.ContextMenu>
                 <CheckBox IsChecked="{Binding AllTracksSelected}" IsThreeState="True"/>
@@ -62,7 +64,7 @@
         <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}" 
                   ItemsSource="{Binding Playlists}" 
                   ItemTemplate="{StaticResource PlaylistTemplate}" 
-                  Grid.Row="1"
+                  Grid.Row="1" IsEnabled="{Binding Enabled}"
                   Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}">
