@@ -143,7 +143,6 @@ namespace loadify.ViewModel
         {
             _EventAggregator.PublishOnUIThread(new DownloadContractStartedEvent(message.Session, _Playlists.SelectMany(playlist => playlist.SelectedTracks)));
             Enabled = false;
-            _EventAggregator.PublishOnUIThread(new DownloadPossibleEvent(false));
         }
 
         public async void Handle(AddPlaylistReplyEvent message)
@@ -205,7 +204,6 @@ namespace loadify.ViewModel
         public void Handle(DownloadContractCompletedEvent message)
         {
             Enabled = true;
-            _EventAggregator.PublishOnUIThread(new DownloadPossibleEvent(true));
         }
 
         public void Handle(TrackSelectedChangedEvent message)

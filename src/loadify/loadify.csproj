@@ -127,7 +127,7 @@
     <Compile Include="Event\AddTrackReplyEvent.cs" />
     <Compile Include="Event\AddTrackRequestEvent.cs" />
     <Compile Include="Event\DialogRequestEvent.cs" />
-    <Compile Include="Event\DownloadPossibleEvent.cs" />
+    <Compile Include="Event\SelectedTracksChangedEvent.cs" />
     <Compile Include="Event\DownloadProgressUpdatedEvent.cs" />
     <Compile Include="Event\ErrorOcurredEvent.cs" />
     <Compile Include="Event\SessionEvent.cs" />

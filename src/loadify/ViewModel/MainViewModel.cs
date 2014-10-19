@@ -14,7 +14,9 @@ namespace loadify.ViewModel
                                                 IHandle<AddPlaylistRequestEvent>, 
                                                 IHandle<ErrorOcurredEvent>,
                                                 IHandle<AddTrackRequestEvent>,
-                                                IHandle<DownloadPossibleEvent>
+                                                IHandle<SelectedTracksChangedEvent>,
+                                                IHandle<DownloadContractCompletedEvent>,
+                                                IHandle<DownloadContractResumedEvent>
     {
         private LoadifySession _Session;
 
@@ -78,7 +80,7 @@ namespace loadify.ViewModel
             }
         }
 
-        private bool _CanStartDownload;
+        private bool _CanStartDownload = false;
         public bool CanStartDownload
         {
             get { return _CanStartDownload; }
@@ -87,13 +89,19 @@ namespace loadify.ViewModel
                 if(_CanStartDownload == value) return;
                 _CanStartDownload = value;
                 NotifyOfPropertyChange(() => CanStartDownload);
-                NotifyOfPropertyChange(() => CanCancelDownload);
             }
         }
 
+        private bool _CanCancelDownload = false;
         public bool CanCancelDownload
         {
-            get { return !CanStartDownload; }
+            get { return _CanCancelDownload; }
+            set
+            {
+                if (_CanCancelDownload == value) return;
+                _CanCancelDownload = value;
+                NotifyOfPropertyChange(() => CanCancelDownload);
+            }
         }
 
         public MainViewModel(LoadifySession session, UserViewModel loggedInUser, IEventAggregator eventAggregator, IWindowManager windowManager):
@@ -112,6 +120,8 @@ namespace loadify.ViewModel
         public void StartDownload()
         {
             _EventAggregator.PublishOnUIThread(new DownloadContractRequestEvent(_Session));
+            CanCancelDownload = true;
+            CanStartDownload = false;
         }
 
         public void CancelDownload()
@@ -155,9 +165,21 @@ namespace loadify.ViewModel
             _EventAggregator.PublishOnUIThread(new AddTrackReplyEvent(response, message.Playlist, _Session));
         }
 
-        public void Handle(DownloadPossibleEvent message)
+        public void Handle(SelectedTracksChangedEvent message)
         {
-            CanStartDownload = message.Possible;
+            CanStartDownload = message.SelectedTracks.Count != 0;
+        }
+
+        public void Handle(DownloadContractCompletedEvent message)
+        {
+            CanCancelDownload = false;
+            CanStartDownload = true;
+        }
+
+        public void Handle(DownloadContractResumedEvent message)
+        {
+            CanCancelDownload = true;
+            CanStartDownload = false;
         }
     }
 }

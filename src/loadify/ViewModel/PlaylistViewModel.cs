@@ -137,7 +137,7 @@ namespace loadify.ViewModel
             NotifyOfPropertyChange(() => SelectedTracks);
             NotifyOfPropertyChange(() => AllTracksSelected);
 
-            _EventAggregator.PublishOnUIThread(new DownloadPossibleEvent(SelectedTracks.Count != 0));
+            _EventAggregator.PublishOnUIThread(new SelectedTracksChangedEvent(SelectedTracks));
         }
     }
 }
