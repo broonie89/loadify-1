@@ -18,7 +18,8 @@ namespace loadify.ViewModel
                                                      IHandle<DownloadContractRequestEvent>,
                                                      IHandle<AddPlaylistReplyEvent>,
                                                      IHandle<AddTrackReplyEvent>,
-                                                     IHandle<DownloadContractCompletedEvent>
+                                                     IHandle<DownloadContractCompletedEvent>,
+                                                     IHandle<TrackSelectedChangedEvent>
     {
         private ObservableCollection<PlaylistViewModel> _Playlists = new ObservableCollection<PlaylistViewModel>();
         public ObservableCollection<PlaylistViewModel> Playlists
@@ -50,6 +51,8 @@ namespace loadify.ViewModel
                 if (_Playlists == value) return;
                 _Playlists = value;
                 NotifyOfPropertyChange(() => Playlists);
+                NotifyOfPropertyChange(() => SelectedTracks);
+                NotifyOfPropertyChange(() => EstimatedDownloadTime);
             }
         }
 
@@ -75,6 +78,22 @@ namespace loadify.ViewModel
                 if (_Enabled == value) return;
                 _Enabled = value;
                 NotifyOfPropertyChange(() => Enabled);
+            }
+        }
+
+        public IEnumerable<TrackViewModel> SelectedTracks
+        {
+            get { return new ObservableCollection<TrackViewModel>(Playlists.SelectMany(playlist => playlist.SelectedTracks)); }
+        }
+
+        public string EstimatedDownloadTime
+        {
+            get
+            {
+                var totalDuration = new TimeSpan();
+                totalDuration = SelectedTracks.Aggregate(totalDuration, (current, selectedTrack) => current + selectedTrack.Duration);
+
+                return new DateTime(new TimeSpan((long) (((double) 100/165) * totalDuration.Ticks)).Ticks).ToString("HH:mm:ss");
             }
         }
 
@@ -187,6 +206,12 @@ namespace loadify.ViewModel
         {
             Enabled = true;
             _EventAggregator.PublishOnUIThread(new DownloadPossibleEvent(true));
+        }
+
+        public void Handle(TrackSelectedChangedEvent message)
+        {
+            NotifyOfPropertyChange(() => SelectedTracks);
+            NotifyOfPropertyChange(() => EstimatedDownloadTime);
         }
     }
 }

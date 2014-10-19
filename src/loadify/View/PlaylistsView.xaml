@@ -10,7 +10,7 @@
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
-             d:DesignHeight="390" d:DesignWidth="300">
+             d:DesignHeight="371" d:DesignWidth="300">
     <UserControl.Resources>
         <mock:PlaylistsMock x:Key="PlaylistsMock"/>
         <DataTemplate x:Key="TrackTemplate" DataType="viewmodel:TrackViewModel">
@@ -58,14 +58,17 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="26*"/>
-            <RowDefinition Height="329*"/>
+            <RowDefinition Height="27*"/>
+            <RowDefinition Height="309*"/>
+            <RowDefinition Height="38*"/>
         </Grid.RowDefinitions>
+        <Border BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="0 1 0 0" Grid.Row="2"></Border>
         <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}" 
                   ItemsSource="{Binding Playlists}" 
                   ItemTemplate="{StaticResource PlaylistTemplate}" 
                   Grid.Row="1" IsEnabled="{Binding Enabled}"
-                  Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
+                  Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                  Margin="0 0 0 5">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem" BasedOn="{StaticResource MetroTreeViewItem}">
                     <Setter Property="IsExpanded" Value="{Binding Expanded, Mode=TwoWay}" />
@@ -89,5 +92,13 @@
         <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=Explicit, Mode=TwoWay}" 
                  behavior:InputBindingsManager.UpdateSourceWhenEnterPressed="TextBox.Text"
                  TextWrapping="Wrap" Padding="2 0" BorderThickness="0" controls:TextboxHelper.Watermark="Search..."/>
+        <Grid Grid.Row="2" Margin="0 2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" FontSize="12" Padding="8 1" Content="{Binding SelectedTracks.Count}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" ContentStringFormat="{}{0} Tracks selected"/>
+            <Label Grid.Row="1" FontSize="12" Padding="8 1" Content="{Binding EstimatedDownloadTime}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" ContentStringFormat="{}Estimated download time: {0}"/>
+        </Grid>
     </Grid>
 </UserControl>
