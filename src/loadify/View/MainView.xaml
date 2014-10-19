@@ -8,7 +8,7 @@
         GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="16*"/>
+            <RowDefinition Height="14*"/>
             <RowDefinition Height="169*"/>
             <RowDefinition Height="13*"/>
         </Grid.RowDefinitions>

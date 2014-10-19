@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
+using loadify.Audio;
 using loadify.Event;
 using loadify.Model;
 using loadify.Properties;

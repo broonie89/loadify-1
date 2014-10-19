@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NAudio.Lame;
 using NAudio.Wave;
 
-namespace loadify.Spotify
+namespace loadify.Audio
 {
     public class WaveToMp3Converter : AudioConverter
     {

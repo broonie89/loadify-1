@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Id3;
 using Id3.Frames;
 using Id3.Id3v2.v23;
 
-namespace loadify.Spotify
+namespace loadify.Audio
 {
     public class Mp3FileDescriptor : AudioFileDescriptor
     {

@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms.VisualStyles;
 using Caliburn.Micro;
+using loadify.Audio;
 using loadify.Event;
 using loadify.Model;
 using SpotifySharp;
@@ -55,7 +56,7 @@ namespace loadify.Spotify
                 {
                     var trackDuration = _Statistic.TargetDuration.TotalMilliseconds;
                     return (trackDuration != 0)
-                            ? (double) 100/_Statistic.TargetDuration.TotalMilliseconds*(46.4*_Statistic.Processings)
+                            ? 100/_Statistic.TargetDuration.TotalMilliseconds*(46.4*_Statistic.Processings)
                             : 100;
                 }
             }
