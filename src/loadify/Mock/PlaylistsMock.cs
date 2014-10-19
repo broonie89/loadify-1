@@ -18,6 +18,12 @@ namespace loadify.Mock
     {
         public PlaylistsMock()
         {
+            SelectedTracks = new List<TrackViewModel>
+            {
+                new TrackViewModel(new TrackModel() {Name = "Test"}, new EventAggregator())
+            };
+
+            EstimatedDownloadTime = "48:54:22";
             Playlists = new List<PlaylistViewModel>
             {
                 new PlaylistViewModel(new EventAggregator())
@@ -36,5 +42,7 @@ namespace loadify.Mock
         }
 
         public List<PlaylistViewModel> Playlists { get; set; }
+        public List<TrackViewModel> SelectedTracks { get; set; }
+        public string EstimatedDownloadTime { get; set; }
     }
 }

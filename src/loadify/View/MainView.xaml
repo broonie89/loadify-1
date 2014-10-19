@@ -24,7 +24,7 @@
                 <ColumnDefinition Width="550*"/>
             </Grid.ColumnDefinitions>
             <GridSplitter Background="{StaticResource AccentColorBrush}" Grid.Column="1" HorizontalAlignment="Stretch"/>
-            <ContentControl x:Name="Playlists" Margin="0 0 0 8"/>
+            <ContentControl x:Name="Playlists"/>
             <Grid Grid.Row="1" Grid.Column="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="326*"/>

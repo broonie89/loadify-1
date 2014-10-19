@@ -63,7 +63,7 @@
             <RowDefinition Height="38*"/>
         </Grid.RowDefinitions>
         <Border BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="0 1 0 0" Grid.Row="2"></Border>
-        <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}" 
+        <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}"
                   ItemsSource="{Binding Playlists}" 
                   ItemTemplate="{StaticResource PlaylistTemplate}" 
                   Grid.Row="1" IsEnabled="{Binding Enabled}"
@@ -92,7 +92,7 @@
         <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=Explicit, Mode=TwoWay}" 
                  behavior:InputBindingsManager.UpdateSourceWhenEnterPressed="TextBox.Text"
                  TextWrapping="Wrap" Padding="2 0" BorderThickness="0" controls:TextboxHelper.Watermark="Search..."/>
-        <Grid Grid.Row="2" Margin="0 2">
+        <Grid Grid.Row="2" Margin="0 2" d:DataContext="{Binding Source={StaticResource PlaylistsMock}}">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
