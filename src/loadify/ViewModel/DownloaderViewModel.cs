@@ -20,7 +20,7 @@ namespace loadify.ViewModel
     public class DownloaderViewModel : ViewModelBase, IHandle<DownloadContractStartedEvent>, 
                                                       IHandle<DownloadContractResumedEvent>,
                                                       IHandle<DownloadProgressUpdatedEvent>,
-                                                      IHandle<DirectorySettingChangedEvent>
+                                                      IHandle<SettingChangedEvent<IDirectorySetting>>
     {
         private TrackViewModel _CurrentTrack;
         public TrackViewModel CurrentTrack
@@ -192,9 +192,9 @@ namespace loadify.ViewModel
             TrackProgress = message.Progress;
         }
 
-        public void Handle(DirectorySettingChangedEvent message)
+        public void Handle(SettingChangedEvent<IDirectorySetting> message)
         {
-            _DirectorySetting = message.DirectorySetting;
+            _DirectorySetting = message.Setting;
         }
     }
 }

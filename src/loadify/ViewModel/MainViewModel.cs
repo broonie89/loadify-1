@@ -113,7 +113,7 @@ namespace loadify.ViewModel
             _Menu = new MenuViewModel(_EventAggregator, _WindowManager);
             _Status = new StatusViewModel(loggedInUser, _EventAggregator);
             _Playlists = new PlaylistsViewModel(_EventAggregator);
-            _Settings = new SettingsViewModel(_EventAggregator, new NETDirectorySetting());
+            _Settings = new SettingsViewModel(_EventAggregator, new NETDirectorySetting(), new NETProxySetting());
 
             _EventAggregator.PublishOnUIThread(new DataRefreshAuthorizedEvent(_Session));
         }

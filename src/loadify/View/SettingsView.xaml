@@ -79,7 +79,7 @@
                             </Grid.ColumnDefinitions>
                             <CheckBox x:Name="UseProxy" IsEnabled="False" Content="Enabled" Margin="5 0"/>
                             <Label Content="IP:" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Grid.Column="1"/>
-                            <TextBox x:Name="ProxyIP" controls:TextboxHelper.Watermark="192.168.101.1"
+                            <TextBox x:Name="ProxyIp" controls:TextboxHelper.Watermark="192.168.101.1"
                                      Grid.Column="2" TextWrapping="Wrap" VerticalContentAlignment="Center" Margin="5"/>
                             <Label Content="Port:" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Grid.Column="3"/>
                             <controls:NumericUpDown Value="{Binding ProxyPort, Mode=TwoWay}" Grid.Column="4" Margin="5 5 15 5" Height="26"/>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -18,44 +19,61 @@ namespace loadify.ViewModel
 {
     public class SettingsViewModel : ViewModelBase
     {
-        public bool UseProxy
+        private IProxySetting _ProxySetting;
+        public IProxySetting ProxySetting
         {
-            get { return (ProxyIP == null) ? false : ProxyIP.Length != 0 && ProxyPort != 0; }
-        }
-
-        public string ProxyIP
-        {
-            get { return Settings.Default.ProxyIP; }
+            get { return _ProxySetting; }
             set
             {
-                if (Settings.Default.ProxyIP == value) return;
-                Settings.Default.ProxyIP = value;
-                Settings.Default.Save();
-                NotifyOfPropertyChange(() => ProxyIP);
+                _ProxySetting = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IProxySetting>(ProxySetting));
+            }
+        }
+
+        public bool UseProxy
+        {
+            get { return ProxySetting.UseProxy; }
+            set
+            {
+                if (ProxySetting.UseProxy == value) return;
+                ProxySetting.UseProxy = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IProxySetting>(ProxySetting));
                 NotifyOfPropertyChange(() => UseProxy);
+            }
+        }
+
+        public string ProxyIp
+        {
+            get { return ProxySetting.ProxyIp; }
+            set
+            {
+                if (ProxySetting.ProxyIp == value) return;
+                ProxySetting.ProxyIp = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IProxySetting>(ProxySetting));
+                NotifyOfPropertyChange(() => ProxyIp);
             }
         }
 
         public ushort ProxyPort
         {
-            get { return Settings.Default.ProxyPort; }
+            get { return ProxySetting.ProxyPort; }
             set
             {
-                if (Settings.Default.ProxyPort == value) return;
-                Settings.Default.ProxyPort = value;
-                Settings.Default.Save();
+                if (ProxySetting.ProxyPort == value) return;
+                ProxySetting.ProxyPort = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IProxySetting>(ProxySetting));
                 NotifyOfPropertyChange(() => ProxyPort);
-                NotifyOfPropertyChange(() => UseProxy);
             }
         }
 
         private IDirectorySetting _DirectorySetting;
         public IDirectorySetting DirectorySetting
         {
+            get { return _DirectorySetting; }
             set
             {
                 _DirectorySetting = value;
-                _EventAggregator.PublishOnUIThread(new DirectorySettingChangedEvent(_DirectorySetting));
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IDirectorySetting>(DirectorySetting));
             }
         }
 
@@ -66,7 +84,7 @@ namespace loadify.ViewModel
             {
                 if (_DirectorySetting.DownloadDirectory == value) return;
                 _DirectorySetting.DownloadDirectory = value;
-                _EventAggregator.PublishOnUIThread(new DirectorySettingChangedEvent(_DirectorySetting));
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IDirectorySetting>(DirectorySetting));
                 NotifyOfPropertyChange(() => DownloadDirectory);
             }
         }
@@ -78,7 +96,7 @@ namespace loadify.ViewModel
             {
                 if (_DirectorySetting.CacheDirectory == value) return;
                 _DirectorySetting.CacheDirectory = value;
-                _EventAggregator.PublishOnUIThread(new DirectorySettingChangedEvent(_DirectorySetting));
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IDirectorySetting>(DirectorySetting));
                 NotifyOfPropertyChange(() => CacheDirectory);
             }
         }
@@ -100,10 +118,11 @@ namespace loadify.ViewModel
             get { return Enum.GetValues(typeof(WriteConflictAction)).Cast<WriteConflictAction>().ToList(); }
         }
 
-        public SettingsViewModel(IEventAggregator eventAggregator, IDirectorySetting directorySetting) :
+        public SettingsViewModel(IEventAggregator eventAggregator, IDirectorySetting directorySetting, IProxySetting proxySetting) :
             base(eventAggregator)
         {
             DirectorySetting = directorySetting;
+            ProxySetting = proxySetting;
         }
 
         public void BrowseCacheDirectory()
@@ -132,7 +151,7 @@ namespace loadify.ViewModel
 
             if (UseProxy)
             {
-                if (!Regex.IsMatch(ProxyIP, @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"))
+                if (!Regex.IsMatch(ProxyIp, @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"))
                     _EventAggregator.PublishOnUIThread(
                         new ErrorOcurredEvent("Settings Error", "The proxy IP address that was entered is not a valid IP address."));
             }
