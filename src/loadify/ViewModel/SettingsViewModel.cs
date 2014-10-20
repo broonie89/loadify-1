@@ -101,14 +101,26 @@ namespace loadify.ViewModel
             }
         }
 
-        public WriteConflictAction WriteConflictAction
+        private IBehaviorSetting _BehaviorSetting;
+        public IBehaviorSetting BehaviorSetting
         {
-            get { return (WriteConflictAction) Enum.Parse(typeof(WriteConflictAction), Settings.Default.WriteConflictAction); }
+            get { return _BehaviorSetting; }
             set
             {
-                if (Settings.Default.WriteConflictAction == value.ToString()) return;
-                Settings.Default.WriteConflictAction = value.ToString();
-                Settings.Default.Save();
+                _BehaviorSetting = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IBehaviorSetting>(BehaviorSetting));
+            }
+        }
+
+        public WriteConflictAction WriteConflictAction
+        {
+            get { return BehaviorSetting.WriteConflictAction.ConvertedValue; }
+            set
+            {
+
+                if (BehaviorSetting.WriteConflictAction.ConvertedValue == value) return;
+                BehaviorSetting.WriteConflictAction.ConvertedValue = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IBehaviorSetting>(BehaviorSetting));
                 NotifyOfPropertyChange(() => WriteConflictAction);
             }
         }
@@ -118,11 +130,15 @@ namespace loadify.ViewModel
             get { return Enum.GetValues(typeof(WriteConflictAction)).Cast<WriteConflictAction>().ToList(); }
         }
 
-        public SettingsViewModel(IEventAggregator eventAggregator, IDirectorySetting directorySetting, IConnectionSetting connectionSetting) :
+        public SettingsViewModel(IEventAggregator eventAggregator, 
+                                 IDirectorySetting directorySetting, 
+                                 IConnectionSetting connectionSetting,
+                                 IBehaviorSetting behaviorSetting) :
             base(eventAggregator)
         {
             DirectorySetting = directorySetting;
             ConnectionSetting = connectionSetting;
+            BehaviorSetting = behaviorSetting;
         }
 
         public void BrowseCacheDirectory()

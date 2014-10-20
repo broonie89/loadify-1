@@ -123,10 +123,13 @@
     <Compile Include="Audio\WriteConflictAction.cs" />
     <Compile Include="Behavior\InputBindingsManager.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Configuration\EnumSetting.cs" />
+    <Compile Include="Configuration\IBehaviorSetting.cs" />
     <Compile Include="Configuration\IDirectorySetting.cs" />
     <Compile Include="Configuration\IConnectionSetting.cs" />
+    <Compile Include="Configuration\NETBehaviorSetting.cs" />
     <Compile Include="Configuration\NETDirectorySetting.cs" />
-    <Compile Include="Configuration\NetConnectionSetting.cs" />
+    <Compile Include="Configuration\NETConnectionSetting.cs" />
     <Compile Include="Event\AddPlaylistRequestEvent.cs" />
     <Compile Include="Event\AddPlaylistReplyEvent.cs" />
     <Compile Include="Event\AddTrackReplyEvent.cs" />
