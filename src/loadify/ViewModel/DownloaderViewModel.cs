@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using loadify.Audio;
+using loadify.Configuration;
 using loadify.Event;
 using loadify.Model;
 using loadify.Properties;
@@ -18,7 +19,8 @@ namespace loadify.ViewModel
 {
     public class DownloaderViewModel : ViewModelBase, IHandle<DownloadContractStartedEvent>, 
                                                       IHandle<DownloadContractResumedEvent>,
-                                                      IHandle<DownloadProgressUpdatedEvent>
+                                                      IHandle<DownloadProgressUpdatedEvent>,
+                                                      IHandle<DirectorySettingChangedEvent>
     {
         private TrackViewModel _CurrentTrack;
         public TrackViewModel CurrentTrack
@@ -97,6 +99,7 @@ namespace loadify.ViewModel
             get { return RemainingTracks.Count != 0; }
         }
 
+        private IDirectorySetting _DirectorySetting;
 
         public DownloaderViewModel(IEventAggregator eventAggregator):
             base(eventAggregator)
@@ -139,8 +142,8 @@ namespace loadify.ViewModel
                 try
                 {
                     await session.DownloadTrack(CurrentTrack.Track,
-                                                new WaveAudioProcessor(Properties.Settings.Default.DownloadDirectory, CurrentTrack.Name),
-                                                new WaveToMp3Converter(Properties.Settings.Default.DownloadDirectory, CurrentTrack.Name),
+                                                new WaveAudioProcessor(_DirectorySetting.DownloadDirectory, CurrentTrack.Name),
+                                                new WaveToMp3Converter(_DirectorySetting.DownloadDirectory, CurrentTrack.Name),
                                                 new Mp3FileDescriptor(new AudioFileMetaData() 
                                                 { 
                                                     Title = CurrentTrack.Name,
@@ -187,6 +190,11 @@ namespace loadify.ViewModel
         public void Handle(DownloadProgressUpdatedEvent message)
         {
             TrackProgress = message.Progress;
+        }
+
+        public void Handle(DirectorySettingChangedEvent message)
+        {
+            _DirectorySetting = message.DirectorySetting;
         }
     }
 }

@@ -50,6 +50,15 @@ namespace loadify.ViewModel
         }
 
         private IDirectorySetting _DirectorySetting;
+        public IDirectorySetting DirectorySetting
+        {
+            set
+            {
+                _DirectorySetting = value;
+                _EventAggregator.PublishOnUIThread(new DirectorySettingChangedEvent(_DirectorySetting));
+            }
+        }
+
         public string DownloadDirectory
         {
             get { return _DirectorySetting.DownloadDirectory; }
@@ -94,7 +103,7 @@ namespace loadify.ViewModel
         public SettingsViewModel(IEventAggregator eventAggregator, IDirectorySetting directorySetting) :
             base(eventAggregator)
         {
-            _DirectorySetting = directorySetting;
+            DirectorySetting = directorySetting;
         }
 
         public void BrowseCacheDirectory()
