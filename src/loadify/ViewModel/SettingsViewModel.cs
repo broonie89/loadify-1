@@ -19,108 +19,77 @@ namespace loadify.ViewModel
 {
     public class SettingsViewModel : ViewModelBase
     {
-        private IConnectionSetting _ConnectionSetting;
-        public IConnectionSetting ConnectionSetting
-        {
-            get { return _ConnectionSetting; }
-            set
-            {
-                _ConnectionSetting = value;
-                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IConnectionSetting>(ConnectionSetting));
-            }
-        }
+        private readonly ISettingsManager _SettingsManager;
 
         public bool UseProxy
         {
-            get { return ConnectionSetting.UseProxy; }
+            get { return _SettingsManager.ConnectionSetting.UseProxy; }
             set
             {
-                if (ConnectionSetting.UseProxy == value) return;
-                ConnectionSetting.UseProxy = value;
-                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IConnectionSetting>(ConnectionSetting));
+                if (_SettingsManager.ConnectionSetting.UseProxy == value) return;
+                _SettingsManager.ConnectionSetting.UseProxy = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IConnectionSetting>(_SettingsManager.ConnectionSetting));
                 NotifyOfPropertyChange(() => UseProxy);
             }
         }
 
         public string ProxyIp
         {
-            get { return ConnectionSetting.ProxyIp; }
+            get { return _SettingsManager.ConnectionSetting.ProxyIp; }
             set
             {
-                if (ConnectionSetting.ProxyIp == value) return;
-                ConnectionSetting.ProxyIp = value;
-                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IConnectionSetting>(ConnectionSetting));
+                if (_SettingsManager.ConnectionSetting.ProxyIp == value) return;
+                _SettingsManager.ConnectionSetting.ProxyIp = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IConnectionSetting>(_SettingsManager.ConnectionSetting));
                 NotifyOfPropertyChange(() => ProxyIp);
             }
         }
 
         public ushort ProxyPort
         {
-            get { return ConnectionSetting.ProxyPort; }
+            get { return _SettingsManager.ConnectionSetting.ProxyPort; }
             set
             {
-                if (ConnectionSetting.ProxyPort == value) return;
-                ConnectionSetting.ProxyPort = value;
-                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IConnectionSetting>(ConnectionSetting));
+                if (_SettingsManager.ConnectionSetting.ProxyPort == value) return;
+                _SettingsManager.ConnectionSetting.ProxyPort = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IConnectionSetting>(_SettingsManager.ConnectionSetting));
                 NotifyOfPropertyChange(() => ProxyPort);
-            }
-        }
-
-        private IDirectorySetting _DirectorySetting;
-        public IDirectorySetting DirectorySetting
-        {
-            get { return _DirectorySetting; }
-            set
-            {
-                _DirectorySetting = value;
-                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IDirectorySetting>(DirectorySetting));
             }
         }
 
         public string DownloadDirectory
         {
-            get { return _DirectorySetting.DownloadDirectory; }
+            get { return _SettingsManager.DirectorySetting.DownloadDirectory; }
             set
             {
-                if (_DirectorySetting.DownloadDirectory == value) return;
-                _DirectorySetting.DownloadDirectory = value;
-                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IDirectorySetting>(DirectorySetting));
+                if (_SettingsManager.DirectorySetting.DownloadDirectory == value) return;
+                _SettingsManager.DirectorySetting.DownloadDirectory = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IDirectorySetting>(_SettingsManager.DirectorySetting));
                 NotifyOfPropertyChange(() => DownloadDirectory);
             }
         }
 
         public string CacheDirectory
         {
-            get { return _DirectorySetting.CacheDirectory; }
+            get { return _SettingsManager.DirectorySetting.CacheDirectory; }
             set
             {
-                if (_DirectorySetting.CacheDirectory == value) return;
-                _DirectorySetting.CacheDirectory = value;
-                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IDirectorySetting>(DirectorySetting));
+                if (_SettingsManager.DirectorySetting.CacheDirectory == value) return;
+                _SettingsManager.DirectorySetting.CacheDirectory = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IDirectorySetting>(_SettingsManager.DirectorySetting));
                 NotifyOfPropertyChange(() => CacheDirectory);
-            }
-        }
-
-        private IBehaviorSetting _BehaviorSetting;
-        public IBehaviorSetting BehaviorSetting
-        {
-            get { return _BehaviorSetting; }
-            set
-            {
-                _BehaviorSetting = value;
-                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IBehaviorSetting>(BehaviorSetting));
             }
         }
 
         public WriteConflictAction WriteConflictAction
         {
-            get { return BehaviorSetting.WriteConflictAction.ConvertedValue; }
+            get { return _SettingsManager.BehaviorSetting.WriteConflictAction.ConvertedValue; }
             set
             {
 
-                if (BehaviorSetting.WriteConflictAction.ConvertedValue == value) return;
-                BehaviorSetting.WriteConflictAction.ConvertedValue = value;
-                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IBehaviorSetting>(BehaviorSetting));
+                if (_SettingsManager.BehaviorSetting.WriteConflictAction.ConvertedValue == value) return;
+                _SettingsManager.BehaviorSetting.WriteConflictAction.ConvertedValue = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IBehaviorSetting>(_SettingsManager.BehaviorSetting));
                 NotifyOfPropertyChange(() => WriteConflictAction);
             }
         }
@@ -130,15 +99,10 @@ namespace loadify.ViewModel
             get { return Enum.GetValues(typeof(WriteConflictAction)).Cast<WriteConflictAction>().ToList(); }
         }
 
-        public SettingsViewModel(IEventAggregator eventAggregator, 
-                                 IDirectorySetting directorySetting, 
-                                 IConnectionSetting connectionSetting,
-                                 IBehaviorSetting behaviorSetting) :
+        public SettingsViewModel(IEventAggregator eventAggregator, ISettingsManager settingsManager) :
             base(eventAggregator)
         {
-            DirectorySetting = directorySetting;
-            ConnectionSetting = connectionSetting;
-            BehaviorSetting = behaviorSetting;
+            _SettingsManager = settingsManager;
         }
 
         public void BrowseCacheDirectory()

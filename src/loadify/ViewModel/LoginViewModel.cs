@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
+using loadify.Configuration;
 using loadify.Event;
 using loadify.Model;
 using loadify.Properties;
@@ -22,6 +23,7 @@ namespace loadify.ViewModel
                                                  IHandle<LoginSuccessfulEvent>
     {
         private LoadifySession _Session;
+        private ISettingsManager _SettingsManager;
 
         private UserViewModel _User;
         public UserViewModel User
@@ -59,11 +61,12 @@ namespace loadify.ViewModel
             }
         }
 
-        public LoginViewModel(IEventAggregator eventAggregator, IWindowManager windowManager) :
+        public LoginViewModel(IEventAggregator eventAggregator, IWindowManager windowManager, ISettingsManager netSettingsManager) :
             base(eventAggregator, windowManager)
         {
             _User = new UserViewModel();
             _Session = new LoadifySession(_EventAggregator);
+            _SettingsManager = netSettingsManager;
         }
 
 
@@ -130,7 +133,7 @@ namespace loadify.ViewModel
         public void Handle(LoginSuccessfulEvent message)
         {
             var loginView = GetView() as LoginView;
-            _WindowManager.ShowWindow(new MainViewModel(_Session, _User, _EventAggregator, _WindowManager));
+            _WindowManager.ShowWindow(new MainViewModel(_Session, _User, _EventAggregator, _WindowManager, _SettingsManager));
             loginView.Close();
         }
     }

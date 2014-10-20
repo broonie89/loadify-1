@@ -127,9 +127,11 @@
     <Compile Include="Configuration\IBehaviorSetting.cs" />
     <Compile Include="Configuration\IDirectorySetting.cs" />
     <Compile Include="Configuration\IConnectionSetting.cs" />
+    <Compile Include="Configuration\ISettingsManager.cs" />
     <Compile Include="Configuration\NETBehaviorSetting.cs" />
     <Compile Include="Configuration\NETDirectorySetting.cs" />
     <Compile Include="Configuration\NETConnectionSetting.cs" />
+    <Compile Include="Configuration\NETSettingsManager.cs" />
     <Compile Include="Event\AddPlaylistRequestEvent.cs" />
     <Compile Include="Event\AddPlaylistReplyEvent.cs" />
     <Compile Include="Event\AddTrackReplyEvent.cs" />
