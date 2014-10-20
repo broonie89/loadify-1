@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using Caliburn.Micro;
 using loadify.Audio;
+using loadify.Configuration;
 using loadify.Event;
 using loadify.Model;
 using loadify.Properties;
@@ -48,26 +49,27 @@ namespace loadify.ViewModel
             }
         }
 
+        private IDirectorySetting _DirectorySetting;
         public string DownloadDirectory
         {
-            get { return Settings.Default.DownloadDirectory; }
+            get { return _DirectorySetting.DownloadDirectory; }
             set
             {
-                if (Settings.Default.DownloadDirectory == value) return;
-                Settings.Default.DownloadDirectory = value;
-                Settings.Default.Save();
+                if (_DirectorySetting.DownloadDirectory == value) return;
+                _DirectorySetting.DownloadDirectory = value;
+                _EventAggregator.PublishOnUIThread(new DirectorySettingChangedEvent(_DirectorySetting));
                 NotifyOfPropertyChange(() => DownloadDirectory);
             }
         }
 
         public string CacheDirectory
         {
-            get { return Settings.Default.CacheDirectory; }
+            get { return _DirectorySetting.CacheDirectory; }
             set
             {
-                if (Settings.Default.CacheDirectory == value) return;
-                Settings.Default.CacheDirectory = value;
-                Settings.Default.Save();
+                if (_DirectorySetting.CacheDirectory == value) return;
+                _DirectorySetting.CacheDirectory = value;
+                _EventAggregator.PublishOnUIThread(new DirectorySettingChangedEvent(_DirectorySetting));
                 NotifyOfPropertyChange(() => CacheDirectory);
             }
         }
@@ -89,9 +91,11 @@ namespace loadify.ViewModel
             get { return Enum.GetValues(typeof(WriteConflictAction)).Cast<WriteConflictAction>().ToList(); }
         }
 
-        public SettingsViewModel(IEventAggregator eventAggregator):
+        public SettingsViewModel(IEventAggregator eventAggregator, IDirectorySetting directorySetting) :
             base(eventAggregator)
-        { }
+        {
+            _DirectorySetting = directorySetting;
+        }
 
         public void BrowseCacheDirectory()
         {

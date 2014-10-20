@@ -123,11 +123,14 @@
     <Compile Include="Audio\WriteConflictAction.cs" />
     <Compile Include="Behavior\InputBindingsManager.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Configuration\IDirectorySetting.cs" />
+    <Compile Include="Configuration\NETDirectorySetting.cs" />
     <Compile Include="Event\AddPlaylistRequestEvent.cs" />
     <Compile Include="Event\AddPlaylistReplyEvent.cs" />
     <Compile Include="Event\AddTrackReplyEvent.cs" />
     <Compile Include="Event\AddTrackRequestEvent.cs" />
     <Compile Include="Event\DialogRequestEvent.cs" />
+    <Compile Include="Event\DirectorySettingChangedEvent.cs" />
     <Compile Include="Event\SelectedTracksChangedEvent.cs" />
     <Compile Include="Event\DownloadProgressUpdatedEvent.cs" />
     <Compile Include="Event\ErrorOcurredEvent.cs" />

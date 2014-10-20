@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Runtime.InteropServices.ComTypes;
 using Caliburn.Micro;
+using loadify.Configuration;
 using loadify.Event;
 using loadify.Spotify;
 using loadify.View;
@@ -112,7 +113,7 @@ namespace loadify.ViewModel
             _Menu = new MenuViewModel(_EventAggregator, _WindowManager);
             _Status = new StatusViewModel(loggedInUser, _EventAggregator);
             _Playlists = new PlaylistsViewModel(_EventAggregator);
-            _Settings = new SettingsViewModel(_EventAggregator);
+            _Settings = new SettingsViewModel(_EventAggregator, new NETDirectorySetting());
 
             _EventAggregator.PublishOnUIThread(new DataRefreshAuthorizedEvent(_Session));
         }
