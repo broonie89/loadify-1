@@ -7,7 +7,7 @@ using loadify.Properties;
 
 namespace loadify.Configuration
 {
-    public class NETProxySetting : IProxySetting
+    public class NETConnectionSetting : IConnectionSetting
     {
         public bool UseProxy
         {

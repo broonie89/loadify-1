@@ -124,9 +124,9 @@
     <Compile Include="Behavior\InputBindingsManager.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Configuration\IDirectorySetting.cs" />
-    <Compile Include="Configuration\IProxySetting.cs" />
+    <Compile Include="Configuration\IConnectionSetting.cs" />
     <Compile Include="Configuration\NETDirectorySetting.cs" />
-    <Compile Include="Configuration\NETProxySetting.cs" />
+    <Compile Include="Configuration\NetConnectionSetting.cs" />
     <Compile Include="Event\AddPlaylistRequestEvent.cs" />
     <Compile Include="Event\AddPlaylistReplyEvent.cs" />
     <Compile Include="Event\AddTrackReplyEvent.cs" />

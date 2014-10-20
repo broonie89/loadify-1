@@ -19,49 +19,49 @@ namespace loadify.ViewModel
 {
     public class SettingsViewModel : ViewModelBase
     {
-        private IProxySetting _ProxySetting;
-        public IProxySetting ProxySetting
+        private IConnectionSetting _ConnectionSetting;
+        public IConnectionSetting ConnectionSetting
         {
-            get { return _ProxySetting; }
+            get { return _ConnectionSetting; }
             set
             {
-                _ProxySetting = value;
-                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IProxySetting>(ProxySetting));
+                _ConnectionSetting = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IConnectionSetting>(ConnectionSetting));
             }
         }
 
         public bool UseProxy
         {
-            get { return ProxySetting.UseProxy; }
+            get { return ConnectionSetting.UseProxy; }
             set
             {
-                if (ProxySetting.UseProxy == value) return;
-                ProxySetting.UseProxy = value;
-                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IProxySetting>(ProxySetting));
+                if (ConnectionSetting.UseProxy == value) return;
+                ConnectionSetting.UseProxy = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IConnectionSetting>(ConnectionSetting));
                 NotifyOfPropertyChange(() => UseProxy);
             }
         }
 
         public string ProxyIp
         {
-            get { return ProxySetting.ProxyIp; }
+            get { return ConnectionSetting.ProxyIp; }
             set
             {
-                if (ProxySetting.ProxyIp == value) return;
-                ProxySetting.ProxyIp = value;
-                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IProxySetting>(ProxySetting));
+                if (ConnectionSetting.ProxyIp == value) return;
+                ConnectionSetting.ProxyIp = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IConnectionSetting>(ConnectionSetting));
                 NotifyOfPropertyChange(() => ProxyIp);
             }
         }
 
         public ushort ProxyPort
         {
-            get { return ProxySetting.ProxyPort; }
+            get { return ConnectionSetting.ProxyPort; }
             set
             {
-                if (ProxySetting.ProxyPort == value) return;
-                ProxySetting.ProxyPort = value;
-                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IProxySetting>(ProxySetting));
+                if (ConnectionSetting.ProxyPort == value) return;
+                ConnectionSetting.ProxyPort = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IConnectionSetting>(ConnectionSetting));
                 NotifyOfPropertyChange(() => ProxyPort);
             }
         }
@@ -118,11 +118,11 @@ namespace loadify.ViewModel
             get { return Enum.GetValues(typeof(WriteConflictAction)).Cast<WriteConflictAction>().ToList(); }
         }
 
-        public SettingsViewModel(IEventAggregator eventAggregator, IDirectorySetting directorySetting, IProxySetting proxySetting) :
+        public SettingsViewModel(IEventAggregator eventAggregator, IDirectorySetting directorySetting, IConnectionSetting connectionSetting) :
             base(eventAggregator)
         {
             DirectorySetting = directorySetting;
-            ProxySetting = proxySetting;
+            ConnectionSetting = connectionSetting;
         }
 
         public void BrowseCacheDirectory()

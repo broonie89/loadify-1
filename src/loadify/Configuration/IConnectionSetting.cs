@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace loadify.Configuration
 {
-    public interface IProxySetting
+    public interface IConnectionSetting
     {
         bool UseProxy { get; set; }
         string ProxyIp { get; set; }
