@@ -73,6 +73,11 @@ namespace loadify.ViewModel
                 _SettingsManager.CredentialsSetting.Username = User.Name;
                 _SettingsManager.CredentialsSetting.Password = loginView.Password.Password;
             }
+            else
+            {
+                _SettingsManager.CredentialsSetting.Username = String.Empty;
+                _SettingsManager.CredentialsSetting.Password = String.Empty;
+            }
 
             _Session.Login(User.Name, password, async error =>
             {
