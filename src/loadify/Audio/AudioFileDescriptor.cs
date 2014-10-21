@@ -1,6 +1,4 @@
-﻿using loadify.Spotify;
-
-namespace loadify.Audio
+﻿namespace loadify.Audio
 {
     public abstract class AudioFileDescriptor
     {

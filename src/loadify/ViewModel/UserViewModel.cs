@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using loadify.Model;
-using SpotifySharp;
+﻿using loadify.Model;
 
 namespace loadify.ViewModel
 {

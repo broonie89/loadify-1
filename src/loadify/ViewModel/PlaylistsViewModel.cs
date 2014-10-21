@@ -2,15 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using loadify.Event;
-using loadify.Model;
 using loadify.Spotify;
-using loadify.View;
-using SpotifySharp;
 
 namespace loadify.ViewModel
 {

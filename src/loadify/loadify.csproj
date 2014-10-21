@@ -141,7 +141,6 @@
     <Compile Include="Event\DialogRequestEvent.cs" />
     <Compile Include="Event\SettingChangedEvent.cs" />
     <Compile Include="Event\SelectedTracksChangedEvent.cs" />
-    <Compile Include="Event\DownloadProgressUpdatedEvent.cs" />
     <Compile Include="Event\ErrorOcurredEvent.cs" />
     <Compile Include="Event\SessionEvent.cs" />
     <Compile Include="Event\UserInputReplyEvent.cs" />
@@ -153,8 +152,6 @@
     <Compile Include="Event\DownloadContractResumedEvent.cs" />
     <Compile Include="Event\DownloadContractCompletedEvent.cs" />
     <Compile Include="Event\DownloadContractPausedEvent.cs" />
-    <Compile Include="Event\LoginFailedEvent.cs" />
-    <Compile Include="Event\LoginSuccessfulEvent.cs" />
     <Compile Include="Event\DataRefreshRequestEvent.cs" />
     <Compile Include="Event\DownloadContractRequestEvent.cs" />
     <Compile Include="Event\DownloadContractStartedEvent.cs" />
@@ -169,13 +166,13 @@
     <Compile Include="Spotify\LoadifySession.cs" />
     <Compile Include="Model\PlaylistModel.cs" />
     <Compile Include="Audio\Mp3FileDescriptor.cs" />
-    <Compile Include="Spotify\PlayTokenLostException.cs" />
     <Compile Include="Audio\AudioMetaData.cs" />
     <Compile Include="Audio\AudioProcessor.cs" />
     <Compile Include="Audio\AudioConverter.cs" />
     <Compile Include="Spotify\SpotifyObject.cs" />
     <Compile Include="Audio\WaveAudioProcessor.cs" />
     <Compile Include="Audio\WaveToMp3Converter.cs" />
+    <Compile Include="Spotify\TrackDownloadService.cs" />
     <Compile Include="ViewModel\AboutViewModel.cs" />
     <Compile Include="ViewModel\DownloaderViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
