@@ -22,8 +22,8 @@ namespace loadify.ViewModel
     public class LoginViewModel : ViewModelBase, IHandle<LoginFailedEvent>,
                                                  IHandle<LoginSuccessfulEvent>
     {
-        private LoadifySession _Session;
-        private ISettingsManager _SettingsManager;
+        private readonly LoadifySession _Session;
+        private readonly ISettingsManager _SettingsManager;
 
         private UserViewModel _User;
         public UserViewModel User
@@ -80,9 +80,8 @@ namespace loadify.ViewModel
 
             if (RememberMe)
             {
-                Settings.Default.Username = User.Name;
-                Settings.Default.Password = loginView.Password.Password;
-                Settings.Default.Save();
+                _SettingsManager.CredentialsSetting.Username = User.Name;
+                _SettingsManager.CredentialsSetting.Password = loginView.Password.Password;
             }
 
             _Session.Login(User.Name, password);          
@@ -100,8 +99,8 @@ namespace loadify.ViewModel
             {
                 var loginView = GetView() as LoginView;
                 RememberMe = true;
-                User.Name = Settings.Default.Username;
-                loginView.Password.Password = Settings.Default.Password;
+                User.Name = _SettingsManager.CredentialsSetting.Username;
+                loginView.Password.Password = _SettingsManager.CredentialsSetting.Password;
             }        
         }
 

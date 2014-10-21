@@ -106,7 +106,9 @@ namespace loadify.ViewModel
             }
         }
 
-        public MainViewModel(LoadifySession session, UserViewModel loggedInUser, IEventAggregator eventAggregator, IWindowManager windowManager,
+        public MainViewModel(LoadifySession session, UserViewModel loggedInUser,
+                             IEventAggregator eventAggregator,
+                             IWindowManager windowManager,
                              ISettingsManager settingsManager):
             base(eventAggregator, windowManager)
         {

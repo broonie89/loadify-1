@@ -125,10 +125,12 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Configuration\EnumSetting.cs" />
     <Compile Include="Configuration\IBehaviorSetting.cs" />
+    <Compile Include="Configuration\ICredentialsSetting.cs" />
     <Compile Include="Configuration\IDirectorySetting.cs" />
     <Compile Include="Configuration\IConnectionSetting.cs" />
     <Compile Include="Configuration\ISettingsManager.cs" />
     <Compile Include="Configuration\NETBehaviorSetting.cs" />
+    <Compile Include="Configuration\NETCredentialsSetting.cs" />
     <Compile Include="Configuration\NETDirectorySetting.cs" />
     <Compile Include="Configuration\NETConnectionSetting.cs" />
     <Compile Include="Configuration\NETSettingsManager.cs" />

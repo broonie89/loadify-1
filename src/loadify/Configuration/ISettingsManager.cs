@@ -11,5 +11,6 @@ namespace loadify.Configuration
         IDirectorySetting DirectorySetting { get; set; }
         IConnectionSetting ConnectionSetting { get; set; }
         IBehaviorSetting BehaviorSetting { get; set; }
+        ICredentialsSetting CredentialsSetting { get; set; }
     }
 }

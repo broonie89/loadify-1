@@ -11,12 +11,14 @@ namespace loadify.Configuration
         public IDirectorySetting DirectorySetting { get; set; }
         public IConnectionSetting ConnectionSetting { get; set; }
         public IBehaviorSetting BehaviorSetting { get; set; }
+        public ICredentialsSetting CredentialsSetting { get; set; }
 
         public NETSettingsManager()
         {
             DirectorySetting = new NETDirectorySetting();
             ConnectionSetting = new NETConnectionSetting();
             BehaviorSetting = new NETBehaviorSetting();
+            CredentialsSetting = new NETCredentialsSetting();
         }
     }
 }
