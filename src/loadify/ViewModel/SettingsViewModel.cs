@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -9,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using Caliburn.Micro;
 using loadify.Audio;
+using loadify.Configuration;
 using loadify.Event;
 using loadify.Model;
 using loadify.Properties;
@@ -17,69 +19,77 @@ namespace loadify.ViewModel
 {
     public class SettingsViewModel : ViewModelBase
     {
+        private readonly ISettingsManager _SettingsManager;
+
         public bool UseProxy
         {
-            get { return (ProxyIP == null) ? false : ProxyIP.Length != 0 && ProxyPort != 0; }
-        }
-
-        public string ProxyIP
-        {
-            get { return Settings.Default.ProxyIP; }
+            get { return _SettingsManager.ConnectionSetting.UseProxy; }
             set
             {
-                if (Settings.Default.ProxyIP == value) return;
-                Settings.Default.ProxyIP = value;
-                Settings.Default.Save();
-                NotifyOfPropertyChange(() => ProxyIP);
+                if (_SettingsManager.ConnectionSetting.UseProxy == value) return;
+                _SettingsManager.ConnectionSetting.UseProxy = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IConnectionSetting>(_SettingsManager.ConnectionSetting));
                 NotifyOfPropertyChange(() => UseProxy);
+            }
+        }
+
+        public string ProxyIp
+        {
+            get { return _SettingsManager.ConnectionSetting.ProxyIp; }
+            set
+            {
+                if (_SettingsManager.ConnectionSetting.ProxyIp == value) return;
+                _SettingsManager.ConnectionSetting.ProxyIp = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IConnectionSetting>(_SettingsManager.ConnectionSetting));
+                NotifyOfPropertyChange(() => ProxyIp);
             }
         }
 
         public ushort ProxyPort
         {
-            get { return Settings.Default.ProxyPort; }
+            get { return _SettingsManager.ConnectionSetting.ProxyPort; }
             set
             {
-                if (Settings.Default.ProxyPort == value) return;
-                Settings.Default.ProxyPort = value;
-                Settings.Default.Save();
+                if (_SettingsManager.ConnectionSetting.ProxyPort == value) return;
+                _SettingsManager.ConnectionSetting.ProxyPort = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IConnectionSetting>(_SettingsManager.ConnectionSetting));
                 NotifyOfPropertyChange(() => ProxyPort);
-                NotifyOfPropertyChange(() => UseProxy);
             }
         }
 
         public string DownloadDirectory
         {
-            get { return Settings.Default.DownloadDirectory; }
+            get { return _SettingsManager.DirectorySetting.DownloadDirectory; }
             set
             {
-                if (Settings.Default.DownloadDirectory == value) return;
-                Settings.Default.DownloadDirectory = value;
-                Settings.Default.Save();
+                if (_SettingsManager.DirectorySetting.DownloadDirectory == value) return;
+                _SettingsManager.DirectorySetting.DownloadDirectory = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IDirectorySetting>(_SettingsManager.DirectorySetting));
                 NotifyOfPropertyChange(() => DownloadDirectory);
             }
         }
 
         public string CacheDirectory
         {
-            get { return Settings.Default.CacheDirectory; }
+            get { return _SettingsManager.DirectorySetting.CacheDirectory; }
             set
             {
-                if (Settings.Default.CacheDirectory == value) return;
-                Settings.Default.CacheDirectory = value;
-                Settings.Default.Save();
+                if (_SettingsManager.DirectorySetting.CacheDirectory == value) return;
+                _SettingsManager.DirectorySetting.CacheDirectory = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IDirectorySetting>(_SettingsManager.DirectorySetting));
                 NotifyOfPropertyChange(() => CacheDirectory);
             }
         }
 
         public WriteConflictAction WriteConflictAction
         {
-            get { return (WriteConflictAction) Enum.Parse(typeof(WriteConflictAction), Settings.Default.WriteConflictAction); }
+            get { return _SettingsManager.BehaviorSetting.WriteConflictAction.ConvertedValue; }
             set
             {
-                if (Settings.Default.WriteConflictAction == value.ToString()) return;
-                Settings.Default.WriteConflictAction = value.ToString();
-                Settings.Default.Save();
+
+                if (_SettingsManager.BehaviorSetting.WriteConflictAction.ConvertedValue == value) return;
+                _SettingsManager.BehaviorSetting.WriteConflictAction.ConvertedValue = value;
+                _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IBehaviorSetting>(_SettingsManager.BehaviorSetting));
                 NotifyOfPropertyChange(() => WriteConflictAction);
             }
         }
@@ -89,9 +99,11 @@ namespace loadify.ViewModel
             get { return Enum.GetValues(typeof(WriteConflictAction)).Cast<WriteConflictAction>().ToList(); }
         }
 
-        public SettingsViewModel(IEventAggregator eventAggregator):
+        public SettingsViewModel(IEventAggregator eventAggregator, ISettingsManager settingsManager) :
             base(eventAggregator)
-        { }
+        {
+            _SettingsManager = settingsManager;
+        }
 
         public void BrowseCacheDirectory()
         {
@@ -119,7 +131,7 @@ namespace loadify.ViewModel
 
             if (UseProxy)
             {
-                if (!Regex.IsMatch(ProxyIP, @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"))
+                if (!Regex.IsMatch(ProxyIp, @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"))
                     _EventAggregator.PublishOnUIThread(
                         new ErrorOcurredEvent("Settings Error", "The proxy IP address that was entered is not a valid IP address."));
             }

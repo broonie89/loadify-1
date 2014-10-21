@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
+using loadify.Configuration;
 using loadify.Event;
 using loadify.Model;
 using loadify.Properties;
@@ -21,7 +22,8 @@ namespace loadify.ViewModel
     public class LoginViewModel : ViewModelBase, IHandle<LoginFailedEvent>,
                                                  IHandle<LoginSuccessfulEvent>
     {
-        private LoadifySession _Session;
+        private readonly LoadifySession _Session;
+        private readonly ISettingsManager _SettingsManager;
 
         private UserViewModel _User;
         public UserViewModel User
@@ -59,11 +61,12 @@ namespace loadify.ViewModel
             }
         }
 
-        public LoginViewModel(IEventAggregator eventAggregator, IWindowManager windowManager) :
+        public LoginViewModel(IEventAggregator eventAggregator, IWindowManager windowManager, ISettingsManager netSettingsManager) :
             base(eventAggregator, windowManager)
         {
             _User = new UserViewModel();
             _Session = new LoadifySession(_EventAggregator);
+            _SettingsManager = netSettingsManager;
         }
 
 
@@ -77,9 +80,8 @@ namespace loadify.ViewModel
 
             if (RememberMe)
             {
-                Settings.Default.Username = User.Name;
-                Settings.Default.Password = loginView.Password.Password;
-                Settings.Default.Save();
+                _SettingsManager.CredentialsSetting.Username = User.Name;
+                _SettingsManager.CredentialsSetting.Password = loginView.Password.Password;
             }
 
             _Session.Login(User.Name, password);          
@@ -97,8 +99,8 @@ namespace loadify.ViewModel
             {
                 var loginView = GetView() as LoginView;
                 RememberMe = true;
-                User.Name = Settings.Default.Username;
-                loginView.Password.Password = Settings.Default.Password;
+                User.Name = _SettingsManager.CredentialsSetting.Username;
+                loginView.Password.Password = _SettingsManager.CredentialsSetting.Password;
             }        
         }
 
@@ -130,7 +132,7 @@ namespace loadify.ViewModel
         public void Handle(LoginSuccessfulEvent message)
         {
             var loginView = GetView() as LoginView;
-            _WindowManager.ShowWindow(new MainViewModel(_Session, _User, _EventAggregator, _WindowManager));
+            _WindowManager.ShowWindow(new MainViewModel(_Session, _User, _EventAggregator, _WindowManager, _SettingsManager));
             loginView.Close();
         }
     }

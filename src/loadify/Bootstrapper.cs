@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
+using loadify.Configuration;
 using loadify.ViewModel;
 
 namespace loadify
@@ -37,6 +38,7 @@ namespace loadify
 
             _Container.Singleton<IEventAggregator, EventAggregator>();
             _Container.Singleton<IWindowManager, WindowManager>();
+            _Container.Singleton<ISettingsManager, NETSettingsManager>();
             _Container.PerRequest<LoginViewModel>();
         }
 

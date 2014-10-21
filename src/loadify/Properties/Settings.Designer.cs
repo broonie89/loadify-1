@@ -64,10 +64,10 @@ namespace loadify.Properties {
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string ProxyIP {
             get {
-                return ((string)(this["ProxyIP"]));
+                return ((string)(this["ProxyIp"]));
             }
             set {
-                this["ProxyIP"] = value;
+                this["ProxyIp"] = value;
             }
         }
         

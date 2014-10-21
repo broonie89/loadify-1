@@ -1,7 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Runtime.InteropServices.ComTypes;
 using Caliburn.Micro;
+using loadify.Configuration;
 using loadify.Event;
+using loadify.Properties;
 using loadify.Spotify;
 using loadify.View;
 using MahApps.Metro.Controls.Dialogs;
@@ -104,7 +106,10 @@ namespace loadify.ViewModel
             }
         }
 
-        public MainViewModel(LoadifySession session, UserViewModel loggedInUser, IEventAggregator eventAggregator, IWindowManager windowManager):
+        public MainViewModel(LoadifySession session, UserViewModel loggedInUser,
+                             IEventAggregator eventAggregator,
+                             IWindowManager windowManager,
+                             ISettingsManager settingsManager):
             base(eventAggregator, windowManager)
         {
             _Session = session;
@@ -112,7 +117,7 @@ namespace loadify.ViewModel
             _Menu = new MenuViewModel(_EventAggregator, _WindowManager);
             _Status = new StatusViewModel(loggedInUser, _EventAggregator);
             _Playlists = new PlaylistsViewModel(_EventAggregator);
-            _Settings = new SettingsViewModel(_EventAggregator);
+            _Settings = new SettingsViewModel(_EventAggregator, settingsManager);
 
             _EventAggregator.PublishOnUIThread(new DataRefreshAuthorizedEvent(_Session));
         }
