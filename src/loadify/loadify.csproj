@@ -153,8 +153,6 @@
     <Compile Include="Event\DownloadContractResumedEvent.cs" />
     <Compile Include="Event\DownloadContractCompletedEvent.cs" />
     <Compile Include="Event\DownloadContractPausedEvent.cs" />
-    <Compile Include="Event\LoginFailedEvent.cs" />
-    <Compile Include="Event\LoginSuccessfulEvent.cs" />
     <Compile Include="Event\DataRefreshRequestEvent.cs" />
     <Compile Include="Event\DownloadContractRequestEvent.cs" />
     <Compile Include="Event\DownloadContractStartedEvent.cs" />

@@ -100,6 +100,8 @@ namespace loadify.Spotify
         private SynchronizationContext _Synchronization { get; set; }
         private TrackCaptureService _TrackCaptureService { get; set; }
 
+        private Action<SpotifyError> _LoggedInCallback = error => { };
+
         public bool Connected
         {
             get
@@ -148,10 +150,11 @@ namespace loadify.Spotify
             _Session = SpotifySession.Create(config);
         }
 
-        public void Login(string username, string password)
+        public void Login(string username, string password, Action<SpotifyError> callback)
         {
             if (Connected) return;
             _Session.Login(username, password, false, null);
+            _LoggedInCallback = callback;
         }
 
         public async Task<IEnumerable<PlaylistModel>> GetPlaylists()
@@ -267,12 +270,9 @@ namespace loadify.Spotify
             {
                 await SpotifyObject.WaitForInitialization(session.User().IsLoaded);
                 _Session.PreferredBitrate(BitRate._320k);
-                _EventAggregator.PublishOnUIThread(new LoginSuccessfulEvent());
             }
-            else
-                _EventAggregator.PublishOnUIThread(new LoginFailedEvent(error));
 
-            base.LoggedIn(session, error);
+            _LoggedInCallback(error);
         }
 
         public override int MusicDelivery(SpotifySession session, AudioFormat format, IntPtr frames, int num_frames)

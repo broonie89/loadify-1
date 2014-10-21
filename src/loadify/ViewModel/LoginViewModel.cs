@@ -19,8 +19,7 @@ using SpotifySharp;
 
 namespace loadify.ViewModel
 {
-    public class LoginViewModel : ViewModelBase, IHandle<LoginFailedEvent>,
-                                                 IHandle<LoginSuccessfulEvent>
+    public class LoginViewModel : ViewModelBase
     {
         private readonly LoadifySession _Session;
         private readonly ISettingsManager _SettingsManager;
@@ -84,7 +83,37 @@ namespace loadify.ViewModel
                 _SettingsManager.CredentialsSetting.Password = loginView.Password.Password;
             }
 
-            _Session.Login(User.Name, password);          
+            _Session.Login(User.Name, password, async error =>
+            {
+                if (error == SpotifyError.Ok)
+                {
+                    _WindowManager.ShowWindow(new MainViewModel(_Session, _User, _EventAggregator, _WindowManager, _SettingsManager));
+                    loginView.Close();            
+                }
+                else
+                {
+                    LoginProcessActive = false;
+
+                    switch (error)
+                    {
+                        case SpotifyError.BadUsernameOrPassword:
+                        {
+                            await loginView.ShowMessageAsync("Login failed", "Name or password is wrong");
+                            break;
+                        }
+                        case SpotifyError.UnableToContactServer:
+                        {
+                            await loginView.ShowMessageAsync("Login failed", "No connection to the Spotify servers could be made");
+                            break;
+                        }
+                        default:
+                        {
+                            await loginView.ShowMessageAsync("Login failed", "Unknown error: " + error);
+                            break;
+                        }
+                    }
+                }
+            });          
         }
 
         public void OnKeyUp(Key key)
@@ -102,38 +131,6 @@ namespace loadify.ViewModel
                 User.Name = _SettingsManager.CredentialsSetting.Username;
                 loginView.Password.Password = _SettingsManager.CredentialsSetting.Password;
             }        
-        }
-
-        public void Handle(LoginFailedEvent message)
-        {
-            var view = GetView() as LoginView;
-            LoginProcessActive = false;
-
-            switch (message.Error)
-            {
-                case SpotifyError.BadUsernameOrPassword:
-                {
-                    view.ShowMessageAsync("Login failed", "Name or password is wrong");
-                    break;
-                }
-                case SpotifyError.UnableToContactServer:
-                {
-                    view.ShowMessageAsync("Login failed", "No connection to the Spotify servers could be made");
-                    break;
-                }
-                default:
-                {
-                    view.ShowMessageAsync("Login failed", "Unknown error: " + message.Error);
-                    break;
-                }
-            }
-        }
-
-        public void Handle(LoginSuccessfulEvent message)
-        {
-            var loginView = GetView() as LoginView;
-            _WindowManager.ShowWindow(new MainViewModel(_Session, _User, _EventAggregator, _WindowManager, _SettingsManager));
-            loginView.Close();
         }
     }
 }
