@@ -171,10 +171,7 @@ namespace loadify.Spotify
             if (_TrackDownloadService != null)
             {
                 if (_TrackDownloadService.Active)
-                {
                     _TrackDownloadService.ProcessInput(format, frames, num_frames);
-                    _EventAggregator.PublishOnUIThread(new DownloadProgressUpdatedEvent(_TrackDownloadService.Progress));
-                }
             }
 
             return num_frames;

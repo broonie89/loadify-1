@@ -141,7 +141,6 @@
     <Compile Include="Event\DialogRequestEvent.cs" />
     <Compile Include="Event\SettingChangedEvent.cs" />
     <Compile Include="Event\SelectedTracksChangedEvent.cs" />
-    <Compile Include="Event\DownloadProgressUpdatedEvent.cs" />
     <Compile Include="Event\ErrorOcurredEvent.cs" />
     <Compile Include="Event\SessionEvent.cs" />
     <Compile Include="Event\UserInputReplyEvent.cs" />

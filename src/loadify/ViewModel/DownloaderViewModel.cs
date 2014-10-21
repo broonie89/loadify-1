@@ -19,7 +19,6 @@ namespace loadify.ViewModel
 {
     public class DownloaderViewModel : ViewModelBase, IHandle<DownloadContractStartedEvent>, 
                                                       IHandle<DownloadContractResumedEvent>,
-                                                      IHandle<DownloadProgressUpdatedEvent>,
                                                       IHandle<SettingChangedEvent<IDirectorySetting>>
     {
         private IDirectorySetting _DirectorySetting;
@@ -174,6 +173,10 @@ namespace loadify.ViewModel
 
                                             if(RemainingTracks.Count == 0)
                                                 _EventAggregator.PublishOnUIThread(new DownloadContractCompletedEvent());
+                                        },
+                                        progress =>
+                                        {
+                                            TrackProgress = progress;
                                         }));            
             }     
         }
@@ -188,11 +191,6 @@ namespace loadify.ViewModel
         public void Handle(DownloadContractResumedEvent message)
         {
             StartDownload(message.Session, message.DownloadIndex);
-        }
-
-        public void Handle(DownloadProgressUpdatedEvent message)
-        {
-            TrackProgress = message.Progress;
         }
 
         public void Handle(SettingChangedEvent<IDirectorySetting> message)

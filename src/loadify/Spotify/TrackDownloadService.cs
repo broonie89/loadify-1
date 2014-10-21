@@ -45,6 +45,7 @@ namespace loadify.Spotify
 
         private Statistic _Statistic = new Statistic();
         private readonly Action<CancellationReason> _DownloadCompletedCallback = cancellationReason => { };
+        private readonly Action<double> _DownloadProgressUpdatedCallback = progress => { };
 
         public double Progress
         {
@@ -58,12 +59,13 @@ namespace loadify.Spotify
         }
 
         public TrackDownloadService(AudioProcessor audioProcessor, AudioConverter audioConverter, AudioFileDescriptor audioFileDescriptor,
-                                    Action<CancellationReason> callback)
+                                    Action<CancellationReason> downloadCompletedCallback, Action<double> downloadProgressUpdatedCallback)
         {
             AudioProcessor = audioProcessor;
             AudioConverter = audioConverter;
             AudioFileDescriptor = audioFileDescriptor;
-            _DownloadCompletedCallback = callback;
+            _DownloadCompletedCallback = downloadCompletedCallback;
+            _DownloadProgressUpdatedCallback = downloadProgressUpdatedCallback;
             AudioMetaData = new AudioMetaData();
         }
 
@@ -91,6 +93,8 @@ namespace loadify.Spotify
 
             _Statistic.Processings++;
             _Statistic.AverageFrameSize = (_Statistic.AverageFrameSize + size) / 2;
+
+            _DownloadProgressUpdatedCallback(Progress);
         }
 
         public void Finish()
