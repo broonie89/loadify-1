@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms.VisualStyles;
-using Caliburn.Micro;
-using loadify.Audio;
-using loadify.Event;
 using loadify.Model;
 using SpotifySharp;
 
@@ -16,7 +10,6 @@ namespace loadify.Spotify
 {
     public class LoadifySession : SpotifySessionListener
     {
-        private readonly IEventAggregator _EventAggregator;
         private SpotifySession _Session { get; set; }
         private SynchronizationContext _Synchronization { get; set; }
         private TrackDownloadService _TrackDownloadService { get; set; }
@@ -32,9 +25,8 @@ namespace loadify.Spotify
             }
         }
 
-        public LoadifySession(IEventAggregator eventAggregator)
+        public LoadifySession()
         {
-            _EventAggregator = eventAggregator;
             Setup();
         }
 

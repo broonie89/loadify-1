@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -12,8 +9,6 @@ using Caliburn.Micro;
 using loadify.Audio;
 using loadify.Configuration;
 using loadify.Event;
-using loadify.Model;
-using loadify.Properties;
 
 namespace loadify.ViewModel
 {

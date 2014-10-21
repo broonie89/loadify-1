@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Caliburn.Micro;
 using loadify.Audio;
 using loadify.Configuration;
 using loadify.Event;
-using loadify.Model;
 using loadify.Properties;
 using loadify.Spotify;
-using SpotifySharp;
 
 namespace loadify.ViewModel
 {

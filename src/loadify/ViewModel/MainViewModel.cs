@@ -1,13 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.Runtime.InteropServices.ComTypes;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using loadify.Configuration;
 using loadify.Event;
-using loadify.Properties;
 using loadify.Spotify;
 using loadify.View;
 using MahApps.Metro.Controls.Dialogs;
-using SpotifySharp;
 
 namespace loadify.ViewModel
 {

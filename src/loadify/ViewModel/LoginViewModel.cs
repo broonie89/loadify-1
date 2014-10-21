@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using loadify.Configuration;
-using loadify.Event;
-using loadify.Model;
 using loadify.Properties;
 using loadify.Spotify;
 using loadify.View;
@@ -64,7 +55,7 @@ namespace loadify.ViewModel
             base(eventAggregator, windowManager)
         {
             _User = new UserViewModel();
-            _Session = new LoadifySession(_EventAggregator);
+            _Session = new LoadifySession();
             _SettingsManager = netSettingsManager;
         }
 
