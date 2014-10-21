@@ -22,6 +22,8 @@ namespace loadify.ViewModel
                                                       IHandle<DownloadProgressUpdatedEvent>,
                                                       IHandle<SettingChangedEvent<IDirectorySetting>>
     {
+        private IDirectorySetting _DirectorySetting;
+
         private TrackViewModel _CurrentTrack;
         public TrackViewModel CurrentTrack
         {
@@ -99,8 +101,6 @@ namespace loadify.ViewModel
             get { return RemainingTracks.Count != 0; }
         }
 
-        private IDirectorySetting _DirectorySetting;
-
         public DownloaderViewModel(IEventAggregator eventAggregator):
             base(eventAggregator)
         {
@@ -109,7 +109,7 @@ namespace loadify.ViewModel
             _CurrentTrack = new TrackViewModel(_EventAggregator);
         }
 
-        public async void StartDownload(LoadifySession session, int startIndex = 0)
+        public void StartDownload(LoadifySession session, int startIndex = 0)
         {
             try
             {
@@ -139,40 +139,43 @@ namespace loadify.ViewModel
             {
                 CurrentTrack = track;
 
-                try
-                {
-                    await session.DownloadTrack(CurrentTrack.Track,
-                                                new WaveAudioProcessor(_DirectorySetting.DownloadDirectory, CurrentTrack.Name),
-                                                new WaveToMp3Converter(_DirectorySetting.DownloadDirectory, CurrentTrack.Name),
-                                                new Mp3FileDescriptor(new AudioFileMetaData() 
-                                                { 
-                                                    Title = CurrentTrack.Name,
-                                                    Artists = CurrentTrack.Artists,
-                                                    Album = CurrentTrack.Album.Name,
-                                                    Year = CurrentTrack.Album.ReleaseYear,
-                                                    Cover = CurrentTrack.Album.Cover
-                                                 }));
+                session.DownloadTrack(CurrentTrack.Track, 
+                                        new TrackDownloadService(
+                                        new WaveAudioProcessor(_DirectorySetting.DownloadDirectory, CurrentTrack.Name),
+                                        new WaveToMp3Converter(_DirectorySetting.DownloadDirectory, CurrentTrack.Name),
+                                        new Mp3FileDescriptor(new AudioFileMetaData() 
+                                        { 
+                                            Title = CurrentTrack.Name,
+                                            Artists = CurrentTrack.Artists,
+                                            Album = CurrentTrack.Album.Name,
+                                            Year = CurrentTrack.Album.ReleaseYear,
+                                            Cover = CurrentTrack.Album.Cover
+                                        }),
+                                        reason =>
+                                        {
+                                            if (reason == TrackDownloadService.CancellationReason.None)
+                                            {
+                                                DownloadedTracks.Add(CurrentTrack);
+                                                RemainingTracks.Remove(CurrentTrack);
+                                                NotifyOfPropertyChange(() => TotalProgress);
+                                                NotifyOfPropertyChange(() => Active);
+                                                NotifyOfPropertyChange(() => DownloadedTracks);
+                                                NotifyOfPropertyChange(() => RemainingTracks);
+                                                NotifyOfPropertyChange(() => CurrentTrackIndex);
+                                            }
+                                            else
+                                            {
+                                                _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(
+                                                    String.Format("{0} could not be downloaded because the logged-in" +
+                                                                    " Spotify account is in use",
+                                                    CurrentTrack.ToString()),
+                                                    RemainingTracks.IndexOf(CurrentTrack)));
+                                            }   
 
-                    DownloadedTracks.Add(CurrentTrack);
-                    RemainingTracks.Remove(CurrentTrack);
-                    NotifyOfPropertyChange(() => TotalProgress);
-                    NotifyOfPropertyChange(() => Active);
-                    NotifyOfPropertyChange(() => DownloadedTracks);
-                    NotifyOfPropertyChange(() => RemainingTracks);
-                    NotifyOfPropertyChange(() => CurrentTrackIndex);
-                }
-                catch (PlayTokenLostException)
-                {
-                    _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(
-                                                            String.Format("{0} could not be downloaded because the logged-in" +
-                                                                          " Spotify account is in use",
-                                                            CurrentTrack.ToString()),
-                                                            RemainingTracks.IndexOf(CurrentTrack)));
-                    break;
-                }       
-            }   
-
-            _EventAggregator.PublishOnUIThread(new DownloadContractCompletedEvent());
+                                            if(RemainingTracks.Count == 0)
+                                                _EventAggregator.PublishOnUIThread(new DownloadContractCompletedEvent());
+                                        }));            
+            }     
         }
 
         public void Handle(DownloadContractStartedEvent message)

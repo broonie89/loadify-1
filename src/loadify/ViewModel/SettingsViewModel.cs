@@ -103,6 +103,7 @@ namespace loadify.ViewModel
             base(eventAggregator)
         {
             _SettingsManager = settingsManager;
+            _EventAggregator.PublishOnUIThread(new SettingChangedEvent<IDirectorySetting>(_SettingsManager.DirectorySetting));
         }
 
         public void BrowseCacheDirectory()

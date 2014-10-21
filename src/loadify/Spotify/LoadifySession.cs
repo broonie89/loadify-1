@@ -16,91 +16,12 @@ namespace loadify.Spotify
 {
     public class LoadifySession : SpotifySessionListener
     {
-        private class TrackCaptureService
-        {
-            private class CaptureStatistic
-            {
-                public TimeSpan TargetDuration { get; set; }
-                public uint Processings { get; set; }
-                public double AverageFrameSize { get; set; }
-
-                public CaptureStatistic(TimeSpan targetDuration)
-                {
-                    TargetDuration = targetDuration;
-                }
-
-                public CaptureStatistic()
-                    : this(new TimeSpan())
-                { }
-            }
-
-
-            public enum CancellationReason
-            {
-                None,
-                PlayTokenLost,
-                Unknown,
-                ConnectionLost
-            };
-
-            public bool Active { get; set; }
-            public bool Finished { get; set; }
-            public CancellationReason Cancellation { get; set; }
-            public AudioMetaData AudioMetaData { get; set; }
-            public AudioProcessor AudioProcessor { get; set; }
-            private CaptureStatistic _Statistic = new CaptureStatistic();
-
-            public double Progress
-            {
-                get
-                {
-                    var trackDuration = _Statistic.TargetDuration.TotalMilliseconds;
-                    return (trackDuration != 0)
-                            ? 100/_Statistic.TargetDuration.TotalMilliseconds*(46.4*_Statistic.Processings)
-                            : 100;
-                }
-            }
-
-            public TrackCaptureService()
-            {
-                Cancellation = CancellationReason.None;
-                AudioMetaData = new AudioMetaData();
-            }
-
-            public void Start(TrackModel track, AudioProcessor audioProcessor)
-            {
-                _Statistic = new CaptureStatistic(track.Duration);
-                AudioProcessor = audioProcessor;
-                Active = true;
-            }
-
-            public void Stop()
-            {
-                AudioProcessor.Release();
-                Active = false;
-            }
-
-            public void ProcessInput(AudioFormat format, IntPtr frames, int num_frames)
-            {
-                AudioMetaData.SampleRate = format.sample_rate;
-                AudioMetaData.Channels = format.channels;
-
-                var size = num_frames * format.channels * 2;
-                var buffer = new byte[size];
-                Marshal.Copy(frames, buffer, 0, size);
-                AudioProcessor.Process(buffer);
-
-                _Statistic.Processings++;
-                _Statistic.AverageFrameSize = (_Statistic.AverageFrameSize + size) / 2;
-            }
-        }
-
-        private IEventAggregator _EventAggregator;
+        private readonly IEventAggregator _EventAggregator;
         private SpotifySession _Session { get; set; }
         private SynchronizationContext _Synchronization { get; set; }
-        private TrackCaptureService _TrackCaptureService { get; set; }
+        private TrackDownloadService _TrackDownloadService { get; set; }
 
-        private Action<SpotifyError> _LoggedInCallback = error => { };
+        private Action<SpotifyError> _LoggedInCallback = error => { };    
 
         public bool Connected
         {
@@ -113,7 +34,6 @@ namespace loadify.Spotify
 
         public LoadifySession(IEventAggregator eventAggregator)
         {
-            _TrackCaptureService = new TrackCaptureService();
             _EventAggregator = eventAggregator;
             Setup();
         }
@@ -153,8 +73,8 @@ namespace loadify.Spotify
         public void Login(string username, string password, Action<SpotifyError> callback)
         {
             if (Connected) return;
-            _Session.Login(username, password, false, null);
             _LoggedInCallback = callback;
+            _Session.Login(username, password, false, null);
         }
 
         public async Task<IEnumerable<PlaylistModel>> GetPlaylists()
@@ -183,43 +103,12 @@ namespace loadify.Spotify
             return Image.Create(_Session, imageId);
         }
 
-        public async Task DownloadTrack(TrackModel track, AudioProcessor audioProcessor, AudioConverter audioConverter, AudioFileDescriptor audioFileDescriptor)
+        public void DownloadTrack(TrackModel track, TrackDownloadService trackDownloadService)
         {
-            await Task.Run(() =>
-            {
-                _TrackCaptureService = new TrackCaptureService();
-                _TrackCaptureService.Start(track, audioProcessor);
-                _Session.PlayerLoad(track.UnmanagedTrack);
-                _Session.PlayerPlay(true);
-
-                while (true)
-                {
-                    if (_TrackCaptureService.Finished)
-                    {
-                        var outputFilePath = audioProcessor.OutputFilePath;
-                        if (audioConverter != null)
-                            outputFilePath = audioConverter.Convert(_TrackCaptureService.AudioProcessor.OutputFilePath);
-
-                        if(audioFileDescriptor != null)
-                            audioFileDescriptor.Write(outputFilePath);
-
-                        break;
-                    }
-
-                    if (_TrackCaptureService.Cancellation == TrackCaptureService.CancellationReason.PlayTokenLost)
-                        throw new PlayTokenLostException("Track could not be downloaded, the play token has been lost");
-                }
-            });
-        }
-
-        public async Task DownloadTrack(TrackModel track, AudioProcessor audioProcessor, AudioConverter audioConverter)
-        {
-            await DownloadTrack(track, audioProcessor, audioConverter, null);
-        }
-
-        public async Task DownloadTrack(TrackModel track, AudioProcessor audioProcessor)
-        {
-            await DownloadTrack(track, audioProcessor, null, null);
+            _TrackDownloadService = trackDownloadService;
+            _TrackDownloadService.Start(track);
+            _Session.PlayerLoad(track.UnmanagedTrack);
+            _Session.PlayerPlay(true);
         }
 
         public async Task<PlaylistModel> GetPlaylist(string url)
@@ -253,7 +142,7 @@ namespace loadify.Spotify
 
         void ProcessEvents()
         {
-            int timeout = 0;
+            var timeout = 0;
             while (timeout == 0)
                 _Session.ProcessEvents(ref timeout);
         }
@@ -277,10 +166,15 @@ namespace loadify.Spotify
 
         public override int MusicDelivery(SpotifySession session, AudioFormat format, IntPtr frames, int num_frames)
         {
-            if (num_frames != 0 && _TrackCaptureService.Active)
+            if (num_frames == 0) return num_frames;
+
+            if (_TrackDownloadService != null)
             {
-                _TrackCaptureService.ProcessInput(format, frames, num_frames);
-                _EventAggregator.PublishOnUIThread(new DownloadProgressUpdatedEvent(_TrackCaptureService.Progress));
+                if (_TrackDownloadService.Active)
+                {
+                    _TrackDownloadService.ProcessInput(format, frames, num_frames);
+                    _EventAggregator.PublishOnUIThread(new DownloadProgressUpdatedEvent(_TrackDownloadService.Progress));
+                }
             }
 
             return num_frames;
@@ -288,18 +182,17 @@ namespace loadify.Spotify
 
         public override void PlayTokenLost(SpotifySession session)
         {
-            if (_TrackCaptureService.Active)
+            if (_TrackDownloadService != null)
             {
-                _TrackCaptureService.Stop();
-                _TrackCaptureService.Cancellation = TrackCaptureService.CancellationReason.PlayTokenLost;
+                if (_TrackDownloadService.Active)
+                    _TrackDownloadService.Cancel(TrackDownloadService.CancellationReason.PlayTokenLost);
             }
         }
 
         public override void EndOfTrack(SpotifySession session)
         {
             _Session.PlayerPlay(false);
-            _TrackCaptureService.Stop();
-            _TrackCaptureService.Finished = true;
+            _TrackDownloadService.Finish();
         }
     }
 }
