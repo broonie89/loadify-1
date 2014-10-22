@@ -39,7 +39,9 @@ namespace loadify.Spotify
         {
             if (_Session == null) return;
             _Session.Logout();
-            _Session.Playlistcontainer().Release();
+            
+            if(_Session.Playlistcontainer() != null)
+                _Session.Playlistcontainer().Release();
         }
 
         private void Setup()
