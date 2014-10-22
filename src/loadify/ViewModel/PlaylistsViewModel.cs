@@ -87,8 +87,11 @@ namespace loadify.ViewModel
             {
                 var totalDuration = new TimeSpan();
                 totalDuration = SelectedTracks.Aggregate(totalDuration, (current, selectedTrack) => current + selectedTrack.Duration);
-
-                return new DateTime(new TimeSpan((long) (((double) 100/165) * totalDuration.Ticks)).Ticks).ToString("HH:mm:ss");
+                var estimatedTime = new TimeSpan((long) (((double) 100/165)*totalDuration.Ticks));
+                return String.Format("{0}:{1}:{2}",
+                                    ((int) estimatedTime.TotalHours).ToString("00"),
+                                    estimatedTime.Minutes.ToString("00"),
+                                    estimatedTime.Seconds.ToString("00"));
             }
         }
 
