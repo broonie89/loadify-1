@@ -9,15 +9,18 @@
              xmlns:cal="http://www.caliburnproject.org"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:converter="clr-namespace:loadify.ValueConverter"
              mc:Ignorable="d" 
              d:DesignHeight="371" d:DesignWidth="300">
     <UserControl.Resources>
+        <converter:ExistsToImageSourceConverter x:Key="ExistsToImageSourceConverter"/>
         <mock:PlaylistsMock x:Key="PlaylistsMock"/>
         <DataTemplate x:Key="TrackTemplate" DataType="viewmodel:TrackViewModel">
             <StackPanel Orientation="Horizontal">
                 <StackPanel.ToolTip>
                     <TextBlock Text="{Binding Duration, StringFormat=Duration: {0}}"/>
                 </StackPanel.ToolTip>
+                <Image Source="{Binding ExistsLocally, Converter={StaticResource ExistsToImageSourceConverter}}" Width="20" Height="20" Margin="3 0"/>
                 <CheckBox IsChecked="{Binding Selected, Mode=TwoWay}"/>
                 <TextBlock>
                     <TextBlock.Text>
@@ -42,7 +45,7 @@
                                   cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                   cal:Message.Attach="[Event Click] = [Action RemovePlaylist($dataContext)]"/>
                     </ContextMenu>
-                </StackPanel.ContextMenu>
+                </StackPanel.ContextMenu> 
                 <CheckBox IsChecked="{Binding AllTracksSelected}" IsThreeState="True"/>
                 <TextBlock>
                     <TextBlock.Text>

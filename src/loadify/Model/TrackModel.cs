@@ -15,6 +15,7 @@ namespace loadify.Model
         public List<ArtistModel> Artists { get; set; }
         public int Rating { get; set; }
         public AlbumModel Album { get; set; }
+        public bool ExistsLocally { get; set; }
 
         public TrackModel(Track unmanagedTrack):
             this()

@@ -172,6 +172,7 @@
     <Compile Include="Audio\WaveAudioProcessor.cs" />
     <Compile Include="Audio\WaveToMp3Converter.cs" />
     <Compile Include="Spotify\TrackDownloadService.cs" />
+    <Compile Include="ValueConverter\ExistsToImageSourceConverter.cs" />
     <Compile Include="ViewModel\AboutViewModel.cs" />
     <Compile Include="ViewModel\DownloaderViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
