@@ -294,6 +294,8 @@
     <Content Include="libmp3lame.64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\success_tick.png" />
+    <Resource Include="Resources\error_cross.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

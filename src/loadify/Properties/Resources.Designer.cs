@@ -9,6 +9,9 @@
 //------------------------------------------------------------------------------
 
 namespace loadify.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -60,6 +63,16 @@ namespace loadify.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap error_cross {
+            get {
+                object obj = ResourceManager.GetObject("error_cross", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap refresh_icon {
             get {
                 object obj = ResourceManager.GetObject("refresh_icon", resourceCulture);
@@ -74,6 +87,16 @@ namespace loadify.Properties {
             get {
                 object obj = ResourceManager.GetObject("spotify_appkey", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap success_tick {
+            get {
+                object obj = ResourceManager.GetObject("success_tick", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
