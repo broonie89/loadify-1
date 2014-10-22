@@ -12,7 +12,8 @@ using loadify.Spotify;
 namespace loadify.ViewModel
 {
     public class DownloaderViewModel : ViewModelBase, IHandle<DownloadContractStartedEvent>, 
-                                                      IHandle<DownloadContractResumedEvent>
+                                                      IHandle<DownloadContractResumedEvent>,
+                                                      IHandle<DownloadContractCompletedEvent>
     {
         private TrackViewModel _CurrentTrack;
         public TrackViewModel CurrentTrack
@@ -182,6 +183,13 @@ namespace loadify.ViewModel
         public void Handle(DownloadContractResumedEvent message)
         {
             StartDownload(message.Session, message.DownloadIndex);
+        }
+
+        public void Handle(DownloadContractCompletedEvent message)
+        {
+            DownloadedTracks = new ObservableCollection<TrackViewModel>();
+            RemainingTracks = new ObservableCollection<TrackViewModel>();
+            _TrackProgress = 0;
         }
     }
 }

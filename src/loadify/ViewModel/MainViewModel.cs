@@ -139,9 +139,14 @@ namespace loadify.ViewModel
         public async void Handle(DownloadContractPausedEvent message)
         {
             var view = GetView() as MainView;
-            await view.ShowMessageAsync("Download Error", message.Reason 
-                                        + "\nPlease resolve this error before continuing downloading");
-            _EventAggregator.PublishOnUIThread(new DownloadContractResumedEvent(_Session));
+            var dialogResult = await view.ShowMessageAsync("Download Paused", message.Reason 
+                                        + "\nPlease resolve this error before continuing downloading",
+                                        MessageDialogStyle.AffirmativeAndNegative);
+            
+            if(dialogResult == MessageDialogResult.Affirmative) // pressed "OK"
+                _EventAggregator.PublishOnUIThread(new DownloadContractResumedEvent(_Session));
+            else
+                _EventAggregator.PublishOnUIThread(new DownloadContractCompletedEvent());
         }
 
         public async void Handle(AddPlaylistRequestEvent message)
