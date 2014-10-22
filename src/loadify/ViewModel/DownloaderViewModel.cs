@@ -12,11 +12,8 @@ using loadify.Spotify;
 namespace loadify.ViewModel
 {
     public class DownloaderViewModel : ViewModelBase, IHandle<DownloadContractStartedEvent>, 
-                                                      IHandle<DownloadContractResumedEvent>,
-                                                      IHandle<SettingChangedEvent<IDirectorySetting>>
+                                                      IHandle<DownloadContractResumedEvent>
     {
-        private IDirectorySetting _DirectorySetting;
-
         private TrackViewModel _CurrentTrack;
         public TrackViewModel CurrentTrack
         {
@@ -94,8 +91,8 @@ namespace loadify.ViewModel
             get { return RemainingTracks.Count != 0; }
         }
 
-        public DownloaderViewModel(IEventAggregator eventAggregator):
-            base(eventAggregator)
+        public DownloaderViewModel(IEventAggregator eventAggregator, ISettingsManager settingsManager):
+            base(eventAggregator, settingsManager)
         {
             _DownloadedTracks = new ObservableCollection<TrackViewModel>();
             _RemainingTracks = new ObservableCollection<TrackViewModel>();
@@ -134,8 +131,8 @@ namespace loadify.ViewModel
 
                 session.DownloadTrack(CurrentTrack.Track, 
                                         new TrackDownloadService(
-                                        new WaveAudioProcessor(_DirectorySetting.DownloadDirectory, CurrentTrack.Name),
-                                        new WaveToMp3Converter(_DirectorySetting.DownloadDirectory, CurrentTrack.Name),
+                                        new WaveAudioProcessor(_SettingsManager.DirectorySetting.DownloadDirectory, CurrentTrack.Name),
+                                        new WaveToMp3Converter(_SettingsManager.DirectorySetting.DownloadDirectory, CurrentTrack.Name),
                                         new Mp3FileDescriptor(new AudioFileMetaData() 
                                         { 
                                             Title = CurrentTrack.Name,
@@ -185,11 +182,6 @@ namespace loadify.ViewModel
         public void Handle(DownloadContractResumedEvent message)
         {
             StartDownload(message.Session, message.DownloadIndex);
-        }
-
-        public void Handle(SettingChangedEvent<IDirectorySetting> message)
-        {
-            _DirectorySetting = message.Setting;
         }
     }
 }

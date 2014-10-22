@@ -1,5 +1,6 @@
 ﻿using System.Windows.Threading;
 using Caliburn.Micro;
+using loadify.Configuration;
 
 namespace loadify.ViewModel
 {
@@ -7,31 +8,24 @@ namespace loadify.ViewModel
     {
         protected IEventAggregator _EventAggregator;
         protected IWindowManager _WindowManager;
+        protected ISettingsManager _SettingsManager;
         private Dispatcher _Dispatcher;
 
-        public ViewModelBase(IEventAggregator eventAggregator, IWindowManager windowManager)
-            : this(eventAggregator)
+        public ViewModelBase(IEventAggregator eventAggregator = null, IWindowManager windowManager = null, ISettingsManager settingsManager = null)
         {
             _WindowManager = windowManager;
-        }
+            _SettingsManager = settingsManager;
 
-        public ViewModelBase(IEventAggregator eventAggregator)
-            : this()
-        {
             _EventAggregator = eventAggregator;
-            _EventAggregator.Subscribe(this);
-        }
+            if (_EventAggregator != null)
+                _EventAggregator.Subscribe(this);
 
-        public ViewModelBase(IWindowManager windowManager)
-            : this()
-        {
-            _WindowManager = windowManager;
-        }
-
-        public ViewModelBase()
-        {
             _Dispatcher = Dispatcher.CurrentDispatcher;
         }
+
+         public ViewModelBase(IEventAggregator eventAggregator, ISettingsManager settingsManager):
+             this(eventAggregator, null, settingsManager)
+        {  }
 
         protected void Execute(System.Action action)
         {

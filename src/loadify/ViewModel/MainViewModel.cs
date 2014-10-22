@@ -106,14 +106,14 @@ namespace loadify.ViewModel
                              IEventAggregator eventAggregator,
                              IWindowManager windowManager,
                              ISettingsManager settingsManager):
-            base(eventAggregator, windowManager)
+            base(eventAggregator, windowManager, settingsManager)
         {
             _Session = session;
             _LoggedInUser = loggedInUser;
             _Menu = new MenuViewModel(_EventAggregator, _WindowManager);
-            _Status = new StatusViewModel(loggedInUser, _EventAggregator);
+            _Status = new StatusViewModel(loggedInUser, new DownloaderViewModel(_EventAggregator, _SettingsManager),  _EventAggregator);
             _Playlists = new PlaylistsViewModel(_EventAggregator);
-            _Settings = new SettingsViewModel(_EventAggregator, settingsManager);
+            _Settings = new SettingsViewModel(_EventAggregator, _SettingsManager);
 
             _EventAggregator.PublishOnUIThread(new DataRefreshAuthorizedEvent(_Session));
         }

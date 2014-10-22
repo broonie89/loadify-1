@@ -28,15 +28,11 @@ namespace loadify.ViewModel
             }
         }
 
-        public StatusViewModel(UserViewModel loggedInUser, IEventAggregator eventAggregator):
+        public StatusViewModel(UserViewModel loggedInUser, DownloaderViewModel downloaderViewModel, IEventAggregator eventAggregator):
             base(eventAggregator)
         {
             LoggedInUser = loggedInUser;
-            Downloader = new DownloaderViewModel(_EventAggregator);
+            Downloader = downloaderViewModel;
         }
-
-        public StatusViewModel(IEventAggregator eventAggregator):
-            this(new UserViewModel(), eventAggregator)
-        { }
     }
 }

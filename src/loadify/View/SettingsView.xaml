@@ -7,7 +7,7 @@
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
              d:DesignHeight="320" d:DesignWidth="500">
-    <Grid cal:Message.Attach="[Event LostFocus] = [Action Validate($eventArgs)]">
+    <Grid>
         <TabControl Margin="5">
             <TabItem Header="Directories">
                 <Grid Background="Transparent">
@@ -77,9 +77,9 @@
                                 <ColumnDefinition Width="47*"/>
                                 <ColumnDefinition Width="110*"/>
                             </Grid.ColumnDefinitions>
-                            <CheckBox x:Name="UseProxy" IsEnabled="False" Content="Enabled" Margin="5 0"/>
+                            <CheckBox x:Name="UseProxy" Content="Enabled" Margin="5 0"/>
                             <Label Content="IP:" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Grid.Column="1"/>
-                            <TextBox x:Name="ProxyIp" controls:TextboxHelper.Watermark="192.168.101.1"
+                            <TextBox Text="{Binding ProxyIp, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" controls:TextboxHelper.Watermark="192.168.101.1"
                                      Grid.Column="2" TextWrapping="Wrap" VerticalContentAlignment="Center" Margin="5"/>
                             <Label Content="Port:" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Grid.Column="3"/>
                             <controls:NumericUpDown Value="{Binding ProxyPort, Mode=TwoWay}" Grid.Column="4" Margin="5 5 15 5" Height="26"/>

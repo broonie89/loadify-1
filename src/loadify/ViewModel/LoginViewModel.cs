@@ -13,7 +13,6 @@ namespace loadify.ViewModel
     public class LoginViewModel : ViewModelBase
     {
         private readonly LoadifySession _Session;
-        private readonly ISettingsManager _SettingsManager;
 
         private UserViewModel _User;
         public UserViewModel User
@@ -51,12 +50,11 @@ namespace loadify.ViewModel
             }
         }
 
-        public LoginViewModel(IEventAggregator eventAggregator, IWindowManager windowManager, ISettingsManager netSettingsManager) :
-            base(eventAggregator, windowManager)
+        public LoginViewModel(IEventAggregator eventAggregator, IWindowManager windowManager, ISettingsManager settingsManager) :
+            base(eventAggregator, windowManager, settingsManager)
         {
             _User = new UserViewModel();
             _Session = new LoadifySession();
-            _SettingsManager = netSettingsManager;
         }
 
 
