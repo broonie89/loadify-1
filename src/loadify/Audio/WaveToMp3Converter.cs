@@ -6,14 +6,12 @@ namespace loadify.Audio
 {
     public class WaveToMp3Converter : AudioConverter
     {
-        public WaveToMp3Converter(string outputDirectory, string outputFileName):
-            base(outputDirectory, outputFileName)
+        public WaveToMp3Converter():
+            base("mp3")
         { }
 
-        public override string Convert(string inputFilePath)
+        public override string Convert(string inputFilePath, string outputFilePath)
         {
-            var outputFilePath = String.Format("{0}/{1}.mp3", OutputDirectory, OutputFileName);
-
             using (var wavReader = new WaveFileReader(inputFilePath))
             using (var mp3Writer = new LameMP3FileWriter(outputFilePath, wavReader.WaveFormat, 128))
                 wavReader.CopyTo(mp3Writer);

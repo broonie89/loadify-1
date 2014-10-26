@@ -112,7 +112,7 @@ namespace loadify.ViewModel
             _LoggedInUser = loggedInUser;
             _Menu = new MenuViewModel(_EventAggregator, _WindowManager);
             _Status = new StatusViewModel(loggedInUser, new DownloaderViewModel(_EventAggregator, _SettingsManager),  _EventAggregator);
-            _Playlists = new PlaylistsViewModel(_EventAggregator);
+            _Playlists = new PlaylistsViewModel(_EventAggregator, settingsManager);
             _Settings = new SettingsViewModel(_EventAggregator, _SettingsManager);
 
             _EventAggregator.PublishOnUIThread(new DataRefreshAuthorizedEvent(_Session));

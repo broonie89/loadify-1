@@ -34,10 +34,13 @@ namespace loadify.Spotify
         };
 
         public bool Active { get; set; }
+        public string OutputDirectory { get; set; }
+        public string OutputFileName { get; set; }
+        public AudioFileMetaData AudioFileMetaData { get; set; }
         public AudioMetaData AudioMetaData { get; set; }
         public AudioProcessor AudioProcessor { get; set; }
         public AudioConverter AudioConverter { get; set; }
-        public AudioFileDescriptor AudioFileDescriptor { get; set; }
+        public IAudioFileDescriptor AudioFileDescriptor { get; set; }
 
         private Statistic _Statistic = new Statistic();
         private readonly Action<CancellationReason> _DownloadCompletedCallback = cancellationReason => { };
@@ -54,12 +57,17 @@ namespace loadify.Spotify
             }
         }
 
-        public TrackDownloadService(AudioProcessor audioProcessor, AudioConverter audioConverter, AudioFileDescriptor audioFileDescriptor,
+        public TrackDownloadService(string outputDirectory, string outputFileName,
+                                    AudioProcessor audioProcessor, AudioConverter audioConverter, IAudioFileDescriptor audioFileDescriptor,
+                                    AudioFileMetaData audioFileMetaData,
                                     Action<CancellationReason> downloadCompletedCallback, Action<double> downloadProgressUpdatedCallback)
         {
+            OutputDirectory = outputDirectory;
+            OutputFileName = outputFileName;
             AudioProcessor = audioProcessor;
             AudioConverter = audioConverter;
             AudioFileDescriptor = audioFileDescriptor;
+            AudioFileMetaData = audioFileMetaData;
             _DownloadCompletedCallback = downloadCompletedCallback;
             _DownloadProgressUpdatedCallback = downloadProgressUpdatedCallback;
             AudioMetaData = new AudioMetaData();
@@ -68,13 +76,13 @@ namespace loadify.Spotify
         public void Start(TrackModel track)
         {
             _Statistic = new Statistic(track.Duration);
+            AudioProcessor.Start(String.Format("{0}/{1}.{2}", OutputDirectory, OutputFileName, AudioProcessor.TargetFileExtension));
             Active = true;
         }
 
         public void Stop()
         {
             Active = false;
-            AudioProcessor.Release();
         }
 
         public void ProcessInput(AudioFormat format, IntPtr frames, int num_frames)
@@ -96,13 +104,17 @@ namespace loadify.Spotify
         public void Finish()
         {
             Stop();
+            AudioProcessor.Release();
 
-            var outputFilePath = AudioProcessor.OutputFilePath;
+            var outputFilePath = String.Format("{0}/{1}.{2}", OutputDirectory, OutputFileName, AudioProcessor.TargetFileExtension);
             if (AudioConverter != null)
-                outputFilePath = AudioConverter.Convert(AudioProcessor.OutputFilePath);
+                outputFilePath = AudioConverter.Convert(outputFilePath, String.Format("{0}/{1}.{2}", 
+                                                                        OutputDirectory, 
+                                                                        OutputFileName, 
+                                                                        AudioConverter.TargetFileExtension));
 
             if (AudioFileDescriptor != null)
-                AudioFileDescriptor.Write(outputFilePath);
+                AudioFileDescriptor.Write(AudioFileMetaData, outputFilePath);
 
             _DownloadCompletedCallback(CancellationReason.None);
         }

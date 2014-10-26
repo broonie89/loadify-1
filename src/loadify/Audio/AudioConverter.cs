@@ -2,16 +2,14 @@
 {
     public abstract class AudioConverter
     {
-        public string OutputDirectory { get; set; }
-        public string OutputFileName { get; set; }
+        public string TargetFileExtension { get; set; }
 
-        public AudioConverter(string outputDirectory, string outputFileName)
+        public AudioConverter(string targetFileExtension)
         {
-            OutputDirectory = outputDirectory;
-            OutputFileName = outputFileName;
+            TargetFileExtension = targetFileExtension;
         }
 
-        public abstract string Convert(string inputFilePath);
+        public abstract string Convert(string inputFilePath, string outputFilePath);
         public virtual void Release() { }
     }
 }

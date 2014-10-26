@@ -131,16 +131,19 @@ namespace loadify.ViewModel
 
                 session.DownloadTrack(CurrentTrack.Track, 
                                         new TrackDownloadService(
-                                        new WaveAudioProcessor(_SettingsManager.DirectorySetting.DownloadDirectory, CurrentTrack.Name),
-                                        new WaveToMp3Converter(_SettingsManager.DirectorySetting.DownloadDirectory, CurrentTrack.Name),
-                                        new Mp3FileDescriptor(new AudioFileMetaData() 
+                                        _SettingsManager.DirectorySetting.DownloadDirectory,
+                                        CurrentTrack.Name,
+                                        _SettingsManager.BehaviorSetting.AudioProcessor,
+                                        _SettingsManager.BehaviorSetting.AudioConverter,
+                                        _SettingsManager.BehaviorSetting.AudioFileDescriptor,
+                                        new AudioFileMetaData() 
                                         { 
                                             Title = CurrentTrack.Name,
                                             Artists = CurrentTrack.Artists,
                                             Album = CurrentTrack.Album.Name,
                                             Year = CurrentTrack.Album.ReleaseYear,
                                             Cover = CurrentTrack.Album.Cover
-                                        }),
+                                        },
                                         reason =>
                                         {
                                             if (reason == TrackDownloadService.CancellationReason.None)
@@ -160,15 +163,18 @@ namespace loadify.ViewModel
                                                                     " Spotify account is in use",
                                                     CurrentTrack.ToString()),
                                                     RemainingTracks.IndexOf(CurrentTrack)));
-                                            }   
+                                            }
 
-                                            if(RemainingTracks.Count == 0)
+                                            if (RemainingTracks.Count == 0)
+                                            {
                                                 _EventAggregator.PublishOnUIThread(new DownloadContractCompletedEvent());
+                                                TrackProgress = 0;
+                                            }
                                         },
                                         progress =>
                                         {
                                             TrackProgress = progress;
-                                        }));            
+                                        }));     
             }     
         }
 
@@ -185,3 +191,4 @@ namespace loadify.ViewModel
         }
     }
 }
+

@@ -160,7 +160,7 @@
     <Compile Include="Model\ArtistModel.cs" />
     <Compile Include="Model\TrackModel.cs" />
     <Compile Include="Model\UserModel.cs" />
-    <Compile Include="Audio\AudioFileDescriptor.cs" />
+    <Compile Include="Audio\IAudioFileDescriptor.cs" />
     <Compile Include="Spotify\InvalidSpotifyUrlException.cs" />
     <Compile Include="Spotify\LoadifySession.cs" />
     <Compile Include="Model\PlaylistModel.cs" />
