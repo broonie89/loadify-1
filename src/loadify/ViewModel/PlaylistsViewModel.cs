@@ -16,7 +16,8 @@ namespace loadify.ViewModel
                                                      IHandle<AddPlaylistReplyEvent>,
                                                      IHandle<AddTrackReplyEvent>,
                                                      IHandle<DownloadContractCompletedEvent>,
-                                                     IHandle<TrackSelectedChangedEvent>
+                                                     IHandle<TrackSelectedChangedEvent>,
+                                                     IHandle<TrackDownloadComplete>
     {
         private ObservableCollection<PlaylistViewModel> _Playlists = new ObservableCollection<PlaylistViewModel>();
         public ObservableCollection<PlaylistViewModel> Playlists
@@ -63,6 +64,7 @@ namespace loadify.ViewModel
                     if (File.Exists(audioProcessorPath) || File.Exists(audioConverterPath))
                         track.ExistsLocally = true;
                 }
+
 
                 NotifyOfPropertyChange(() => Playlists);
                 NotifyOfPropertyChange(() => SelectedTracks);
@@ -227,6 +229,11 @@ namespace loadify.ViewModel
         {
             NotifyOfPropertyChange(() => SelectedTracks);
             NotifyOfPropertyChange(() => EstimatedDownloadTime);
+        }
+
+        public void Handle(TrackDownloadComplete message)
+        {
+            NotifyOfPropertyChange(() => Playlists);
         }
     }
 }

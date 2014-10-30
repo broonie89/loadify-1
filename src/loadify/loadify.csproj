@@ -142,6 +142,7 @@
     <Compile Include="Event\SelectedTracksChangedEvent.cs" />
     <Compile Include="Event\ErrorOcurredEvent.cs" />
     <Compile Include="Event\SessionEvent.cs" />
+    <Compile Include="Event\TrackDownloadComplete.cs" />
     <Compile Include="Event\UserInputReplyEvent.cs" />
     <Compile Include="Event\UserInputRequestEvent.cs" />
     <Compile Include="Extensions.cs" />

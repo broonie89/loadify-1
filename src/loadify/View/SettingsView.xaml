@@ -49,7 +49,7 @@
             <TabItem Header="Connection">
                 <Grid Background="Transparent">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="79*"/>
+                        <RowDefinition Height="Auto" MinHeight="80"/>
                         <RowDefinition Height="164*"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.RowSpan="2">
@@ -60,7 +60,7 @@
                     </Grid>
                     <Grid Grid.RowSpan="2">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="29*"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="87*"/>
@@ -70,12 +70,15 @@
                     </Grid>
                     <GroupBox Header="Proxy" Margin="10 5">
                         <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" MinHeight="30"></RowDefinition>
+                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="85*"/>
-                                <ColumnDefinition Width="41*"/>
-                                <ColumnDefinition Width="167*"/>
-                                <ColumnDefinition Width="47*"/>
-                                <ColumnDefinition Width="110*"/>
+                                <ColumnDefinition Width="Auto" MinWidth="75"/>
+                                <ColumnDefinition Width="Auto" MinWidth="40"/>
+                                <ColumnDefinition Width="Auto" MinWidth="180"/>
+                                <ColumnDefinition Width="Auto" MinWidth="45"/>
+                                <ColumnDefinition Width="Auto" MinWidth="100"/>
                             </Grid.ColumnDefinitions>
                             <CheckBox x:Name="UseProxy" Content="Enabled" Margin="5 0"/>
                             <Label Content="IP:" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" Grid.Column="1"/>

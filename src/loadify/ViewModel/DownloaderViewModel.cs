@@ -151,6 +151,7 @@ namespace loadify.ViewModel
 
                 if (result == TrackDownloadService.CancellationReason.None)
                 {
+                    CurrentTrack.ExistsLocally = true;
                     DownloadedTracks.Add(CurrentTrack);
                     RemainingTracks.Remove(CurrentTrack);
                     NotifyOfPropertyChange(() => TotalProgress);
@@ -158,6 +159,7 @@ namespace loadify.ViewModel
                     NotifyOfPropertyChange(() => DownloadedTracks);
                     NotifyOfPropertyChange(() => RemainingTracks);
                     NotifyOfPropertyChange(() => CurrentTrackIndex);
+                    _EventAggregator.PublishOnUIThread(new TrackDownloadComplete(CurrentTrack));        
                 }
                 else
                 {
