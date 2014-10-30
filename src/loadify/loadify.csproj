@@ -142,6 +142,7 @@
     <Compile Include="Event\SelectedTracksChangedEvent.cs" />
     <Compile Include="Event\ErrorOcurredEvent.cs" />
     <Compile Include="Event\SessionEvent.cs" />
+    <Compile Include="Event\TrackDownloadComplete.cs" />
     <Compile Include="Event\UserInputReplyEvent.cs" />
     <Compile Include="Event\UserInputRequestEvent.cs" />
     <Compile Include="Extensions.cs" />
@@ -160,7 +161,7 @@
     <Compile Include="Model\ArtistModel.cs" />
     <Compile Include="Model\TrackModel.cs" />
     <Compile Include="Model\UserModel.cs" />
-    <Compile Include="Audio\AudioFileDescriptor.cs" />
+    <Compile Include="Audio\IAudioFileDescriptor.cs" />
     <Compile Include="Spotify\InvalidSpotifyUrlException.cs" />
     <Compile Include="Spotify\LoadifySession.cs" />
     <Compile Include="Model\PlaylistModel.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="Audio\WaveAudioProcessor.cs" />
     <Compile Include="Audio\WaveToMp3Converter.cs" />
     <Compile Include="Spotify\TrackDownloadService.cs" />
+    <Compile Include="ValueConverter\ExistsToImageSourceConverter.cs" />
     <Compile Include="ViewModel\AboutViewModel.cs" />
     <Compile Include="ViewModel\DownloaderViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
@@ -294,6 +296,8 @@
     <Content Include="libmp3lame.64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\success_tick.png" />
+    <Resource Include="Resources\error_cross.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

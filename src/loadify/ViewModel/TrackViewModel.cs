@@ -69,6 +69,17 @@ namespace loadify.ViewModel
             }
         }
 
+        public bool ExistsLocally
+        {
+            get { return Track.ExistsLocally; }
+            set
+            {
+                if (Track.ExistsLocally == value) return;
+                _Track.ExistsLocally = value;
+                NotifyOfPropertyChange(() => ExistsLocally);
+            }
+        }
+
         private bool _Selected;
         public bool Selected
         {

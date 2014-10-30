@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Caliburn.Micro;
+using loadify.Configuration;
 using loadify.Event;
 using loadify.Spotify;
 
@@ -14,7 +16,8 @@ namespace loadify.ViewModel
                                                      IHandle<AddPlaylistReplyEvent>,
                                                      IHandle<AddTrackReplyEvent>,
                                                      IHandle<DownloadContractCompletedEvent>,
-                                                     IHandle<TrackSelectedChangedEvent>
+                                                     IHandle<TrackSelectedChangedEvent>,
+                                                     IHandle<TrackDownloadComplete>
     {
         private ObservableCollection<PlaylistViewModel> _Playlists = new ObservableCollection<PlaylistViewModel>();
         public ObservableCollection<PlaylistViewModel> Playlists
@@ -45,6 +48,24 @@ namespace loadify.ViewModel
             {
                 if (_Playlists == value) return;
                 _Playlists = value;
+
+                foreach (var track in _Playlists.SelectMany(playlist => playlist.Tracks))
+                {
+                    var audioProcessorPath = String.Format("{0}/{1}.{2}",
+                        _SettingsManager.DirectorySetting.DownloadDirectory,
+                        track.Name,
+                        _SettingsManager.BehaviorSetting.AudioProcessor.TargetFileExtension);
+
+                    var audioConverterPath = String.Format("{0}/{1}.{2}",
+                        _SettingsManager.DirectorySetting.DownloadDirectory,
+                        track.Name,
+                        _SettingsManager.BehaviorSetting.AudioConverter.TargetFileExtension);
+
+                    if (File.Exists(audioProcessorPath) || File.Exists(audioConverterPath))
+                        track.ExistsLocally = true;
+                }
+
+
                 NotifyOfPropertyChange(() => Playlists);
                 NotifyOfPropertyChange(() => SelectedTracks);
                 NotifyOfPropertyChange(() => EstimatedDownloadTime);
@@ -95,14 +116,14 @@ namespace loadify.ViewModel
             }
         }
 
-        public PlaylistsViewModel(IEnumerable<PlaylistViewModel> playlistCollection, IEventAggregator eventAggregator) :
-            base(eventAggregator)
+        public PlaylistsViewModel(IEnumerable<PlaylistViewModel> playlistCollection, IEventAggregator eventAggregator, ISettingsManager settingsManager) :
+            base(eventAggregator, settingsManager)
         {
             _Playlists = new ObservableCollection<PlaylistViewModel>(playlistCollection);
         }
 
-        public PlaylistsViewModel(IEventAggregator eventAggregator) :
-            this(new ObservableCollection<PlaylistViewModel>(), eventAggregator)
+        public PlaylistsViewModel(IEventAggregator eventAggregator, ISettingsManager settingsManager) :
+            this(new ObservableCollection<PlaylistViewModel>(), eventAggregator, settingsManager)
         { }
 
         public void AddPlaylist()
@@ -208,6 +229,11 @@ namespace loadify.ViewModel
         {
             NotifyOfPropertyChange(() => SelectedTracks);
             NotifyOfPropertyChange(() => EstimatedDownloadTime);
+        }
+
+        public void Handle(TrackDownloadComplete message)
+        {
+            NotifyOfPropertyChange(() => Playlists);
         }
     }
 }

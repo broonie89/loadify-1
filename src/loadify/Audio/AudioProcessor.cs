@@ -1,25 +1,20 @@
-﻿namespace loadify.Audio
+﻿using System.IO;
+
+namespace loadify.Audio
 {
     public abstract class AudioProcessor
     {
-        public string OutputDirectory { get; set; }
-        public string OutputFileName { get; set; }
-        public string OutputFilePath { get; protected set; }
         public AudioMetaData AudioMetaData { get; set; }
+        public string TargetFileExtension { get; set; }
 
-        public AudioProcessor(string outputDirectory, string outputFileName, AudioMetaData audioMetaData)
+        public AudioProcessor(AudioMetaData audioMetaData, string targetFileExtension)
         {
-            OutputDirectory = outputDirectory;
-            OutputFileName = outputFileName;
             AudioMetaData = audioMetaData;
+            TargetFileExtension = targetFileExtension;
         }
 
-        public AudioProcessor(string outputDirectory, string outputFileName):
-            this(outputDirectory, outputFileName, new AudioMetaData())
-        { }
-
+        public abstract void Start(string outputFilePath);
         public abstract void Process(byte[] audioData);
-
         public virtual void Release() { }
     }
 }
