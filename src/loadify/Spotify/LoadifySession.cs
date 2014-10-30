@@ -97,12 +97,21 @@ namespace loadify.Spotify
             return Image.Create(_Session, imageId);
         }
 
-        public void DownloadTrack(TrackModel track, TrackDownloadService trackDownloadService)
+        public async Task<TrackDownloadService.CancellationReason> DownloadTrack(TrackModel track, TrackDownloadService trackDownloadService)
         {
-            _TrackDownloadService = trackDownloadService;
-            _TrackDownloadService.Start(track);
-            _Session.PlayerLoad(track.UnmanagedTrack);
-            _Session.PlayerPlay(true);
+            return await Task.Run(() =>
+            {
+                _TrackDownloadService = trackDownloadService;
+                _TrackDownloadService.Start(track);
+                _Session.PlayerLoad(track.UnmanagedTrack);
+                _Session.PlayerPlay(true);
+
+                while (true)
+                {
+                    if (!_TrackDownloadService.Active)
+                        return _TrackDownloadService.Cancellation;
+                }
+            });
         }
 
         public async Task<PlaylistModel> GetPlaylist(string url)

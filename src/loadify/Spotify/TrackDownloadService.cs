@@ -34,6 +34,7 @@ namespace loadify.Spotify
         };
 
         public bool Active { get; set; }
+        public CancellationReason Cancellation { get; set; }
         public string OutputDirectory { get; set; }
         public string OutputFileName { get; set; }
         public AudioFileMetaData AudioFileMetaData { get; set; }
@@ -43,7 +44,6 @@ namespace loadify.Spotify
         public IAudioFileDescriptor AudioFileDescriptor { get; set; }
 
         private Statistic _Statistic = new Statistic();
-        private readonly Action<CancellationReason> _DownloadCompletedCallback = cancellationReason => { };
         private readonly Action<double> _DownloadProgressUpdatedCallback = progress => { };
 
         public double Progress
@@ -60,7 +60,7 @@ namespace loadify.Spotify
         public TrackDownloadService(string outputDirectory, string outputFileName,
                                     AudioProcessor audioProcessor, AudioConverter audioConverter, IAudioFileDescriptor audioFileDescriptor,
                                     AudioFileMetaData audioFileMetaData,
-                                    Action<CancellationReason> downloadCompletedCallback, Action<double> downloadProgressUpdatedCallback)
+                                    Action<double> downloadProgressUpdatedCallback)
         {
             OutputDirectory = outputDirectory;
             OutputFileName = outputFileName;
@@ -68,7 +68,6 @@ namespace loadify.Spotify
             AudioConverter = audioConverter;
             AudioFileDescriptor = audioFileDescriptor;
             AudioFileMetaData = audioFileMetaData;
-            _DownloadCompletedCallback = downloadCompletedCallback;
             _DownloadProgressUpdatedCallback = downloadProgressUpdatedCallback;
             AudioMetaData = new AudioMetaData();
         }
@@ -116,13 +115,12 @@ namespace loadify.Spotify
             if (AudioFileDescriptor != null)
                 AudioFileDescriptor.Write(AudioFileMetaData, outputFilePath);
 
-            _DownloadCompletedCallback(CancellationReason.None);
         }
 
         public void Cancel(CancellationReason reason)
         {
+            Cancellation = reason;
             Stop();
-            _DownloadCompletedCallback(reason);
         }
     }
 }

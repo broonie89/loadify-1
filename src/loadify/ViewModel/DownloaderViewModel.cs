@@ -99,7 +99,7 @@ namespace loadify.ViewModel
             _CurrentTrack = new TrackViewModel(_EventAggregator);
         }
 
-        public void StartDownload(LoadifySession session, int startIndex = 0)
+        public async void StartDownload(LoadifySession session, int startIndex = 0)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace loadify.ViewModel
             {
                 CurrentTrack = track;
 
-                session.DownloadTrack(CurrentTrack.Track, 
+                var result = await session.DownloadTrack(CurrentTrack.Track, 
                                         new TrackDownloadService(
                                         _SettingsManager.DirectorySetting.DownloadDirectory,
                                         CurrentTrack.Name,
@@ -144,38 +144,33 @@ namespace loadify.ViewModel
                                             Year = CurrentTrack.Album.ReleaseYear,
                                             Cover = CurrentTrack.Album.Cover
                                         },
-                                        reason =>
-                                        {
-                                            if (reason == TrackDownloadService.CancellationReason.None)
-                                            {
-                                                DownloadedTracks.Add(CurrentTrack);
-                                                RemainingTracks.Remove(CurrentTrack);
-                                                NotifyOfPropertyChange(() => TotalProgress);
-                                                NotifyOfPropertyChange(() => Active);
-                                                NotifyOfPropertyChange(() => DownloadedTracks);
-                                                NotifyOfPropertyChange(() => RemainingTracks);
-                                                NotifyOfPropertyChange(() => CurrentTrackIndex);
-                                            }
-                                            else
-                                            {
-                                                _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(
-                                                    String.Format("{0} could not be downloaded because the logged-in" +
-                                                                    " Spotify account is in use",
-                                                    CurrentTrack.ToString()),
-                                                    RemainingTracks.IndexOf(CurrentTrack)));
-                                            }
-
-                                            if (RemainingTracks.Count == 0)
-                                            {
-                                                _EventAggregator.PublishOnUIThread(new DownloadContractCompletedEvent());
-                                                TrackProgress = 0;
-                                            }
-                                        },
                                         progress =>
                                         {
                                             TrackProgress = progress;
-                                        }));     
-            }     
+                                        }));
+
+                if (result == TrackDownloadService.CancellationReason.None)
+                {
+                    DownloadedTracks.Add(CurrentTrack);
+                    RemainingTracks.Remove(CurrentTrack);
+                    NotifyOfPropertyChange(() => TotalProgress);
+                    NotifyOfPropertyChange(() => Active);
+                    NotifyOfPropertyChange(() => DownloadedTracks);
+                    NotifyOfPropertyChange(() => RemainingTracks);
+                    NotifyOfPropertyChange(() => CurrentTrackIndex);
+                }
+                else
+                {
+                    _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(
+                        String.Format("{0} could not be downloaded because the logged-in" +
+                                        " Spotify account is in use",
+                        CurrentTrack.ToString()),
+                        RemainingTracks.IndexOf(CurrentTrack)));
+                }
+            }
+
+            _EventAggregator.PublishOnUIThread(new DownloadContractCompletedEvent());
+            TrackProgress = 0;
         }
 
         public void Handle(DownloadContractStartedEvent message)
