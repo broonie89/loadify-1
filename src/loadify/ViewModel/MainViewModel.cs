@@ -127,7 +127,7 @@ namespace loadify.ViewModel
 
         public void CancelDownload()
         {
-            
+            _EventAggregator.PublishOnUIThread(new DownloadContractCancelledEvent());
         }
 
         public void Handle(DataRefreshRequestEvent message)

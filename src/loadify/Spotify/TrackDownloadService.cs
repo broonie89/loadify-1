@@ -28,6 +28,7 @@ namespace loadify.Spotify
         public enum CancellationReason
         {
             None,
+            UserInteraction,
             PlayTokenLost,
             Unknown,
             ConnectionLost
@@ -81,6 +82,7 @@ namespace loadify.Spotify
 
         public void Stop()
         {
+            AudioProcessor.Release();
             Active = false;
         }
 

@@ -8,12 +8,14 @@ using loadify.Configuration;
 using loadify.Event;
 using loadify.Properties;
 using loadify.Spotify;
+using System.Threading;
 
 namespace loadify.ViewModel
 {
     public class DownloaderViewModel : ViewModelBase, IHandle<DownloadContractStartedEvent>, 
                                                       IHandle<DownloadContractResumedEvent>,
-                                                      IHandle<DownloadContractCompletedEvent>
+                                                      IHandle<DownloadContractCompletedEvent>,
+                                                      IHandle<DownloadContractCancelledEvent>
     {
         private TrackViewModel _CurrentTrack;
         public TrackViewModel CurrentTrack
@@ -92,6 +94,8 @@ namespace loadify.ViewModel
             get { return RemainingTracks.Count != 0; }
         }
 
+        private CancellationTokenSource _CancellationToken = new CancellationTokenSource();
+
         public DownloaderViewModel(IEventAggregator eventAggregator, ISettingsManager settingsManager):
             base(eventAggregator, settingsManager)
         {
@@ -102,6 +106,8 @@ namespace loadify.ViewModel
 
         public async void StartDownload(LoadifySession session, int startIndex = 0)
         {
+            _CancellationToken = new CancellationTokenSource();
+
             try
             {
                 if (!Directory.Exists(Settings.Default.DownloadDirectory))
@@ -148,7 +154,10 @@ namespace loadify.ViewModel
                                         progress =>
                                         {
                                             TrackProgress = progress;
-                                        }));
+                                        }),
+                                        _CancellationToken.Token);
+
+                if (result == TrackDownloadService.CancellationReason.UserInteraction) break;
 
                 if (result == TrackDownloadService.CancellationReason.None)
                 {
@@ -169,6 +178,7 @@ namespace loadify.ViewModel
                                         " Spotify account is in use",
                         CurrentTrack.ToString()),
                         RemainingTracks.IndexOf(CurrentTrack)));
+                    return;
                 }
             }
 
@@ -193,6 +203,11 @@ namespace loadify.ViewModel
             DownloadedTracks = new ObservableCollection<TrackViewModel>();
             RemainingTracks = new ObservableCollection<TrackViewModel>();
             _TrackProgress = 0;
+        }
+
+        public void Handle(DownloadContractCancelledEvent message)
+        {
+            _CancellationToken.Cancel();
         }
     }
 }

@@ -97,7 +97,7 @@ namespace loadify.Spotify
             return Image.Create(_Session, imageId);
         }
 
-        public async Task<TrackDownloadService.CancellationReason> DownloadTrack(TrackModel track, TrackDownloadService trackDownloadService)
+        public async Task<TrackDownloadService.CancellationReason> DownloadTrack(TrackModel track, TrackDownloadService trackDownloadService, CancellationToken cancellationToken)
         {
             return await Task.Run(() =>
             {
@@ -110,6 +110,13 @@ namespace loadify.Spotify
                 {
                     if (!_TrackDownloadService.Active)
                         return _TrackDownloadService.Cancellation;
+
+                    if(cancellationToken.IsCancellationRequested)
+                    {
+                        _TrackDownloadService.Stop();
+                        _TrackDownloadService.Cancellation = TrackDownloadService.CancellationReason.UserInteraction;
+                        return _TrackDownloadService.Cancellation;
+                    }
                 }
             });
         }
