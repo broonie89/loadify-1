@@ -4,7 +4,7 @@
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         WindowStartupLocation="CenterScreen"
         GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize"
-        Title="AboutView" Height="210" Width="370">
+        Title="About Loadify" Height="210" Width="370">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="140*"/>
