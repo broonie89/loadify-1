@@ -1,5 +1,7 @@
 Loadify
 =======
+Loadify is a Spotify downloader written in .NET for downloading playlists and tracks from Spotify.
+Please keep in mind that the software is currently a work-in-progress. Please let us know if something does not work as expected or if you find the documentation is lacking information.
 
 The Problem
 -
@@ -27,6 +29,7 @@ The login is as simple as it gets. You just enter your username and password you
 
 ![](http://i.epvpimg.com/JYQCg.png)
 
+
 ***
 
 ### Dashboard
@@ -40,6 +43,7 @@ Once you've selected some tracks (or whole playlists) for downloading, the `Down
 
 ![](http://i.epvpimg.com/LYhwg.png)
 
+
 ***
 
 ### Resizable Panes
@@ -48,6 +52,7 @@ Playlist or track names are too long to be fully displayed? That isn't a problem
 As you have might already found out, just grab the green bar with the dots on it and drag it to the left or right, depending on which panel you expect to be larger.
 
 ![](http://i.epvpimg.com/39FGe.png)
+
 
 ***
 
@@ -72,6 +77,7 @@ Once you have started the download contract, the download status bar in the lowe
 
 ![](http://i.epvpimg.com/7xRkd.png)
 
+
 ***
 
 ### Searching for tracks
@@ -82,6 +88,7 @@ Typing in __eminem__ for example, will display all tracks that got the word __em
 Pressing enter will apply the search filter, removing the search text and pressing enter again will restore all playlists without the search filter.
 
 ![](http://i.epvpimg.com/cxSdf.png)
+
 
 ***
 
@@ -101,6 +108,7 @@ Note the `/playlist/` and `:playlist:` section of the url.
 If the url provided is a valid url to a playlist, Loadify will fetch all of it's tracks and add the new playlist in the left panel. Once you refresh your playlists, it will be removed if it is not your playlist)
 
 ![](http://i.epvpimg.com/hECMb.png)
+
 
 #### Tracks
 For adding single tracks into an existing playlist, you need to right click one of the playlists and select __Add Track from Link__. 
