@@ -7,6 +7,7 @@ Spotify offers a special mode, the offline mode. Using this offline mode, you ar
 
 Well, why would you develop a software to download tracks if you could simply do that by using the official client? In fact, you just could use the official client and use that offline mode mentioned before but it comes with a huge disadvantage: The only way to listen to downloaded tracks is to use the official Spotify client. Since Spotify encrypts their audio data, you won't be able to listen to the music you've downloaded once your Spotify premium membership expires.
 
+
 The Solution
 -
 There isn't much to say about Loadify. It is (yet another) Spotify downloader that is open source - useable for everyone. We have provided some features that we personally found important when it comes to downloading music. But, how does it work?
@@ -19,10 +20,14 @@ Features
 ### User friendly, simple, beautiful
 While this is not important for many other developers that did take hand on designing Spotify downloaders, it was very important for us to make using the software self-explainable and to keep things simple.
 
+***
+
 ### Login and Authentication
 The login is as simple as it gets. You just enter your username and password you'd normally use for logging into Spotify and click on `Login`. Please note that the _Remember me_ option works fine but requires to store your password unencrypted into the configuration file. If you can't deal with that, please don't use this feature.
 
 ![](http://i.epvpimg.com/JYQCg.png)
+
+***
 
 ### Dashboard
 After logging in, a new window containing your dashboard will open up. The software will start to fetch your playlists and display them in the left pane. 
@@ -35,12 +40,16 @@ Once you've selected some tracks (or whole playlists) for downloading, the `Down
 
 ![](http://i.epvpimg.com/LYhwg.png)
 
+***
+
 ### Resizable Panes
 Playlist or track names are too long to be fully displayed? That isn't a problem anymore if you know that you can easily use the slider to rule the sizes of both panes.
 
 As you have might already found out, just grab the green bar with the dots on it and drag it to the left or right, depending on which panel you expect to be larger.
 
 ![](http://i.epvpimg.com/39FGe.png)
+
+***
 
 ### Tracks and Playlists
 Once you expand a playlist in the left pane, all associated tracks will be listed in the following format:
@@ -63,6 +72,7 @@ Once you have started the download contract, the download status bar in the lowe
 
 ![](http://i.epvpimg.com/7xRkd.png)
 
+***
 
 ### Searching for tracks
 Sometimes you don't want to browse your playlists for a certain track you want to download. For quickly searching and finding tracks in your playlists, the search field was implemented:
@@ -73,4 +83,33 @@ Pressing enter will apply the search filter, removing the search text and pressi
 
 ![](http://i.epvpimg.com/cxSdf.png)
 
+***
+
+### Adding additional playlists and tracks
+If you want to download playlists/tracks that you've not added to your spotify account, you can temporary add them in Loadify to select them for the download contract.
+
+#### Playlists
+Right click in an empty area of the panel where the playlists and tracks are shown and select __Add Playlist from Link__
+
+![](http://i.epvpimg.com/WHjrc.png)
+
+A dialog will be displayed prompting you to enter the link to the playlist you want to add. There are 2 types of playlist links:
+* HTTP links (example: __http://open.spotify.com/user/spotify_germany/playlist/0QUQf1xMMbtArIbDjwi2Hf__)
+* Spotify links (example: __spotify:user:spotify_germany:playlist:0QUQf1xMMbtArIbDjwi2Hf__)
+
+Note the `/playlist/` and `:playlist:` section of the url.
+If the url provided is a valid url to a playlist, Loadify will fetch all of it's tracks and add the new playlist in the left panel. Once you refresh your playlists, it will be removed if it is not your playlist)
+
+![](http://i.epvpimg.com/hECMb.png)
+
+#### Tracks
+For adding single tracks into an existing playlist, you need to right click one of the playlists and select __Add Track from Link__. 
+
+![](http://i.epvpimg.com/3TWTd.png)
+
+This is basically following the same procedure as the __Add Playlist from Link__ feature explained earlier. The only difference lies in the urls.
+
+While playlist urls contain a `/playlist/` and `:playlist:` section, tracks do not. This section is replaced with the string `/track/` or `:track:`.
+
+![](http://i.epvpimg.com/0kouc.png)
 
