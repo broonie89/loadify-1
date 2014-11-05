@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
+using loadify.Configuration;
 using loadify.Model;
 using loadify.ViewModel;
 
@@ -22,7 +23,7 @@ namespace loadify.Mock
             EstimatedDownloadTime = "48:54:22";
             Playlists = new List<PlaylistViewModel>
             {
-                new PlaylistViewModel(new EventAggregator())
+                new PlaylistViewModel(new EventAggregator(), new NETSettingsManager())
                 {
                     Creator = "Mostey",
                     Description = "Test",
@@ -33,7 +34,7 @@ namespace loadify.Mock
                         new TrackViewModel(new EventAggregator()) {Name = "Could it be"}
                     }
                 },
-                new PlaylistViewModel(new EventAggregator()) {Creator = "Mostey", Description = "Test2", Name = "Hardcore"}
+                new PlaylistViewModel(new EventAggregator(), new NETSettingsManager()) {Creator = "Mostey", Description = "Test2", Name = "Hardcore"}
             };
         }
 

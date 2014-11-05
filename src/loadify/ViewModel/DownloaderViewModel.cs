@@ -161,7 +161,6 @@ namespace loadify.ViewModel
 
                 if (result == TrackDownloadService.CancellationReason.None)
                 {
-                    CurrentTrack.ExistsLocally = true;
                     DownloadedTracks.Add(CurrentTrack);
                     RemainingTracks.Remove(CurrentTrack);
                     NotifyOfPropertyChange(() => TotalProgress);

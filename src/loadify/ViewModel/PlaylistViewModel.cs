@@ -1,6 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using Caliburn.Micro;
+using loadify.Configuration;
 using loadify.Event;
 using loadify.Model;
 
@@ -16,6 +19,24 @@ namespace loadify.ViewModel
             {
                 if (_Playlist == value) return;
                 _Playlist = value;
+
+                foreach (var track in Playlist.Tracks)
+                {
+                    var audioProcessorPath = String.Format("{0}/{1}.{2}",
+                        _SettingsManager.DirectorySetting.DownloadDirectory,
+                        track.Name,
+                        _SettingsManager.BehaviorSetting.AudioProcessor.TargetFileExtension);
+
+                    var audioConverterPath = String.Format("{0}/{1}.{2}",
+                        _SettingsManager.DirectorySetting.DownloadDirectory,
+                        track.Name,
+                        _SettingsManager.BehaviorSetting.AudioConverter.TargetFileExtension);
+
+                    if (File.Exists(audioProcessorPath) || File.Exists(audioConverterPath))
+                        track.ExistsLocally = true;
+                }
+
+
                 NotifyOfPropertyChange(() => Playlist);
             }
         }
@@ -105,21 +126,21 @@ namespace loadify.ViewModel
             get { return new ObservableCollection<TrackViewModel>(Tracks.Where(track => (bool) track.Selected)); }
         }
 
-        public PlaylistViewModel(PlaylistModel playlist, IEventAggregator eventAggregator):
-            base(eventAggregator)
+        public PlaylistViewModel(PlaylistModel playlist, IEventAggregator eventAggregator, ISettingsManager settingsManager):
+            base(eventAggregator, settingsManager)
         {
-            _Playlist = playlist;
-            _Tracks = new ObservableCollection<TrackViewModel>(playlist.Tracks.Select(track => new TrackViewModel(track, eventAggregator)));
+            Playlist = playlist;
+            Tracks = new ObservableCollection<TrackViewModel>(playlist.Tracks.Select(track => new TrackViewModel(track, eventAggregator)));
         }
 
-        public PlaylistViewModel(IEventAggregator eventAggregator):
-            this(new PlaylistModel(), eventAggregator)
+        public PlaylistViewModel(IEventAggregator eventAggregator, ISettingsManager settingsManager):
+            this(new PlaylistModel(), eventAggregator, settingsManager)
         { }
 
         public PlaylistViewModel(PlaylistViewModel playlistViewModel)
         {
             _EventAggregator = playlistViewModel._EventAggregator;
-            _Tracks = new ObservableCollection<TrackViewModel>(playlistViewModel.Tracks);
+            Tracks = new ObservableCollection<TrackViewModel>(playlistViewModel.Tracks);
             Playlist = new PlaylistModel(playlistViewModel.Playlist);
             AllTracksSelected = playlistViewModel.AllTracksSelected;
             Expanded = playlistViewModel.Expanded;

@@ -49,23 +49,6 @@ namespace loadify.ViewModel
                 if (_Playlists == value) return;
                 _Playlists = value;
 
-                foreach (var track in _Playlists.SelectMany(playlist => playlist.Tracks))
-                {
-                    var audioProcessorPath = String.Format("{0}/{1}.{2}",
-                        _SettingsManager.DirectorySetting.DownloadDirectory,
-                        track.Name,
-                        _SettingsManager.BehaviorSetting.AudioProcessor.TargetFileExtension);
-
-                    var audioConverterPath = String.Format("{0}/{1}.{2}",
-                        _SettingsManager.DirectorySetting.DownloadDirectory,
-                        track.Name,
-                        _SettingsManager.BehaviorSetting.AudioConverter.TargetFileExtension);
-
-                    if (File.Exists(audioProcessorPath) || File.Exists(audioConverterPath))
-                        track.ExistsLocally = true;
-                }
-
-
                 NotifyOfPropertyChange(() => Playlists);
                 NotifyOfPropertyChange(() => SelectedTracks);
                 NotifyOfPropertyChange(() => EstimatedDownloadTime);
@@ -155,7 +138,7 @@ namespace loadify.ViewModel
         public async void Handle(DataRefreshAuthorizedEvent message)
         {
             var playlists = await message.Session.GetPlaylists();
-            Playlists = new ObservableCollection<PlaylistViewModel>(playlists.Select(playlist => new PlaylistViewModel(playlist, _EventAggregator)));
+            Playlists = new ObservableCollection<PlaylistViewModel>(playlists.Select(playlist => new PlaylistViewModel(playlist, _EventAggregator, _SettingsManager)));
         }
 
         public void Handle(DownloadContractRequestEvent message)
@@ -183,7 +166,7 @@ namespace loadify.ViewModel
                 try
                 {
                     var playlist = await message.Session.GetPlaylist(message.Content);
-                    Playlists.Add(new PlaylistViewModel(playlist, _EventAggregator));
+                    Playlists.Add(new PlaylistViewModel(playlist, _EventAggregator, _SettingsManager));
                 }
                 catch (InvalidSpotifyUrlException)
                 {
@@ -233,6 +216,7 @@ namespace loadify.ViewModel
 
         public void Handle(TrackDownloadComplete message)
         {
+            message.Track.ExistsLocally = true;
             NotifyOfPropertyChange(() => Playlists);
         }
     }
