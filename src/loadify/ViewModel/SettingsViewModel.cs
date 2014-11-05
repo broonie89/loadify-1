@@ -35,7 +35,7 @@ namespace loadify.ViewModel
                 if (!Regex.IsMatch(ProxyIp,
                     @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"))
                 {
-                    _EventAggregator.PublishOnUIThread(new ErrorOcurredEvent("Settings Error", 
+                    _EventAggregator.PublishOnUIThread(new NotificationEvent("Settings Error", 
                             "The proxy IP address that was entered is not a valid IP address."));
                 }
 

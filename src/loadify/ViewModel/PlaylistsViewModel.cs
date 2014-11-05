@@ -149,7 +149,7 @@ namespace loadify.ViewModel
         {
             if (String.IsNullOrEmpty(message.Content)) return;
 
-            var invalidUrlEvent = new ErrorOcurredEvent("Add Playlist",
+            var invalidUrlEvent = new NotificationEvent("Add Playlist",
                                                         "The playlist could not be added because the url" +
                                                         " does not point to a valid Spotify playlist." +
                                                         "\n" +
@@ -163,8 +163,11 @@ namespace loadify.ViewModel
             {
                 try
                 {
+                    _EventAggregator.PublishOnUIThread(new DisplayProgressEvent("Adding Playlist...", 
+                                                        "Please wait while Loadify is adding the playlist to your playlist collection"));
                     var playlist = await message.Session.GetPlaylist(message.Content);
                     Playlists.Add(new PlaylistViewModel(playlist, _EventAggregator, _SettingsManager));
+                    _EventAggregator.PublishOnUIThread(new HideProgressEvent());
                 }
                 catch (InvalidSpotifyUrlException)
                 {
@@ -177,7 +180,7 @@ namespace loadify.ViewModel
         {
             if (String.IsNullOrEmpty(message.Content)) return;
 
-            var invalidUrlEvent = new ErrorOcurredEvent("Add Track",
+            var invalidUrlEvent = new NotificationEvent("Add Track",
                                                         "The track could not be added because the url" +
                                                         " does not point to a valid Spotify track." +
                                                         "\n" +
@@ -191,8 +194,11 @@ namespace loadify.ViewModel
             {
                 try
                 {
+                    _EventAggregator.PublishOnUIThread(new DisplayProgressEvent("Adding Track...",
+                                                        String.Format("Please wait while Loadify is adding the track to playlist {0}", message.Playlist.Name)));
                     var track = await message.Session.GetTrack(message.Content);
                     message.Playlist.Tracks.Add(new TrackViewModel(track, _EventAggregator));
+                    _EventAggregator.PublishOnUIThread(new HideProgressEvent());
                 }
                 catch (InvalidSpotifyUrlException)
                 {

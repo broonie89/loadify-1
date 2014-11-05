@@ -137,9 +137,11 @@
     <Compile Include="Event\AddPlaylistReplyEvent.cs" />
     <Compile Include="Event\AddTrackReplyEvent.cs" />
     <Compile Include="Event\AddTrackRequestEvent.cs" />
+    <Compile Include="Event\DisplayProgressEvent.cs" />
     <Compile Include="Event\DownloadContractCancelledEvent.cs" />
+    <Compile Include="Event\HideProgressEvent.cs" />
     <Compile Include="Event\SelectedTracksChangedEvent.cs" />
-    <Compile Include="Event\ErrorOcurredEvent.cs" />
+    <Compile Include="Event\NotificationEvent.cs" />
     <Compile Include="Event\SessionEvent.cs" />
     <Compile Include="Event\TrackDownloadComplete.cs" />
     <Compile Include="Extensions.cs" />

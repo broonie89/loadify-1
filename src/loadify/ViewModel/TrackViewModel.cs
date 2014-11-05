@@ -114,7 +114,7 @@ namespace loadify.ViewModel
 
         public override string ToString()
         {
-            return string.Format("{0} - {1}", Artists, Name);
+            return string.Format("{0} - {1}", String.Join(", ", Artists.Select(artist => artist.Name)), Name);
         }
     }
 }

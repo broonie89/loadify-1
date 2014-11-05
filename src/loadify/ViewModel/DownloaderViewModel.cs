@@ -157,8 +157,15 @@ namespace loadify.ViewModel
                                         }),
                                         _CancellationToken.Token);
 
-                if (result == TrackDownloadService.CancellationReason.UserInteraction) break;
-
+                if (result == TrackDownloadService.CancellationReason.UserInteraction)
+                {
+                    _EventAggregator.PublishOnUIThread(new NotificationEvent("Download cancelled", String.Format("The download contract was cancelled. \n" +
+                                                                                                    "Tracks downloaded: {0}\n" +
+                                                                                                    "Tracks remaining: {1}\n",
+                                                                                                    DownloadedTracks.Count, RemainingTracks.Count)));
+                    break;
+                }
+  
                 if (result == TrackDownloadService.CancellationReason.None)
                 {
                     DownloadedTracks.Add(CurrentTrack);
@@ -173,10 +180,9 @@ namespace loadify.ViewModel
                 else
                 {
                     _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(
-                        String.Format("{0} could not be downloaded because the logged-in" +
-                                        " Spotify account is in use",
-                        CurrentTrack.ToString()),
-                        RemainingTracks.IndexOf(CurrentTrack)));
+                                                        String.Format("{0} could not be downloaded because the account being used triggered an action in another client.",
+                                                        CurrentTrack.ToString()),
+                                                        RemainingTracks.IndexOf(CurrentTrack)));
                     return;
                 }
             }
