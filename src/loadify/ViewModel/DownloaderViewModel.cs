@@ -143,7 +143,7 @@ namespace loadify.ViewModel
                                         _SettingsManager.BehaviorSetting.AudioProcessor,
                                         _SettingsManager.BehaviorSetting.AudioConverter,
                                         _SettingsManager.BehaviorSetting.AudioFileDescriptor,
-                                        new AudioFileMetaData() 
+                                        new Mp3MetaData() 
                                         { 
                                             Title = CurrentTrack.Name,
                                             Artists = CurrentTrack.Artists,

@@ -1,5 +1,8 @@
 ﻿namespace loadify.Audio
 {
+    /// <summary>
+    /// Metadata about audio data containing information about the data such as the sample rate or bit rate
+    /// </summary>
     public class AudioMetaData
     {
         public int SampleRate { get; set; }

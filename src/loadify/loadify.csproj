@@ -147,7 +147,7 @@
     <Compile Include="Event\UserInputReplyEvent.cs" />
     <Compile Include="Event\UserInputRequestEvent.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Audio\AudioFileMetaData.cs" />
+    <Compile Include="Audio\Mp3MetaData.cs" />
     <Compile Include="Spotify\DownloadInterruptedException.cs" />
     <Compile Include="Event\DataRefreshAuthorizedEvent.cs" />
     <Compile Include="Event\DownloadContractResumedEvent.cs" />

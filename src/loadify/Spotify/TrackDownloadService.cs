@@ -38,7 +38,7 @@ namespace loadify.Spotify
         public CancellationReason Cancellation { get; set; }
         public string OutputDirectory { get; set; }
         public string OutputFileName { get; set; }
-        public AudioFileMetaData AudioFileMetaData { get; set; }
+        public Mp3MetaData Mp3MetaData { get; set; }
         public AudioMetaData AudioMetaData { get; set; }
         public AudioProcessor AudioProcessor { get; set; }
         public AudioConverter AudioConverter { get; set; }
@@ -60,7 +60,7 @@ namespace loadify.Spotify
 
         public TrackDownloadService(string outputDirectory, string outputFileName,
                                     AudioProcessor audioProcessor, AudioConverter audioConverter, IAudioFileDescriptor audioFileDescriptor,
-                                    AudioFileMetaData audioFileMetaData,
+                                    Mp3MetaData mp3MetaData,
                                     Action<double> downloadProgressUpdatedCallback)
         {
             OutputDirectory = outputDirectory;
@@ -68,7 +68,7 @@ namespace loadify.Spotify
             AudioProcessor = audioProcessor;
             AudioConverter = audioConverter;
             AudioFileDescriptor = audioFileDescriptor;
-            AudioFileMetaData = audioFileMetaData;
+            Mp3MetaData = mp3MetaData;
             _DownloadProgressUpdatedCallback = downloadProgressUpdatedCallback;
             AudioMetaData = new AudioMetaData();
         }
@@ -105,18 +105,16 @@ namespace loadify.Spotify
         public void Finish()
         {
             Stop();
-            AudioProcessor.Release();
 
             var outputFilePath = String.Format("{0}/{1}.{2}", OutputDirectory, OutputFileName, AudioProcessor.TargetFileExtension);
             if (AudioConverter != null)
-                outputFilePath = AudioConverter.Convert(outputFilePath, String.Format("{0}/{1}.{2}", 
-                                                                        OutputDirectory, 
-                                                                        OutputFileName, 
-                                                                        AudioConverter.TargetFileExtension));
+                AudioConverter.Convert(outputFilePath, String.Format("{0}/{1}.{2}", 
+                                                        OutputDirectory, 
+                                                        OutputFileName, 
+                                                        AudioConverter.TargetFileExtension));
 
             if (AudioFileDescriptor != null)
-                AudioFileDescriptor.Write(AudioFileMetaData, outputFilePath);
-
+                AudioFileDescriptor.Write(Mp3MetaData, outputFilePath);
         }
 
         public void Cancel(CancellationReason reason)

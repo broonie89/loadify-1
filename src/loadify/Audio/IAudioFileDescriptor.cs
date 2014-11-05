@@ -2,7 +2,7 @@
 {
     public interface IAudioFileDescriptor
     {
-        void Write(AudioFileMetaData audioFileMetaData, string inputFilePath);
-        AudioFileMetaData Read(string inputFilePath);
+        void Write(Mp3MetaData mp3MetaData, string inputFilePath);
+        Mp3MetaData Read(string inputFilePath);
     }
 }
