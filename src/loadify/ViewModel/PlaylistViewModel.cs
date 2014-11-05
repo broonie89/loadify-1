@@ -22,17 +22,14 @@ namespace loadify.ViewModel
 
                 foreach (var track in Playlist.Tracks)
                 {
-                    var audioProcessorPath = String.Format("{0}/{1}.{2}",
-                        _SettingsManager.DirectorySetting.DownloadDirectory,
-                        track.Name,
-                        _SettingsManager.BehaviorSetting.AudioProcessor.TargetFileExtension);
+                    var trackPath = String.Format("{0}/{1}.{2}", 
+                                _SettingsManager.DirectorySetting.DownloadDirectory, 
+                                track.Name, 
+                                _SettingsManager.BehaviorSetting.AudioConverter != null ? 
+                                _SettingsManager.BehaviorSetting.AudioConverter.TargetFileExtension 
+                                : _SettingsManager.BehaviorSetting.AudioProcessor.TargetFileExtension);
 
-                    var audioConverterPath = String.Format("{0}/{1}.{2}",
-                        _SettingsManager.DirectorySetting.DownloadDirectory,
-                        track.Name,
-                        _SettingsManager.BehaviorSetting.AudioConverter.TargetFileExtension);
-
-                    if (File.Exists(audioProcessorPath) || File.Exists(audioConverterPath))
+                    if (File.Exists(trackPath))
                         track.ExistsLocally = true;
                 }
 

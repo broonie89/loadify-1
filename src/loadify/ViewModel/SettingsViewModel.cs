@@ -77,23 +77,6 @@ namespace loadify.ViewModel
             }
         }
 
-        public WriteConflictAction WriteConflictAction
-        {
-            get { return _SettingsManager.BehaviorSetting.WriteConflictAction.ConvertedValue; }
-            set
-            {
-
-                if (_SettingsManager.BehaviorSetting.WriteConflictAction.ConvertedValue == value) return;
-                _SettingsManager.BehaviorSetting.WriteConflictAction.ConvertedValue = value;
-                NotifyOfPropertyChange(() => WriteConflictAction);
-            }
-        }
-
-        public List<WriteConflictAction> WriteConflictActions
-        {
-            get { return Enum.GetValues(typeof(WriteConflictAction)).Cast<WriteConflictAction>().ToList(); }
-        }
-
         public SettingsViewModel(IEventAggregator eventAggregator, ISettingsManager settingsManager) :
             base(eventAggregator, settingsManager)
         { }
