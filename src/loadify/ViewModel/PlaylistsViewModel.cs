@@ -111,7 +111,7 @@ namespace loadify.ViewModel
 
         public void AddPlaylist()
         {
-            _EventAggregator.PublishOnUIThread(new AddPlaylistRequestEvent("Add Playlist", "Please insert the link to the Spotify playlist"));
+            _EventAggregator.PublishOnUIThread(new AddPlaylistRequestEvent());
         }
 
         public void RemovePlaylist(object dataContext)
@@ -125,9 +125,7 @@ namespace loadify.ViewModel
             var playlist = (dataContext as PlaylistViewModel);
             if (playlist == null) return;
 
-            _EventAggregator.PublishOnUIThread(
-                new AddTrackRequestEvent(String.Format("Add Track to Playlist {0}", playlist.Name),
-                    "Please insert the link to the Spotify track", playlist));
+            _EventAggregator.PublishOnUIThread(new AddTrackRequestEvent(playlist));
         }
 
         public void RefreshData()

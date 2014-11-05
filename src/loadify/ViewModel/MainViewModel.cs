@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 using loadify.Configuration;
 using loadify.Event;
 using loadify.Spotify;
@@ -16,7 +17,7 @@ namespace loadify.ViewModel
                                                 IHandle<DownloadContractCompletedEvent>,
                                                 IHandle<DownloadContractResumedEvent>
     {
-        private LoadifySession _Session;
+        private readonly LoadifySession _Session;
 
         private MenuViewModel _Menu;
         public MenuViewModel Menu
@@ -109,11 +110,11 @@ namespace loadify.ViewModel
             base(eventAggregator, windowManager, settingsManager)
         {
             _Session = session;
-            _LoggedInUser = loggedInUser;
-            _Menu = new MenuViewModel(_EventAggregator, _WindowManager);
-            _Status = new StatusViewModel(loggedInUser, new DownloaderViewModel(_EventAggregator, _SettingsManager),  _EventAggregator);
-            _Playlists = new PlaylistsViewModel(_EventAggregator, settingsManager);
-            _Settings = new SettingsViewModel(_EventAggregator, _SettingsManager);
+            LoggedInUser = loggedInUser;
+            Menu = new MenuViewModel(_EventAggregator, _WindowManager);
+            Status = new StatusViewModel(loggedInUser, new DownloaderViewModel(_EventAggregator, _SettingsManager),  _EventAggregator);
+            Playlists = new PlaylistsViewModel(_EventAggregator, settingsManager);
+            Settings = new SettingsViewModel(_EventAggregator, _SettingsManager);
 
             _EventAggregator.PublishOnUIThread(new DataRefreshAuthorizedEvent(_Session));
         }
@@ -152,7 +153,7 @@ namespace loadify.ViewModel
         public async void Handle(AddPlaylistRequestEvent message)
         {
             var view = GetView() as MainView;
-            var response = await view.ShowInputAsync(message.Title, message.Content);
+            var response = await view.ShowInputAsync("Add Playlist", "Please insert the link to the Spotify playlist");
 
             _EventAggregator.PublishOnUIThread(new AddPlaylistReplyEvent(response, _Session));
         }
@@ -166,7 +167,7 @@ namespace loadify.ViewModel
         public async void Handle(AddTrackRequestEvent message)
         {
             var view = GetView() as MainView;
-            var response = await view.ShowInputAsync(message.Title, message.Content);
+            var response = await view.ShowInputAsync(String.Format("Add Track to Playlist {0}", message.Playlist.Name), "Please insert the link to the Spotify track");
 
             _EventAggregator.PublishOnUIThread(new AddTrackReplyEvent(response, message.Playlist, _Session));
         }
