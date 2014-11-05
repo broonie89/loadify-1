@@ -14,6 +14,7 @@
              d:DesignHeight="371" d:DesignWidth="300">
     <UserControl.Resources>
         <converter:ExistsToImageSourceConverter x:Key="ExistsToImageSourceConverter"/>
+        <converter:ArtistsToStringConverter x:Key="ArtistsToStringConverter"/>
         <mock:PlaylistsMock x:Key="PlaylistsMock"/>
         <DataTemplate x:Key="TrackTemplate" DataType="viewmodel:TrackViewModel">
             <StackPanel Orientation="Horizontal">
@@ -25,7 +26,7 @@
                 <TextBlock>
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{} {0} - {1}">
-                            <Binding Path="Artists"/>
+                            <Binding Path="Artists" Converter="{StaticResource ArtistsToStringConverter}"/>
                             <Binding Path="Name"/>
                         </MultiBinding>
                     </TextBlock.Text>

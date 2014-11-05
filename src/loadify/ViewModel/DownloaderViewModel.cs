@@ -146,7 +146,7 @@ namespace loadify.ViewModel
                                         new Mp3MetaData() 
                                         { 
                                             Title = CurrentTrack.Name,
-                                            Artists = CurrentTrack.Artists,
+                                            Artists = String.Join(", ", CurrentTrack.Artists.Select(artist => artist.Name)),
                                             Album = CurrentTrack.Album.Name,
                                             Year = CurrentTrack.Album.ReleaseYear,
                                             Cover = CurrentTrack.Album.Cover
