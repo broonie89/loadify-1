@@ -5,6 +5,16 @@ namespace loadify.Configuration
 {
     public class NETBehaviorSetting : IBehaviorSetting
     {
+        public bool NotifyLocalTrackDetections
+        {
+            get { return Settings.Default.NotifyLocalTrackDetections; }
+            set
+            {
+                Settings.Default.NotifyLocalTrackDetections = value;
+                Settings.Default.Save();
+            }
+        }
+
         public AudioProcessor AudioProcessor { get; set; }
         public AudioConverter AudioConverter { get; set; }
         public IAudioFileDescriptor AudioFileDescriptor { get; set; }

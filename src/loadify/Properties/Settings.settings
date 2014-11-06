@@ -26,5 +26,8 @@
     <Setting Name="WriteConflictAction" Type="System.String" Scope="User">
       <Value Profile="(Default)">Overwrite</Value>
     </Setting>
+    <Setting Name="NotifyLocalTrackDetections" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -103,7 +103,7 @@ namespace loadify.ViewModel
                 foreach (var track in Tracks)
                     track.Selected = (bool) value;
 
-                if(AllTracksSelected == true)
+                if(AllTracksSelected == true && _SettingsManager.BehaviorSetting.NotifyLocalTrackDetections)
                     _EventAggregator.PublishOnUIThread(new UnselectExistingTracksRequestEvent(
                                                             new ObservableCollection<TrackViewModel>(
                                                                 Tracks.Where(track => track.ExistsLocally))));

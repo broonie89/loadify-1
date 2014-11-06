@@ -77,6 +77,17 @@ namespace loadify.ViewModel
             }
         }
 
+        public bool NotifyLocalTrackDetections
+        {
+            get { return _SettingsManager.BehaviorSetting.NotifyLocalTrackDetections; }
+            set
+            {
+                if (_SettingsManager.BehaviorSetting.NotifyLocalTrackDetections == value) return;
+                _SettingsManager.BehaviorSetting.NotifyLocalTrackDetections = value;
+                NotifyOfPropertyChange(() => CacheDirectory);
+            }
+        }
+
         public SettingsViewModel(IEventAggregator eventAggregator, ISettingsManager settingsManager) :
             base(eventAggregator, settingsManager)
         { }

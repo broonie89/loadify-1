@@ -64,10 +64,10 @@ namespace loadify.Properties {
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string ProxyIP {
             get {
-                return ((string)(this["ProxyIp"]));
+                return ((string)(this["ProxyIP"]));
             }
             set {
-                this["ProxyIp"] = value;
+                this["ProxyIP"] = value;
             }
         }
         
@@ -116,6 +116,18 @@ namespace loadify.Properties {
             }
             set {
                 this["WriteConflictAction"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool NotifyLocalTrackDetections {
+            get {
+                return ((bool)(this["NotifyLocalTrackDetections"]));
+            }
+            set {
+                this["NotifyLocalTrackDetections"] = value;
             }
         }
     }
