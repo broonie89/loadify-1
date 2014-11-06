@@ -76,7 +76,7 @@ namespace loadify.Spotify
         public void Start(TrackModel track)
         {
             _Statistic = new Statistic(track.Duration);
-            AudioProcessor.Start(String.Format("{0}/{1}.{2}", OutputDirectory, OutputFileName, AudioProcessor.TargetFileExtension));
+            AudioProcessor.Start(String.Format("{0}/{1}.{2}", OutputDirectory, OutputFileName.ValidateFileName(), AudioProcessor.TargetFileExtension));
             Active = true;
         }
 
@@ -106,8 +106,8 @@ namespace loadify.Spotify
         {
             Stop();
 
-            var processorOutputPath = String.Format("{0}/{1}.{2}", OutputDirectory, OutputFileName, AudioProcessor.TargetFileExtension);
-            var converterOutputPath = String.Format("{0}/{1}.{2}", OutputDirectory, OutputFileName, AudioConverter.TargetFileExtension);
+            var processorOutputPath = String.Format("{0}/{1}.{2}", OutputDirectory, OutputFileName.ValidateFileName(), AudioProcessor.TargetFileExtension);
+            var converterOutputPath = String.Format("{0}/{1}.{2}", OutputDirectory, OutputFileName.ValidateFileName(), AudioConverter.TargetFileExtension);
             if (AudioConverter != null)
                 AudioConverter.Convert(processorOutputPath, converterOutputPath);
 
