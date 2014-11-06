@@ -38,7 +38,8 @@ namespace loadify.Model
                 var unmanagedTrack = unmanagedPlaylist.Track(i);
                 if (unmanagedTrack == null) continue;
                 var managedTrack = await TrackModel.FromLibrary(unmanagedTrack, session);
-               
+                managedTrack.Playlist = playlistModel;
+                 
                 playlistModel.Tracks.Add(managedTrack);
             }
 

@@ -110,8 +110,8 @@ namespace loadify.ViewModel
 
             try
             {
-                if (!Directory.Exists(Settings.Default.DownloadDirectory))
-                    Directory.CreateDirectory(Settings.Default.DownloadDirectory);
+                if (!Directory.Exists(_SettingsManager.DirectorySetting.DownloadDirectory))
+                    Directory.CreateDirectory(_SettingsManager.DirectorySetting.DownloadDirectory);
             }
             catch (UnauthorizedAccessException)
             {
@@ -136,9 +136,15 @@ namespace loadify.ViewModel
             {
                 CurrentTrack = track;
 
+                var playlistDownloadDirectory = String.Format("{0}/{1}", 
+                                                        _SettingsManager.DirectorySetting.DownloadDirectory,
+                                                        CurrentTrack.Track.Playlist.Name);
+                if(!Directory.Exists(playlistDownloadDirectory))
+                    Directory.CreateDirectory(playlistDownloadDirectory);
+
                 var result = await session.DownloadTrack(CurrentTrack.Track, 
                                         new TrackDownloadService(
-                                        _SettingsManager.DirectorySetting.DownloadDirectory,
+                                        playlistDownloadDirectory,
                                         CurrentTrack.Name,
                                         _SettingsManager.BehaviorSetting.AudioProcessor,
                                         _SettingsManager.BehaviorSetting.AudioConverter,

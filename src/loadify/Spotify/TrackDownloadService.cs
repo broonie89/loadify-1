@@ -106,15 +106,13 @@ namespace loadify.Spotify
         {
             Stop();
 
-            var outputFilePath = String.Format("{0}/{1}.{2}", OutputDirectory, OutputFileName, AudioProcessor.TargetFileExtension);
+            var processorOutputPath = String.Format("{0}/{1}.{2}", OutputDirectory, OutputFileName, AudioProcessor.TargetFileExtension);
+            var converterOutputPath = String.Format("{0}/{1}.{2}", OutputDirectory, OutputFileName, AudioConverter.TargetFileExtension);
             if (AudioConverter != null)
-                AudioConverter.Convert(outputFilePath, String.Format("{0}/{1}.{2}", 
-                                                        OutputDirectory, 
-                                                        OutputFileName, 
-                                                        AudioConverter.TargetFileExtension));
+                AudioConverter.Convert(processorOutputPath, converterOutputPath);
 
             if (AudioFileDescriptor != null)
-                AudioFileDescriptor.Write(Mp3MetaData, outputFilePath);
+                AudioFileDescriptor.Write(Mp3MetaData, (AudioConverter != null) ? converterOutputPath : processorOutputPath);
         }
 
         public void Cancel(CancellationReason reason)

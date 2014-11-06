@@ -11,6 +11,7 @@ namespace loadify.Model
         public Track UnmanagedTrack { get; set; }
 
         public string Name { get; set; }
+        public PlaylistModel Playlist { get; set; }
         public TimeSpan Duration { get; set; }
         public List<ArtistModel> Artists { get; set; }
         public int Rating { get; set; }
@@ -27,6 +28,7 @@ namespace loadify.Model
         {
             Artists = new List<ArtistModel>();
             Album = new AlbumModel();
+            Playlist = new PlaylistModel();
         }
 
         public static async Task<TrackModel> FromLibrary(Track unmanagedTrack, LoadifySession session)
