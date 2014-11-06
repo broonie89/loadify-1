@@ -6,6 +6,7 @@ using Caliburn.Micro;
 using loadify.Configuration;
 using loadify.Event;
 using loadify.Model;
+using SpotifySharp;
 
 namespace loadify.ViewModel
 {
@@ -21,19 +22,17 @@ namespace loadify.ViewModel
                 if (_Playlist == value) return;
                 _Playlist = value;
 
+                var downloadDirectoryFiles = Directory.GetFiles(_SettingsManager.DirectorySetting.DownloadDirectory,
+                                                                String.Format("*.{0}", _SettingsManager.BehaviorSetting.AudioConverter != null
+                                                                    ? _SettingsManager.BehaviorSetting.AudioConverter.TargetFileExtension
+                                                                    : _SettingsManager.BehaviorSetting.AudioProcessor.TargetFileExtension),
+                                                                SearchOption.AllDirectories);
+
                 foreach (var track in Playlist.Tracks)
                 {
-                    var trackPath = String.Format("{0}/{1}.{2}", 
-                                _SettingsManager.DirectorySetting.DownloadDirectory, 
-                                track.Name, 
-                                _SettingsManager.BehaviorSetting.AudioConverter != null ? 
-                                _SettingsManager.BehaviorSetting.AudioConverter.TargetFileExtension 
-                                : _SettingsManager.BehaviorSetting.AudioProcessor.TargetFileExtension);
-
-                    if (File.Exists(trackPath))
+                    if(downloadDirectoryFiles.Any(filePath => Path.GetFileNameWithoutExtension(filePath) == track.Name))
                         track.ExistsLocally = true;
                 }
-
 
                 NotifyOfPropertyChange(() => Playlist);
             }
