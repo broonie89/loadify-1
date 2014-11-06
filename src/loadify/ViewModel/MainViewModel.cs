@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms.VisualStyles;
 using Caliburn.Micro;
 using loadify.Configuration;
 using loadify.Event;
@@ -17,7 +18,8 @@ namespace loadify.ViewModel
                                                 IHandle<DownloadContractCompletedEvent>,
                                                 IHandle<DownloadContractResumedEvent>,
                                                 IHandle<DisplayProgressEvent>,
-                                                IHandle<HideProgressEvent>
+                                                IHandle<HideProgressEvent>,
+                                                IHandle<UnselectExistingTracksRequestEvent>
     {
         private readonly LoadifySession _Session;
 
@@ -214,6 +216,19 @@ namespace loadify.ViewModel
             
             _ProgressDialogController.CloseAsync();
             _ProgressHideRequested = false;
+        }
+
+        public async void Handle(UnselectExistingTracksRequestEvent message)
+        {
+            if (message.ExistingTracks.Count == 0) return;
+
+            var view = GetView() as MainView;
+            var dialogResult = await view.ShowMessageAsync("Detected existing Tracks", 
+                                                            String.Format("Loadify detected that you already have {0} of the selected tracks in your download directory.\n" +
+                                                            "Do you want to remove them from your download contract?",
+                                                            message.ExistingTracks.Count), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "yes", NegativeButtonText = "no" });
+
+            _EventAggregator.PublishOnUIThread(new UnselectExistingTracksReplyEvent(dialogResult == MessageDialogResult.Affirmative));
         }
     }
 }

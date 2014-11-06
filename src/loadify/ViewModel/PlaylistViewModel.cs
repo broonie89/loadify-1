@@ -9,7 +9,8 @@ using loadify.Model;
 
 namespace loadify.ViewModel
 {
-    public class PlaylistViewModel : ViewModelBase, IHandle<TrackSelectedChangedEvent>
+    public class PlaylistViewModel : ViewModelBase, IHandle<TrackSelectedChangedEvent>,
+                                                    IHandle<UnselectExistingTracksReplyEvent>
     {
         private PlaylistModel _Playlist;
         public PlaylistModel Playlist
@@ -102,6 +103,11 @@ namespace loadify.ViewModel
                 foreach (var track in Tracks)
                     track.Selected = (bool) value;
 
+                if(AllTracksSelected == true)
+                    _EventAggregator.PublishOnUIThread(new UnselectExistingTracksRequestEvent(
+                                                            new ObservableCollection<TrackViewModel>(
+                                                                Tracks.Where(track => track.ExistsLocally))));
+
                 NotifyOfPropertyChange(() => AllTracksSelected);
             }
         }
@@ -151,6 +157,15 @@ namespace loadify.ViewModel
             NotifyOfPropertyChange(() => AllTracksSelected);
 
             _EventAggregator.PublishOnUIThread(new SelectedTracksChangedEvent(SelectedTracks));
+        }
+
+        public void Handle(UnselectExistingTracksReplyEvent message)
+        {
+            if (message.Unselect)
+            {
+                foreach (var existingTrack in Tracks.Where(track => track.ExistsLocally))
+                    existingTrack.Selected = false;
+            }
         }
     }
 }
