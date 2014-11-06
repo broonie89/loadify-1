@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Documents;
 using Caliburn.Micro;
 using loadify.Event;
 using loadify.Model;
@@ -53,19 +55,14 @@ namespace loadify.ViewModel
             }
         }
 
-        public string Artists
+        public List<ArtistModel> Artists
         {
-            get
+            get { return Track.Artists; }
+            set
             {
-                var artists = "";
-                foreach (var artist in Track.Artists)
-                {
-                    artists += artist.Name;
-                    if (artist != Track.Artists.LastOrDefault())
-                        artists += ", ";
-                }
-
-                return artists;
+                if (Track.Artists == value) return;
+                Track.Artists = value;
+                NotifyOfPropertyChange(() => Track.Artists);
             }
         }
 
@@ -117,7 +114,7 @@ namespace loadify.ViewModel
 
         public override string ToString()
         {
-            return string.Format("{0} - {1}", Artists, Name);
+            return string.Format("{0} - {1}", String.Join(", ", Artists.Select(artist => artist.Name)), Name);
         }
     }
 }

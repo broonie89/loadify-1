@@ -1,9 +1,8 @@
 ﻿namespace loadify.Event
 {
-    public class AddPlaylistRequestEvent : UserInputRequestEvent
+    public class AddPlaylistRequestEvent
     {
-        public AddPlaylistRequestEvent(string title, string content):
-            base(title, content)
+        public AddPlaylistRequestEvent()
         { }
     }
 }

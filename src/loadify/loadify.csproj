@@ -120,7 +120,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Audio\WriteConflictAction.cs" />
     <Compile Include="Behavior\InputBindingsManager.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Configuration\EnumSetting.cs" />
@@ -138,16 +137,17 @@
     <Compile Include="Event\AddPlaylistReplyEvent.cs" />
     <Compile Include="Event\AddTrackReplyEvent.cs" />
     <Compile Include="Event\AddTrackRequestEvent.cs" />
-    <Compile Include="Event\DialogRequestEvent.cs" />
+    <Compile Include="Event\DisplayProgressEvent.cs" />
     <Compile Include="Event\DownloadContractCancelledEvent.cs" />
+    <Compile Include="Event\HideProgressEvent.cs" />
     <Compile Include="Event\SelectedTracksChangedEvent.cs" />
-    <Compile Include="Event\ErrorOcurredEvent.cs" />
+    <Compile Include="Event\NotificationEvent.cs" />
     <Compile Include="Event\SessionEvent.cs" />
     <Compile Include="Event\TrackDownloadComplete.cs" />
-    <Compile Include="Event\UserInputReplyEvent.cs" />
-    <Compile Include="Event\UserInputRequestEvent.cs" />
+    <Compile Include="Event\UnselectExistingTracksReplyEvent.cs" />
+    <Compile Include="Event\UnselectExistingTracksRequestEvent.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Audio\AudioFileMetaData.cs" />
+    <Compile Include="Audio\Mp3MetaData.cs" />
     <Compile Include="Spotify\DownloadInterruptedException.cs" />
     <Compile Include="Event\DataRefreshAuthorizedEvent.cs" />
     <Compile Include="Event\DownloadContractResumedEvent.cs" />
@@ -175,6 +175,7 @@
     <Compile Include="Audio\WaveToMp3Converter.cs" />
     <Compile Include="Spotify\TrackDownloadService.cs" />
     <Compile Include="ValueConverter\ExistsToImageSourceConverter.cs" />
+    <Compile Include="ValueConverter\ArtistsToStringConverter.cs" />
     <Compile Include="ViewModel\AboutViewModel.cs" />
     <Compile Include="ViewModel\DownloaderViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />

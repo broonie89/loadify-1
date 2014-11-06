@@ -14,6 +14,7 @@
              d:DesignHeight="371" d:DesignWidth="300">
     <UserControl.Resources>
         <converter:ExistsToImageSourceConverter x:Key="ExistsToImageSourceConverter"/>
+        <converter:ArtistsToStringConverter x:Key="ArtistsToStringConverter"/>
         <mock:PlaylistsMock x:Key="PlaylistsMock"/>
         <DataTemplate x:Key="TrackTemplate" DataType="viewmodel:TrackViewModel">
             <StackPanel Orientation="Horizontal">
@@ -25,7 +26,7 @@
                 <TextBlock>
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{} {0} - {1}">
-                            <Binding Path="Artists"/>
+                            <Binding Path="Artists" Converter="{StaticResource ArtistsToStringConverter}"/>
                             <Binding Path="Name"/>
                         </MultiBinding>
                     </TextBlock.Text>
@@ -38,7 +39,7 @@
             <StackPanel Orientation="Horizontal" Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}">
                 <StackPanel.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Add Track from Link" 
+                        <MenuItem Header="Add Track" 
                                   cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                                   cal:Message.Attach="[Event Click] = [Action AddTrack($dataContext)]"/>
                         <MenuItem Header="Remove"
@@ -86,7 +87,7 @@
                             <Image Height="18" Width="18" Source="/Resources/refresh_icon.png"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                    <MenuItem Header="Add Playlist from Link"
+                    <MenuItem Header="Add Playlist"
                               cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                               cal:Message.Attach="[Event Click] = [Action AddPlaylist()]" />
                 </ContextMenu>

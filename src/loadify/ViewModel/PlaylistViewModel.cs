@@ -1,12 +1,16 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using Caliburn.Micro;
+using loadify.Configuration;
 using loadify.Event;
 using loadify.Model;
 
 namespace loadify.ViewModel
 {
-    public class PlaylistViewModel : ViewModelBase, IHandle<TrackSelectedChangedEvent>
+    public class PlaylistViewModel : ViewModelBase, IHandle<TrackSelectedChangedEvent>,
+                                                    IHandle<UnselectExistingTracksReplyEvent>
     {
         private PlaylistModel _Playlist;
         public PlaylistModel Playlist
@@ -16,6 +20,21 @@ namespace loadify.ViewModel
             {
                 if (_Playlist == value) return;
                 _Playlist = value;
+
+                foreach (var track in Playlist.Tracks)
+                {
+                    var trackPath = String.Format("{0}/{1}.{2}", 
+                                _SettingsManager.DirectorySetting.DownloadDirectory, 
+                                track.Name, 
+                                _SettingsManager.BehaviorSetting.AudioConverter != null ? 
+                                _SettingsManager.BehaviorSetting.AudioConverter.TargetFileExtension 
+                                : _SettingsManager.BehaviorSetting.AudioProcessor.TargetFileExtension);
+
+                    if (File.Exists(trackPath))
+                        track.ExistsLocally = true;
+                }
+
+
                 NotifyOfPropertyChange(() => Playlist);
             }
         }
@@ -84,6 +103,11 @@ namespace loadify.ViewModel
                 foreach (var track in Tracks)
                     track.Selected = (bool) value;
 
+                if(AllTracksSelected == true)
+                    _EventAggregator.PublishOnUIThread(new UnselectExistingTracksRequestEvent(
+                                                            new ObservableCollection<TrackViewModel>(
+                                                                Tracks.Where(track => track.ExistsLocally))));
+
                 NotifyOfPropertyChange(() => AllTracksSelected);
             }
         }
@@ -105,21 +129,21 @@ namespace loadify.ViewModel
             get { return new ObservableCollection<TrackViewModel>(Tracks.Where(track => (bool) track.Selected)); }
         }
 
-        public PlaylistViewModel(PlaylistModel playlist, IEventAggregator eventAggregator):
-            base(eventAggregator)
+        public PlaylistViewModel(PlaylistModel playlist, IEventAggregator eventAggregator, ISettingsManager settingsManager):
+            base(eventAggregator, settingsManager)
         {
-            _Playlist = playlist;
-            _Tracks = new ObservableCollection<TrackViewModel>(playlist.Tracks.Select(track => new TrackViewModel(track, eventAggregator)));
+            Playlist = playlist;
+            Tracks = new ObservableCollection<TrackViewModel>(playlist.Tracks.Select(track => new TrackViewModel(track, eventAggregator)));
         }
 
-        public PlaylistViewModel(IEventAggregator eventAggregator):
-            this(new PlaylistModel(), eventAggregator)
+        public PlaylistViewModel(IEventAggregator eventAggregator, ISettingsManager settingsManager):
+            this(new PlaylistModel(), eventAggregator, settingsManager)
         { }
 
         public PlaylistViewModel(PlaylistViewModel playlistViewModel)
         {
             _EventAggregator = playlistViewModel._EventAggregator;
-            _Tracks = new ObservableCollection<TrackViewModel>(playlistViewModel.Tracks);
+            Tracks = new ObservableCollection<TrackViewModel>(playlistViewModel.Tracks);
             Playlist = new PlaylistModel(playlistViewModel.Playlist);
             AllTracksSelected = playlistViewModel.AllTracksSelected;
             Expanded = playlistViewModel.Expanded;
@@ -133,6 +157,15 @@ namespace loadify.ViewModel
             NotifyOfPropertyChange(() => AllTracksSelected);
 
             _EventAggregator.PublishOnUIThread(new SelectedTracksChangedEvent(SelectedTracks));
+        }
+
+        public void Handle(UnselectExistingTracksReplyEvent message)
+        {
+            if (message.Unselect)
+            {
+                foreach (var existingTrack in Tracks.Where(track => track.ExistsLocally))
+                    existingTrack.Selected = false;
+            }
         }
     }
 }

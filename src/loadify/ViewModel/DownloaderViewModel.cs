@@ -143,10 +143,10 @@ namespace loadify.ViewModel
                                         _SettingsManager.BehaviorSetting.AudioProcessor,
                                         _SettingsManager.BehaviorSetting.AudioConverter,
                                         _SettingsManager.BehaviorSetting.AudioFileDescriptor,
-                                        new AudioFileMetaData() 
+                                        new Mp3MetaData() 
                                         { 
                                             Title = CurrentTrack.Name,
-                                            Artists = CurrentTrack.Artists,
+                                            Artists = String.Join(", ", CurrentTrack.Artists.Select(artist => artist.Name)),
                                             Album = CurrentTrack.Album.Name,
                                             Year = CurrentTrack.Album.ReleaseYear,
                                             Cover = CurrentTrack.Album.Cover
@@ -157,11 +157,17 @@ namespace loadify.ViewModel
                                         }),
                                         _CancellationToken.Token);
 
-                if (result == TrackDownloadService.CancellationReason.UserInteraction) break;
-
+                if (result == TrackDownloadService.CancellationReason.UserInteraction)
+                {
+                    _EventAggregator.PublishOnUIThread(new NotificationEvent("Download cancelled", String.Format("The download contract was cancelled. \n" +
+                                                                                                    "Tracks downloaded: {0}\n" +
+                                                                                                    "Tracks remaining: {1}\n",
+                                                                                                    DownloadedTracks.Count, RemainingTracks.Count)));
+                    break;
+                }
+  
                 if (result == TrackDownloadService.CancellationReason.None)
                 {
-                    CurrentTrack.ExistsLocally = true;
                     DownloadedTracks.Add(CurrentTrack);
                     RemainingTracks.Remove(CurrentTrack);
                     NotifyOfPropertyChange(() => TotalProgress);
@@ -174,10 +180,9 @@ namespace loadify.ViewModel
                 else
                 {
                     _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(
-                        String.Format("{0} could not be downloaded because the logged-in" +
-                                        " Spotify account is in use",
-                        CurrentTrack.ToString()),
-                        RemainingTracks.IndexOf(CurrentTrack)));
+                                                        String.Format("{0} could not be downloaded because the account being used triggered an action in another client.",
+                                                        CurrentTrack.ToString()),
+                                                        RemainingTracks.IndexOf(CurrentTrack)));
                     return;
                 }
             }

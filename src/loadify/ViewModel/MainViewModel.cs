@@ -1,4 +1,6 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Windows.Forms.VisualStyles;
+using Caliburn.Micro;
 using loadify.Configuration;
 using loadify.Event;
 using loadify.Spotify;
@@ -10,13 +12,16 @@ namespace loadify.ViewModel
     public class MainViewModel : ViewModelBase, IHandle<DataRefreshRequestEvent>, 
                                                 IHandle<DownloadContractPausedEvent>,
                                                 IHandle<AddPlaylistRequestEvent>, 
-                                                IHandle<ErrorOcurredEvent>,
+                                                IHandle<NotificationEvent>,
                                                 IHandle<AddTrackRequestEvent>,
                                                 IHandle<SelectedTracksChangedEvent>,
                                                 IHandle<DownloadContractCompletedEvent>,
-                                                IHandle<DownloadContractResumedEvent>
+                                                IHandle<DownloadContractResumedEvent>,
+                                                IHandle<DisplayProgressEvent>,
+                                                IHandle<HideProgressEvent>,
+                                                IHandle<UnselectExistingTracksRequestEvent>
     {
-        private LoadifySession _Session;
+        private readonly LoadifySession _Session;
 
         private MenuViewModel _Menu;
         public MenuViewModel Menu
@@ -102,6 +107,9 @@ namespace loadify.ViewModel
             }
         }
 
+        private bool _ProgressHideRequested = false;
+        private ProgressDialogController _ProgressDialogController;
+
         public MainViewModel(LoadifySession session, UserViewModel loggedInUser,
                              IEventAggregator eventAggregator,
                              IWindowManager windowManager,
@@ -109,11 +117,11 @@ namespace loadify.ViewModel
             base(eventAggregator, windowManager, settingsManager)
         {
             _Session = session;
-            _LoggedInUser = loggedInUser;
-            _Menu = new MenuViewModel(_EventAggregator, _WindowManager);
-            _Status = new StatusViewModel(loggedInUser, new DownloaderViewModel(_EventAggregator, _SettingsManager),  _EventAggregator);
-            _Playlists = new PlaylistsViewModel(_EventAggregator, settingsManager);
-            _Settings = new SettingsViewModel(_EventAggregator, _SettingsManager);
+            LoggedInUser = loggedInUser;
+            Menu = new MenuViewModel(_EventAggregator, _WindowManager);
+            Status = new StatusViewModel(loggedInUser, new DownloaderViewModel(_EventAggregator, _SettingsManager),  _EventAggregator);
+            Playlists = new PlaylistsViewModel(_EventAggregator, settingsManager);
+            Settings = new SettingsViewModel(_EventAggregator, _SettingsManager);
 
             _EventAggregator.PublishOnUIThread(new DataRefreshAuthorizedEvent(_Session));
         }
@@ -132,15 +140,15 @@ namespace loadify.ViewModel
 
         public void Handle(DataRefreshRequestEvent message)
         {
-            // accept all requests by default (debugging purposes)
             _EventAggregator.PublishOnUIThread(new DataRefreshAuthorizedEvent(_Session));
         }
 
         public async void Handle(DownloadContractPausedEvent message)
         {
             var view = GetView() as MainView;
-            var dialogResult = await view.ShowMessageAsync("Download Paused", message.Reason 
-                                        + "\nPlease resolve this error before continuing downloading",
+            var dialogResult = await view.ShowMessageAsync("Download Paused", 
+                                        message.Reason
+                                        + "\nPlease resolve this issue before continuing downloading.",
                                         MessageDialogStyle.AffirmativeAndNegative);
             
             if(dialogResult == MessageDialogResult.Affirmative) // pressed "OK"
@@ -152,12 +160,12 @@ namespace loadify.ViewModel
         public async void Handle(AddPlaylistRequestEvent message)
         {
             var view = GetView() as MainView;
-            var response = await view.ShowInputAsync(message.Title, message.Content);
+            var response = await view.ShowInputAsync("Add Playlist", "Please insert the link to the Spotify playlist you want to add.");
 
             _EventAggregator.PublishOnUIThread(new AddPlaylistReplyEvent(response, _Session));
         }
 
-        public async void Handle(ErrorOcurredEvent message)
+        public async void Handle(NotificationEvent message)
         {
             var view = GetView() as MainView;
             await view.ShowMessageAsync(message.Title, message.Content);
@@ -166,7 +174,7 @@ namespace loadify.ViewModel
         public async void Handle(AddTrackRequestEvent message)
         {
             var view = GetView() as MainView;
-            var response = await view.ShowInputAsync(message.Title, message.Content);
+            var response = await view.ShowInputAsync(String.Format("Add Track to Playlist {0}", message.Playlist.Name), "Please insert the link to the Spotify track you want to add.");
 
             _EventAggregator.PublishOnUIThread(new AddTrackReplyEvent(response, message.Playlist, _Session));
         }
@@ -186,6 +194,41 @@ namespace loadify.ViewModel
         {
             CanCancelDownload = true;
             CanStartDownload = false;
+        }
+
+        public async void Handle(DisplayProgressEvent message)
+        {
+            var view = GetView() as MainView;
+            _ProgressDialogController = await view.ShowProgressAsync(message.Title, message.Content);
+            if (_ProgressHideRequested)
+            {
+                await _ProgressDialogController.CloseAsync();
+                _ProgressHideRequested = false;
+            }
+        }
+
+        public void Handle(HideProgressEvent message)
+        {
+            _ProgressHideRequested = true;
+
+            if (_ProgressDialogController == null) return;
+            if (!_ProgressDialogController.IsOpen) return;
+            
+            _ProgressDialogController.CloseAsync();
+            _ProgressHideRequested = false;
+        }
+
+        public async void Handle(UnselectExistingTracksRequestEvent message)
+        {
+            if (message.ExistingTracks.Count == 0) return;
+
+            var view = GetView() as MainView;
+            var dialogResult = await view.ShowMessageAsync("Detected existing Tracks", 
+                                                            String.Format("Loadify detected that you already have {0} of the selected tracks in your download directory.\n" +
+                                                            "Do you want to remove them from your download contract?",
+                                                            message.ExistingTracks.Count), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "yes", NegativeButtonText = "no" });
+
+            _EventAggregator.PublishOnUIThread(new UnselectExistingTracksReplyEvent(dialogResult == MessageDialogResult.Affirmative));
         }
     }
 }
