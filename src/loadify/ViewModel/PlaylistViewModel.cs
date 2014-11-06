@@ -22,16 +22,20 @@ namespace loadify.ViewModel
                 if (_Playlist == value) return;
                 _Playlist = value;
 
-                var downloadDirectoryFiles = Directory.GetFiles(_SettingsManager.DirectorySetting.DownloadDirectory,
-                                                                String.Format("*.{0}", _SettingsManager.BehaviorSetting.AudioConverter != null
-                                                                    ? _SettingsManager.BehaviorSetting.AudioConverter.TargetFileExtension
-                                                                    : _SettingsManager.BehaviorSetting.AudioProcessor.TargetFileExtension),
-                                                                SearchOption.AllDirectories);
-
-                foreach (var track in Playlist.Tracks)
+                if (Directory.Exists(_SettingsManager.DirectorySetting.DownloadDirectory))
                 {
-                    if(downloadDirectoryFiles.Any(filePath => Path.GetFileNameWithoutExtension(filePath) == track.Name))
-                        track.ExistsLocally = true;
+                    var downloadDirectoryFiles = Directory.GetFiles(_SettingsManager.DirectorySetting.DownloadDirectory,
+                                                                    String.Format("*.{0}", _SettingsManager.BehaviorSetting.AudioConverter != null
+                                                                        ? _SettingsManager.BehaviorSetting.AudioConverter.TargetFileExtension
+                                                                        : _SettingsManager.BehaviorSetting.AudioProcessor.TargetFileExtension),
+                                                                    SearchOption.AllDirectories);
+
+                    foreach (var track in Playlist.Tracks)
+                    {
+                        if (downloadDirectoryFiles
+                            .Any(filePath => Path.GetFileNameWithoutExtension(filePath) == track.Name))
+                            track.ExistsLocally = true;
+                    }
                 }
 
                 NotifyOfPropertyChange(() => Playlist);

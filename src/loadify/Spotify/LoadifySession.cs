@@ -57,7 +57,7 @@ namespace loadify.Spotify
                 SettingsLocation = cachePath,
                 ApplicationKey = Properties.Resources.spotify_appkey,
                 UserAgent = "Loadify",
-                Listener = this
+                Listener = this            
             };
 
             _Synchronization = SynchronizationContext.Current;
