@@ -138,7 +138,7 @@ namespace loadify.ViewModel
 
                 var playlistDownloadDirectory = String.Format("{0}/{1}", 
                                                         _SettingsManager.DirectorySetting.DownloadDirectory,
-                                                        CurrentTrack.Track.Playlist.Name);
+                                                        CurrentTrack.Track.Playlist.Name.ValidateFileName());
                 if(!Directory.Exists(playlistDownloadDirectory))
                     Directory.CreateDirectory(playlistDownloadDirectory);
 
