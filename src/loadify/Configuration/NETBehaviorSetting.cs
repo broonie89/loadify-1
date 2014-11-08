@@ -15,6 +15,16 @@ namespace loadify.Configuration
             }
         }
 
+        public bool CleanupAfterConversion
+        {
+            get { return Settings.Default.CleanupAfterConversion; }
+            set
+            {
+                Settings.Default.CleanupAfterConversion = value;
+                Settings.Default.Save();
+            }
+        }
+
         public AudioProcessor AudioProcessor { get; set; }
         public AudioConverter AudioConverter { get; set; }
         public IAudioFileDescriptor AudioFileDescriptor { get; set; }

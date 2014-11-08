@@ -88,6 +88,17 @@ namespace loadify.ViewModel
             }
         }
 
+        public bool CleanupAfterConversion
+        {
+            get { return _SettingsManager.BehaviorSetting.CleanupAfterConversion; }
+            set
+            {
+                if (_SettingsManager.BehaviorSetting.CleanupAfterConversion == value) return;
+                _SettingsManager.BehaviorSetting.CleanupAfterConversion = value;
+                NotifyOfPropertyChange(() => CacheDirectory);
+            }
+        }
+
         public SettingsViewModel(IEventAggregator eventAggregator, ISettingsManager settingsManager) :
             base(eventAggregator, settingsManager)
         { }

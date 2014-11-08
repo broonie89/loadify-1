@@ -23,10 +23,10 @@
     <Setting Name="Password" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="WriteConflictAction" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Overwrite</Value>
-    </Setting>
     <Setting Name="NotifyLocalTrackDetections" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="CleanupAfterConversion" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>

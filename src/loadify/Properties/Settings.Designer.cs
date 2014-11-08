@@ -109,18 +109,6 @@ namespace loadify.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Overwrite")]
-        public string WriteConflictAction {
-            get {
-                return ((string)(this["WriteConflictAction"]));
-            }
-            set {
-                this["WriteConflictAction"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool NotifyLocalTrackDetections {
             get {
@@ -128,6 +116,18 @@ namespace loadify.Properties {
             }
             set {
                 this["NotifyLocalTrackDetections"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CleanupAfterConversion {
+            get {
+                return ((bool)(this["CleanupAfterConversion"]));
+            }
+            set {
+                this["CleanupAfterConversion"] = value;
             }
         }
     }
