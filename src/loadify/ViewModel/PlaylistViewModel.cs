@@ -91,9 +91,9 @@ namespace loadify.ViewModel
         {
             get
             {
-                if ( Tracks.All(track => (bool)track.Selected) )
+                if ( Tracks.All(track => (bool)track.Selected) && Tracks.Count != 0 )
                     return true;
-                if ( Tracks.Any(track => (bool)track.Selected ) )
+                if ( Tracks.Any(track => (bool)track.Selected) && Tracks.Count != 0 )
                     return null;
 
                 return false;

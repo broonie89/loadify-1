@@ -122,8 +122,6 @@ namespace loadify.ViewModel
             Status = new StatusViewModel(loggedInUser, new DownloaderViewModel(_EventAggregator, _SettingsManager),  _EventAggregator);
             Playlists = new PlaylistsViewModel(_EventAggregator, settingsManager);
             Settings = new SettingsViewModel(_EventAggregator, _SettingsManager);
-
-            _EventAggregator.PublishOnUIThread(new DataRefreshAuthorizedEvent(_Session));
         }
 
         public void StartDownload()
@@ -136,6 +134,11 @@ namespace loadify.ViewModel
         public void CancelDownload()
         {
             _EventAggregator.PublishOnUIThread(new DownloadContractCancelledEvent());
+        }
+
+        protected override void OnViewLoaded(object view)
+        {
+            _EventAggregator.PublishOnUIThread(new DataRefreshAuthorizedEvent(_Session));
         }
 
         public void Handle(DataRefreshRequestEvent message)

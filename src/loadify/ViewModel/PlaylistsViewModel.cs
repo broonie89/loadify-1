@@ -135,8 +135,10 @@ namespace loadify.ViewModel
 
         public async void Handle(DataRefreshAuthorizedEvent message)
         {
+            _EventAggregator.PublishOnUIThread(new DisplayProgressEvent("Retrieving Playlists...", "Please wait while Loadify is retrieving playlists from your Spotify account."));
             var playlists = await message.Session.GetPlaylists();
             Playlists = new ObservableCollection<PlaylistViewModel>(playlists.Select(playlist => new PlaylistViewModel(playlist, _EventAggregator, _SettingsManager)));
+            _EventAggregator.PublishOnUIThread(new HideProgressEvent());
         }
 
         public void Handle(DownloadContractRequestEvent message)
