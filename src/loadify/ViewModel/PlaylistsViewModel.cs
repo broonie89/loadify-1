@@ -155,7 +155,7 @@ namespace loadify.ViewModel
                                                         "\n" +
                                                         " Url: " + message.Content);
             if (!Regex.IsMatch(message.Content,
-                @"((?:(?:http|https)://open.spotify.com/user/[a-zA-Z]+/playlist/[a-zA-Z0-9]+)|(?:spotify:user:[a-zA-Z]+:playlist:[a-zA-Z0-9]+))"))
+                @"((?:(?:http|https)://open.spotify.com/user/[a-zA-Z0-9]+/playlist/[a-zA-Z0-9]+)|(?:spotify:user:[a-zA-Z0-9]+:playlist:[a-zA-Z0-9]+))"))
             {
                 _EventAggregator.PublishOnUIThread(invalidUrlEvent);
             }
