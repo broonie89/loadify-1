@@ -22,9 +22,12 @@ namespace loadify.ViewModel
                 if (_Playlist == value) return;
                 _Playlist = value;
 
-                if (Directory.Exists(_SettingsManager.DirectorySetting.DownloadDirectory))
+                string downloadDirectory = String.Format("{0}/{1}", 
+                                                        _SettingsManager.DirectorySetting.DownloadDirectory,
+                                                        Playlist.Name.ValidateFileName());
+                if (Directory.Exists(downloadDirectory))
                 {
-                    var downloadDirectoryFiles = Directory.GetFiles(_SettingsManager.DirectorySetting.DownloadDirectory,
+                    var downloadDirectoryFiles = Directory.GetFiles(downloadDirectory,
                                                                     String.Format("*.{0}", _SettingsManager.BehaviorSetting.AudioConverter != null
                                                                         ? _SettingsManager.BehaviorSetting.AudioConverter.TargetFileExtension
                                                                         : _SettingsManager.BehaviorSetting.AudioProcessor.TargetFileExtension),
@@ -33,7 +36,7 @@ namespace loadify.ViewModel
                     foreach (var track in Playlist.Tracks)
                     {
                         if (downloadDirectoryFiles
-                            .Any(filePath => Path.GetFileNameWithoutExtension(filePath) == track.Name))
+                            .Any(filePath => Path.GetFileNameWithoutExtension(filePath) == track.Name.ValidateFileName()))
                             track.ExistsLocally = true;
                     }
                 }

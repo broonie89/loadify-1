@@ -140,7 +140,7 @@ namespace loadify.ViewModel
                                                         _SettingsManager.DirectorySetting.DownloadDirectory,
                                                         CurrentTrack.Track.Playlist.Name.ValidateFileName());
 
-                var uncompressedFileOuputPath = String.Format("{0}/{1}.{2}", playlistDownloadDirectory, CurrentTrack.Name,
+                var uncompressedFileOuputPath = String.Format("{0}/{1}.{2}", playlistDownloadDirectory, CurrentTrack.Name.ValidateFileName(),
                                                             _SettingsManager.BehaviorSetting.AudioProcessor.TargetFileExtension);
 
                 if(!Directory.Exists(playlistDownloadDirectory))
