@@ -27,7 +27,7 @@ namespace loadify.Audio
          /// <param name="outputFilePath"> Path where to store the converted file </param>
         public override void Start(string outputFilePath)
         {
-            _WaveFileWriter = new WaveFileWriter(outputFilePath, new WaveFormat(AudioMetaData.SampleRate, AudioMetaData.BitRate, AudioMetaData.Channels));
+            _WaveFileWriter = new WaveFileWriter(outputFilePath, new WaveFormat(AudioMetaData.SampleRate, AudioMetaData.BitsPerSample, AudioMetaData.Channels));
         }
 
         /// <summary>

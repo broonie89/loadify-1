@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Win32;
 using NAudio.Lame;
 using NAudio.Wave;
 
@@ -9,8 +10,8 @@ namespace loadify.Audio
     /// </summary>
     public class WaveToMp3Converter : AudioConverter
     {
-        public WaveToMp3Converter():
-            base("mp3")
+        public WaveToMp3Converter(int bitRate = 320) :
+            base("mp3", bitRate)
         { }
 
         /// <summary>
@@ -21,7 +22,7 @@ namespace loadify.Audio
         public override void Convert(string filePath, string outputFilePath)
         {
             using (var wavReader = new WaveFileReader(filePath))
-            using (var mp3Writer = new LameMP3FileWriter(outputFilePath, wavReader.WaveFormat, 128))
+            using (var mp3Writer = new LameMP3FileWriter(outputFilePath, wavReader.WaveFormat, BitRate))
                 wavReader.CopyTo(mp3Writer);
         }
     }

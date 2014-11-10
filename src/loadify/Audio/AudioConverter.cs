@@ -1,4 +1,6 @@
-﻿namespace loadify.Audio
+﻿using SpotifySharp;
+
+namespace loadify.Audio
 {
     /// <summary>
     /// Base class for audio converters. Every converter needs to implement the Convert function for converting
@@ -11,10 +13,15 @@
         /// </summary>
         public string TargetFileExtension { get; set; }
 
-        /// <param name="targetFileExtension"> The file extension of the converted file</param>
-        public AudioConverter(string targetFileExtension)
+        /// <summary>
+        /// Target bitrate of the tracks getting converted
+        /// </summary>
+        public int BitRate { get; set; }
+
+        public AudioConverter(string targetFileExtension, int bitRate = 320)
         {
             TargetFileExtension = targetFileExtension;
+            BitRate = bitRate;
         }
 
         /// <summary>

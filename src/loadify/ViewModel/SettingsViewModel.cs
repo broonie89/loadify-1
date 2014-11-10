@@ -9,6 +9,7 @@ using Caliburn.Micro;
 using loadify.Audio;
 using loadify.Configuration;
 using loadify.Event;
+using SpotifySharp;
 
 namespace loadify.ViewModel
 {
@@ -98,6 +99,8 @@ namespace loadify.ViewModel
                 NotifyOfPropertyChange(() => CacheDirectory);
             }
         }
+
+
 
         public SettingsViewModel(IEventAggregator eventAggregator, ISettingsManager settingsManager) :
             base(eventAggregator, settingsManager)

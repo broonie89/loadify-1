@@ -13,6 +13,7 @@ namespace loadify.Spotify
             public TimeSpan TargetDuration { get; set; }
             public uint Processings { get; set; }
             public double AverageFrameSize { get; set; }
+            public int AverageBitRate { get; set; }
 
             public Statistic(TimeSpan targetDuration)
             {
@@ -23,7 +24,6 @@ namespace loadify.Spotify
                 : this(new TimeSpan())
             { }
         }
-
 
         public enum CancellationReason
         {
