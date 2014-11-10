@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Id3;
 using Id3.Frames;
-using Id3.Id3v2.v23;
 
 namespace loadify.Audio
 {
@@ -16,14 +16,15 @@ namespace loadify.Audio
                 {
                     mp3.DeleteAllTags(); // make sure the file got no tags
 
-                    var id3Tag = new Id3v23Tag();
+                    var id3Tag = new Id3Tag();
                     id3Tag.Title.Value = mp3MetaData.Title;
-                    id3Tag.Artists.Value = mp3MetaData.Artists;
+                    foreach(var artist in mp3MetaData.Artists)
+                        id3Tag.Artists.Value.Add(artist);
                     id3Tag.Album.Value = mp3MetaData.Album;
-                    id3Tag.Year.Value = mp3MetaData.Year.ToString();
+                    id3Tag.Year.Value = mp3MetaData.Year;
                     id3Tag.Pictures.Add(new PictureFrame() { PictureType = PictureType.FrontCover, PictureData = mp3MetaData.Cover });
 
-                    mp3.WriteTag(id3Tag, 2, 3, Id3.WriteConflictAction.NoAction);
+                    mp3.WriteTag(id3Tag, 2, 3);
                 }
             }
         }
