@@ -199,6 +199,7 @@ namespace loadify.ViewModel
                     _EventAggregator.PublishOnUIThread(new DisplayProgressEvent("Adding Track...",
                                                         String.Format("Please wait while Loadify is adding the track to playlist {0}", message.Playlist.Name)));
                     var track = await message.Session.GetTrack(message.Content);
+                    track.Playlist = message.Playlist.Playlist;
                     message.Playlist.Tracks.Add(new TrackViewModel(track, _EventAggregator));
                     _EventAggregator.PublishOnUIThread(new HideProgressEvent());
                 }

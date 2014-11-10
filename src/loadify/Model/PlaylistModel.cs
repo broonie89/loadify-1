@@ -24,10 +24,10 @@ namespace loadify.Model
             if (unmanagedPlaylist == null) return playlistModel;
             await SpotifyObject.WaitForInitialization(unmanagedPlaylist.IsLoaded);
 
-            playlistModel.Name = unmanagedPlaylist.Name();
+            playlistModel.Name = unmanagedPlaylist.Name() ?? "";
             playlistModel.Subscribers = unmanagedPlaylist.Subscribers().ToList();
-            playlistModel.Creator = unmanagedPlaylist.Owner().DisplayName();
-            playlistModel.Description = unmanagedPlaylist.GetDescription();
+            playlistModel.Creator = unmanagedPlaylist.Owner().DisplayName() ?? "";
+            playlistModel.Description = unmanagedPlaylist.GetDescription() ?? "";
 
             var playlistImageId = unmanagedPlaylist.GetImage();
             if (playlistImageId != null)
