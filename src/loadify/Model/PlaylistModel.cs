@@ -31,7 +31,11 @@ namespace loadify.Model
 
             var playlistImageId = unmanagedPlaylist.GetImage();
             if (playlistImageId != null)
-                playlistModel.Image = session.GetImage(playlistImageId).Data();
+            {
+                var playlistImage = session.GetImage(playlistImageId);
+                await SpotifyObject.WaitForInitialization(playlistImage.IsLoaded);
+                playlistModel.Image = playlistImage.Data();
+            }
 
             for (var i = 0; i < unmanagedPlaylist.NumTracks(); i++)
             {
