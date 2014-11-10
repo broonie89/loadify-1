@@ -1,4 +1,6 @@
-﻿namespace loadify.Audio
+﻿using System.Collections.Generic;
+
+namespace loadify.Audio
 {
     /// <summary>
     /// Metadata structure containing data that may be serialized into mp3 files using ID3 tags. 
@@ -6,7 +8,7 @@
     public class Mp3MetaData
     {
         public string Title { get; set; }
-        public string Artists { get; set; }
+        public IEnumerable<string> Artists { get; set; }
         public string Album { get; set; }
         public int Year { get; set; }
         public byte[] Cover { get; set; }
