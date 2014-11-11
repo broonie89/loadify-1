@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Windows.Data;
 using Caliburn.Micro;
 using loadify.Configuration;
 using loadify.Event;
 using loadify.Spotify;
+using SpotifySharp;
 
 namespace loadify.ViewModel
 {
@@ -22,28 +25,7 @@ namespace loadify.ViewModel
         private ObservableCollection<PlaylistViewModel> _Playlists = new ObservableCollection<PlaylistViewModel>();
         public ObservableCollection<PlaylistViewModel> Playlists
         {
-            get
-            {
-                if (SearchTerm.Length == 0) return _Playlists;
-
-                var matchingPlaylists = new ObservableCollection<PlaylistViewModel>();
-                foreach (var playlist in _Playlists)
-                {
-                    var matchingTracks =
-                        new ObservableCollection<TrackViewModel>(playlist.Tracks
-                                                                .Where(track => track.ToString()
-                                                                .Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)));
-                    if (matchingTracks.Count != 0)
-                    {
-                        matchingPlaylists.Add(new PlaylistViewModel(playlist)
-                        {
-                            Tracks = matchingTracks
-                        });
-                    }
-                }
-
-                return matchingPlaylists;
-            }
+            get { return _Playlists; }
             set
             {
                 if (_Playlists == value) return;
@@ -63,6 +45,28 @@ namespace loadify.ViewModel
             {
                 if (_SearchTerm == value) return;
                 _SearchTerm = value;
+
+                // Filter playlists and only list them if at least one of their tracks match the search pattern
+                var playlistsCollectionView = CollectionViewSource.GetDefaultView(_Playlists);
+                playlistsCollectionView.Filter = o =>
+                {
+                    return (o == null || !(o is PlaylistViewModel))
+                            ? false
+                            : (o as PlaylistViewModel).Tracks.Any(track => track.ToString().Contains(SearchTerm, StringComparison.OrdinalIgnoreCase));
+                };
+                
+                // After filtering the playlists, only list tracks that match the search pattern
+                foreach (var playlist in _Playlists)
+                {
+                    var trackCollectionView = CollectionViewSource.GetDefaultView(playlist.Tracks);
+                    trackCollectionView.Filter = o =>
+                    {
+                        return (o == null || !(o is TrackViewModel))
+                                ? false
+                                : (o as TrackViewModel).ToString().Contains(SearchTerm, StringComparison.OrdinalIgnoreCase);
+                    };
+                }
+
                 NotifyOfPropertyChange(() => SearchTerm);
                 NotifyOfPropertyChange(() => Playlists);
             }
