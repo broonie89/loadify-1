@@ -12,7 +12,7 @@
             <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Content="LOADIFY " HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-               FontFamily="MV Boli" FontSize="46"/>
+               FontFamily="MV Boli" FontSize="40"/>
         <Grid Grid.Row="1" Margin="20 5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="40*"/>
