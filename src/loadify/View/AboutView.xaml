@@ -11,8 +11,8 @@
             <RowDefinition Height="160*"/>
             <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
-        <Label Grid.Column="0" Content="LOADIFY" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-               FontFamily="Segoe WP" FontSize="46"/>
+        <Label Grid.Column="0" Content="LOADIFY " HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+               FontFamily="MV Boli" FontSize="46"/>
         <Grid Grid.Row="1" Margin="20 5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="40*"/>
