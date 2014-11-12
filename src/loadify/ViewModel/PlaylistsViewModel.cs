@@ -20,7 +20,8 @@ namespace loadify.ViewModel
                                                      IHandle<AddTrackReplyEvent>,
                                                      IHandle<DownloadContractCompletedEvent>,
                                                      IHandle<TrackSelectedChangedEvent>,
-                                                     IHandle<TrackDownloadComplete>
+                                                     IHandle<TrackDownloadComplete>,
+                                                     IHandle<RemovePlaylistReplyEvent>
     {
         private ObservableCollection<PlaylistViewModel> _Playlists = new ObservableCollection<PlaylistViewModel>();
         public ObservableCollection<PlaylistViewModel> Playlists
@@ -121,7 +122,7 @@ namespace loadify.ViewModel
         public void RemovePlaylist(object dataContext)
         {
             var playlist = (dataContext as PlaylistViewModel);
-            Playlists.Remove(playlist);
+            _EventAggregator.PublishOnUIThread(new RemovePlaylistRequestEvent(playlist));
         }
 
         public void AddTrack(object dataContext)
@@ -233,6 +234,18 @@ namespace loadify.ViewModel
         {
             message.Track.ExistsLocally = true;
             NotifyOfPropertyChange(() => Playlists);
+        }
+
+        public async void Handle(RemovePlaylistReplyEvent message)
+        {
+            Playlists.Remove(message.Playlist);
+            if (message.Permanent)
+            {
+                _EventAggregator.PublishOnUIThread(new DisplayProgressEvent("Removing Playlist...",
+                                                    String.Format("Please wait while Loadify is removing playlist {0} from your account", message.Playlist.Name)));
+                await message.Session.RemovePlaylist(message.Playlist.Playlist.UnmanagedPlaylist);
+                _EventAggregator.PublishOnUIThread(new HideProgressEvent());
+            }
         }
     }
 }

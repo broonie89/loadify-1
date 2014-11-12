@@ -153,6 +153,25 @@ namespace loadify.Spotify
             container.AddPlaylist(Link.CreateFromPlaylist(playlist));
         }
 
+        public async Task RemovePlaylist(Playlist playlist)
+        {
+            var container = _Session.Playlistcontainer();
+            if (container == null) return;
+            await SpotifyObject.WaitForInitialization(container.IsLoaded);
+
+            for (int i = 0; i < container.NumPlaylists(); i++)
+            {
+                var unmanagedPlaylist = container.Playlist(i);
+                await SpotifyObject.WaitForInitialization(unmanagedPlaylist.IsLoaded);
+
+                if (unmanagedPlaylist.Name() == playlist.Name())
+                {
+                    container.RemovePlaylist(i);
+                    break;
+                }
+            }
+        }
+
         private void InvokeProcessEvents()
         {
             _Synchronization.Post(state => ProcessEvents(), null);

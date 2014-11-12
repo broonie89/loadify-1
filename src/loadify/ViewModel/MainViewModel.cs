@@ -19,7 +19,8 @@ namespace loadify.ViewModel
                                                 IHandle<DownloadContractResumedEvent>,
                                                 IHandle<DisplayProgressEvent>,
                                                 IHandle<HideProgressEvent>,
-                                                IHandle<UnselectExistingTracksRequestEvent>
+                                                IHandle<UnselectExistingTracksRequestEvent>,
+                                                IHandle<RemovePlaylistRequestEvent>
     {
         private readonly LoadifySession _Session;
 
@@ -243,6 +244,21 @@ namespace loadify.ViewModel
                                                             message.ExistingTracks.Count), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "yes", NegativeButtonText = "no" });
 
             _EventAggregator.PublishOnUIThread(new UnselectExistingTracksReplyEvent(dialogResult == MessageDialogResult.Affirmative));
+        }
+
+        public async void Handle(RemovePlaylistRequestEvent message)
+        {
+            var view = GetView() as MainView;
+            var dialogResult = await view.ShowMessageAsync("Remove Playlist",
+                                                            "Do you want to permanently remove this playlist from your account?",
+                                                            MessageDialogStyle.AffirmativeAndNegative,
+                                                            new MetroDialogSettings()
+                                                            {
+                                                                AffirmativeButtonText = "yes",
+                                                                NegativeButtonText = "no"
+                                                            });
+
+            _EventAggregator.PublishOnUIThread(new RemovePlaylistReplyEvent(_Session, message.Playlist, dialogResult == MessageDialogResult.Affirmative));
         }
     }
 }
