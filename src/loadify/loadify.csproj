@@ -164,6 +164,7 @@
     <Compile Include="Model\TrackModel.cs" />
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="Audio\IAudioFileDescriptor.cs" />
+    <Compile Include="Configuration\IDownloadPathConfigurator.cs" />
     <Compile Include="Spotify\InvalidSpotifyUrlException.cs" />
     <Compile Include="Spotify\LoadifySession.cs" />
     <Compile Include="Model\PlaylistModel.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="Audio\AudioMetaData.cs" />
     <Compile Include="Audio\AudioProcessor.cs" />
     <Compile Include="Audio\AudioConverter.cs" />
+    <Compile Include="Configuration\PlaylistRepositoryPathConfigurator.cs" />
     <Compile Include="Spotify\SpotifyObject.cs" />
     <Compile Include="Audio\WaveAudioProcessor.cs" />
     <Compile Include="Audio\WaveToMp3Converter.cs" />

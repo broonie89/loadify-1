@@ -97,13 +97,13 @@ namespace loadify.Spotify
             return Image.Create(_Session, imageId);
         }
 
-        public async Task<TrackDownloadService.CancellationReason> DownloadTrack(TrackModel track, TrackDownloadService trackDownloadService, CancellationToken cancellationToken)
+        public async Task<TrackDownloadService.CancellationReason> DownloadTrack(TrackDownloadService trackDownloadService, CancellationToken cancellationToken)
         {
             return await Task.Run(() =>
             {
                 _TrackDownloadService = trackDownloadService;
-                _TrackDownloadService.Start(track);
-                _Session.PlayerLoad(track.UnmanagedTrack);
+                _TrackDownloadService.Start();
+                _Session.PlayerLoad(trackDownloadService.Track.UnmanagedTrack);
                 _Session.PlayerPlay(true);
 
                 while (true)

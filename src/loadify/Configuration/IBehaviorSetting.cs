@@ -9,5 +9,6 @@ namespace loadify.Configuration
         AudioProcessor AudioProcessor { get; set; }
         AudioConverter AudioConverter { get; set; }
         IAudioFileDescriptor AudioFileDescriptor { get; set; }
+        IDownloadPathConfigurator DownloadPathConfigurator { get; set; }
     }
 }

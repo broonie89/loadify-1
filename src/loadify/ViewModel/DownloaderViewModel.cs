@@ -136,39 +136,30 @@ namespace loadify.ViewModel
             {
                 CurrentTrack = track;
 
-                var playlistDownloadDirectory = String.Format("{0}/{1}", 
-                                                        _SettingsManager.DirectorySetting.DownloadDirectory,
-                                                        CurrentTrack.Track.Playlist.Name.ValidateFileName());
+                var trackDownloadService = new TrackDownloadService(CurrentTrack.Track,
+                                                                    _SettingsManager.BehaviorSetting.AudioProcessor, 
+                                                                    _SettingsManager.BehaviorSetting.DownloadPathConfigurator)
+                {
+                    Cleanup = _SettingsManager.BehaviorSetting.CleanupAfterConversion,
+                    OutputDirectory = _SettingsManager.DirectorySetting.DownloadDirectory,
+                    AudioConverter = _SettingsManager.BehaviorSetting.AudioConverter,
+                    AudioFileDescriptor = _SettingsManager.BehaviorSetting.AudioFileDescriptor,
+                    Mp3MetaData = new Mp3MetaData()
+                    {
+                        Title = CurrentTrack.Name,
+                        Artists = CurrentTrack.Artists.Select(artist => artist.Name),
+                        Album = CurrentTrack.Album.Name,
+                        Year = CurrentTrack.Album.ReleaseYear,
+                        Cover = CurrentTrack.Album.Cover
+                    },
+                    DownloadProgressUpdated = progress =>
+                    {
+                        TrackProgress = progress;
+                    }
+                };
 
-                var uncompressedFileOuputPath = String.Format("{0}/{1}.{2}", playlistDownloadDirectory, CurrentTrack.Name.ValidateFileName(),
-                                                            _SettingsManager.BehaviorSetting.AudioProcessor.TargetFileExtension);
+                var result = await session.DownloadTrack(trackDownloadService, _CancellationToken.Token);
 
-                if(!Directory.Exists(playlistDownloadDirectory))
-                    Directory.CreateDirectory(playlistDownloadDirectory);
-
-                var result = await session.DownloadTrack(CurrentTrack.Track, 
-                                        new TrackDownloadService(
-                                        playlistDownloadDirectory,
-                                        CurrentTrack.Name,
-                                        _SettingsManager.BehaviorSetting.AudioProcessor,
-                                        _SettingsManager.BehaviorSetting.AudioConverter,
-                                        _SettingsManager.BehaviorSetting.AudioFileDescriptor,
-                                        new Mp3MetaData() 
-                                        { 
-                                            Title = CurrentTrack.Name,
-                                            Artists = CurrentTrack.Artists.Select(artist => artist.Name),
-                                            Album = CurrentTrack.Album.Name,
-                                            Year = CurrentTrack.Album.ReleaseYear,
-                                            Cover = CurrentTrack.Album.Cover
-                                        },
-                                        progress =>
-                                        {
-                                            TrackProgress = progress;
-                                        }),
-                                        _CancellationToken.Token);
-
-                if (File.Exists(uncompressedFileOuputPath) && _SettingsManager.BehaviorSetting.CleanupAfterConversion)
-                    File.Delete(uncompressedFileOuputPath);
 
                 if (result == TrackDownloadService.CancellationReason.UserInteraction)
                 {

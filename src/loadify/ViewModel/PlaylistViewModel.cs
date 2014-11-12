@@ -24,25 +24,16 @@ namespace loadify.ViewModel
 
                 if (_SettingsManager != null)
                 {
-                    string downloadDirectory = String.Format("{0}/{1}",
-                                                            _SettingsManager.DirectorySetting.DownloadDirectory,
-                                                            Playlist.Name.ValidateFileName());
-                    if (Directory.Exists(downloadDirectory))
+                    foreach (var track in Playlist.Tracks)
                     {
-                        var downloadDirectoryFiles = Directory.GetFiles(downloadDirectory,
-                                                                        String.Format("*.{0}", _SettingsManager.BehaviorSetting.AudioConverter != null
-                                                                            ? _SettingsManager.BehaviorSetting.AudioConverter.TargetFileExtension
-                                                                            : _SettingsManager.BehaviorSetting.AudioProcessor.TargetFileExtension),
-                                                                        SearchOption.AllDirectories);
+                        var path = _SettingsManager.BehaviorSetting.DownloadPathConfigurator.Configure(
+                                            _SettingsManager.DirectorySetting.DownloadDirectory,
+                                            (_SettingsManager.BehaviorSetting.AudioConverter != null
+                                                ? _SettingsManager.BehaviorSetting.AudioConverter.TargetFileExtension
+                                                : _SettingsManager.BehaviorSetting.AudioProcessor.TargetFileExtension),
+                                            track);
 
-                        foreach (var track in Playlist.Tracks)
-                        {
-                            if (downloadDirectoryFiles
-                                .Any(
-                                    filePath =>
-                                        Path.GetFileNameWithoutExtension(filePath) == track.Name.ValidateFileName()))
-                                track.ExistsLocally = true;
-                        }
+                        track.ExistsLocally = File.Exists(path);
                     }
                 }
 
