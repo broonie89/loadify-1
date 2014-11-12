@@ -145,6 +145,14 @@ namespace loadify.Spotify
             return managedTrack;
         }
 
+        public async Task AddPlaylist(Playlist playlist)
+        {
+            var container = _Session.Playlistcontainer();
+            if (container == null) return;
+            await SpotifyObject.WaitForInitialization(container.IsLoaded);
+            container.AddPlaylist(Link.CreateFromPlaylist(playlist));
+        }
+
         private void InvokeProcessEvents()
         {
             _Synchronization.Post(state => ProcessEvents(), null);

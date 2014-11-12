@@ -173,6 +173,10 @@ namespace loadify.ViewModel
                                                         "Please wait while Loadify is adding the playlist to your playlist collection"));
                     var playlist = await message.Session.GetPlaylist(message.Content);
                     Playlists.Add(new PlaylistViewModel(playlist, _EventAggregator, _SettingsManager));
+
+                    if (message.Permanent)
+                        await message.Session.AddPlaylist(playlist.UnmanagedPlaylist);
+
                     _EventAggregator.PublishOnUIThread(new HideProgressEvent());
                 }
                 catch (InvalidSpotifyUrlException)

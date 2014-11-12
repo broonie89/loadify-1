@@ -164,8 +164,19 @@ namespace loadify.ViewModel
         {
             var view = GetView() as MainView;
             var response = await view.ShowInputAsync("Add Playlist", "Please insert the link to the Spotify playlist you want to add.");
+            if (response.Length != 0)
+            {
+                var dialogResult =  await view.ShowMessageAsync("Add Playlist",
+                                                "Do you want to permanently add this playlist to your account?",
+                                                MessageDialogStyle.AffirmativeAndNegative,
+                                                new MetroDialogSettings()
+                                                {
+                                                    AffirmativeButtonText = "yes",
+                                                    NegativeButtonText = "no"
+                                                });
 
-            _EventAggregator.PublishOnUIThread(new AddPlaylistReplyEvent(response, _Session));
+                _EventAggregator.PublishOnUIThread(new AddPlaylistReplyEvent(response, _Session, dialogResult == MessageDialogResult.Affirmative));
+            }
         }
 
         public async void Handle(NotificationEvent message)

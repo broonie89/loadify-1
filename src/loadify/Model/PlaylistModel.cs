@@ -8,7 +8,7 @@ namespace loadify.Model
 {
     public class PlaylistModel
     {
-        private readonly Playlist _UnmanagedPlaylist;
+        public readonly Playlist UnmanagedPlaylist;
 
         public string Name { get; set; }
         public string Description { get; set; }
@@ -53,7 +53,7 @@ namespace loadify.Model
         public PlaylistModel(Playlist unmanagedPlaylist)
             : this()
         {
-            _UnmanagedPlaylist = unmanagedPlaylist;
+            UnmanagedPlaylist = unmanagedPlaylist;
         }
 
         public PlaylistModel()
