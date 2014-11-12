@@ -32,8 +32,8 @@
         <Button x:Name="Login" Content="Login" Margin="20 3" Grid.Row="5" Grid.ColumnSpan="3" TabIndex="2"/>
         <Label Grid.Column="0" Content="Username:" HorizontalContentAlignment="Right" Grid.Row="2"/>
         <Label Grid.Column="0" Content="Passwort:" HorizontalContentAlignment="Right" Grid.Row="3"/>
-        <Label Grid.Column="0" Content="LOADIFY" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-               Grid.ColumnSpan="3" FontFamily="Segoe WP" FontSize="40"/>
+        <Label Grid.Column="0" Content="LOADIFY " HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+               Grid.ColumnSpan="3" FontFamily="MV Boli" FontSize="42" Margin="0,0,10,10" HorizontalAlignment="Right" Width="252" Grid.RowSpan="2"/>
         <controls:MetroProgressBar IsIndeterminate="{Binding LoginProcessActive}" Foreground="{StaticResource AccentColorBrush}" Background="Transparent" Margin="3" Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Stretch"/>
         <CheckBox x:Name="RememberMe" Margin="22 0" Content="Remember me" ToolTip="Password is stored unencrypted, please use with caution" Grid.Row="4" Grid.ColumnSpan="2"/>
     </Grid>
