@@ -41,10 +41,18 @@
                     <ContextMenu>
                         <MenuItem Header="Add Track" 
                                   cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                  cal:Message.Attach="[Event Click] = [Action AddTrack($dataContext)]"/>
+                                  cal:Message.Attach="[Event Click] = [Action AddTrack($dataContext)]">
+                            <MenuItem.Icon>
+                                <Image Source="/Resources/plus.png" Height="18" Width="19"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
                         <MenuItem Header="Remove"
                                   cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                                  cal:Message.Attach="[Event Click] = [Action RemovePlaylist($dataContext)]"/>
+                                  cal:Message.Attach="[Event Click] = [Action RemovePlaylist($dataContext)]">
+                            <MenuItem.Icon>
+                                <Image Source="/Resources/minus.png" Height="18" Width="19"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </ContextMenu>
                 </StackPanel.ContextMenu> 
                 <CheckBox IsChecked="{Binding AllTracksSelected}" IsThreeState="True"/>
@@ -89,13 +97,21 @@
                     </MenuItem>
                     <MenuItem Header="Add Playlist"
                               cal:Action.TargetWithoutContext="{Binding Path=PlacementTarget.Tag.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                              cal:Message.Attach="[Event Click] = [Action AddPlaylist()]" />
+                              cal:Message.Attach="[Event Click] = [Action AddPlaylist()]">
+                        <MenuItem.Icon>
+                            <Image Source="/Resources/plus.png" Height="18" Width="19"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </ContextMenu>
             </TreeView.ContextMenu>
         </TreeView>
-        <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=Explicit, Mode=TwoWay}" 
+        <DockPanel>
+            <Image Source="/Resources/search.png" Height="18" Width="19" Margin="5 0 0 2"></Image>
+            <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=Explicit, Mode=TwoWay}" 
                  behavior:InputBindingsManager.UpdateSourceWhenEnterPressed="TextBox.Text"
-                 TextWrapping="Wrap" Padding="2 0" BorderThickness="0" controls:TextboxHelper.Watermark="Search..."/>
+                 TextWrapping="Wrap" BorderThickness="0" controls:TextboxHelper.Watermark="Search..."
+                  />
+        </DockPanel>
         <Grid Grid.Row="2" Margin="0 2" d:DataContext="{Binding Source={StaticResource PlaylistsMock}}">
             <Grid.RowDefinitions>
                 <RowDefinition/>

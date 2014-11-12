@@ -301,6 +301,9 @@
     <Content Include="libmp3lame.64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\minus.png" />
+    <Resource Include="Resources\plus.png" />
+    <Resource Include="Resources\search.png" />
     <Resource Include="Resources\success_tick.png" />
     <Resource Include="Resources\error_cross.png" />
   </ItemGroup>
