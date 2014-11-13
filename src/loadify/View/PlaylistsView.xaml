@@ -109,7 +109,7 @@
             <Image Source="/Resources/search.png" Height="18" Width="19" Margin="5 0 0 2"></Image>
             <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=Explicit, Mode=TwoWay}" 
                  behavior:InputBindingsManager.UpdateSourceWhenEnterPressed="TextBox.Text"
-                 TextWrapping="Wrap" BorderThickness="0" controls:TextboxHelper.Watermark="Search..."
+                 TextWrapping="Wrap" BorderThickness="0" controls:TextboxHelper.Watermark="Filter..."
                   />
         </DockPanel>
         <Grid Grid.Row="2" Margin="0 2" d:DataContext="{Binding Source={StaticResource PlaylistsMock}}">
