@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.Win32;
-using NAudio.Lame;
+﻿using NAudio.Lame;
 using NAudio.Wave;
 
 namespace loadify.Audio

@@ -1,8 +1,6 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using loadify.Model;
-using loadify.Spotify;
 
 namespace loadify.Configuration
 {

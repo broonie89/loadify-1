@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Caliburn.Micro;
 using loadify.Configuration;
 using loadify.Event;
 using loadify.Model;
-using SpotifySharp;
 
 namespace loadify.ViewModel
 {

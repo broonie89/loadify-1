@@ -1,6 +1,4 @@
-﻿using SpotifySharp;
-
-namespace loadify.Audio
+﻿namespace loadify.Audio
 {
     /// <summary>
     /// Base class for audio converters. Every converter needs to implement the Convert function for converting

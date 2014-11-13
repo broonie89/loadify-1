@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Data;
-using System.Windows.Navigation;
 using Caliburn.Micro;
 using loadify.Configuration;
 using loadify.Event;
@@ -179,7 +176,7 @@ namespace loadify.ViewModel
                 {
                     _EventAggregator.PublishOnUIThread(new DisplayProgressEvent("Adding Playlist...", 
                                                         "Please wait while Loadify is adding the playlist to your playlist collection"));
-                    var playlist = await message.Session.GetPlaylist(message.Content);
+                    var playlist = await PlaylistModel.FromLibrary(message.Session.GetPlaylist(message.Content), message.Session);
                     Playlists.Add(new PlaylistViewModel(playlist, _EventAggregator, _SettingsManager));
 
                     if (message.Permanent)
@@ -216,7 +213,7 @@ namespace loadify.ViewModel
                 {
                     _EventAggregator.PublishOnUIThread(new DisplayProgressEvent("Adding Track...",
                                                         String.Format("Please wait while Loadify is adding the track to playlist {0}", message.Playlist.Name)));
-                    var track = await message.Session.GetTrack(message.Content);
+                    var track = await TrackModel.FromLibrary(message.Session.GetTrack(message.Content), message.Session);
                     track.Playlist = message.Playlist.Playlist;
                     message.Playlist.Tracks.Add(new TrackViewModel(track, _EventAggregator));
                     _EventAggregator.PublishOnUIThread(new HideProgressEvent());

@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Caliburn.Micro;
-using loadify.Audio;
 using loadify.Configuration;
 using loadify.Event;
-using SpotifySharp;
 
 namespace loadify.ViewModel
 {

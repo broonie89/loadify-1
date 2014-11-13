@@ -6,7 +6,6 @@ using Caliburn.Micro;
 using loadify.Audio;
 using loadify.Configuration;
 using loadify.Event;
-using loadify.Properties;
 using loadify.Spotify;
 using System.Threading;
 

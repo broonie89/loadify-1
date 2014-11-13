@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using loadify.Model;
 using SpotifySharp;
 
 namespace loadify.Spotify
@@ -108,19 +106,17 @@ namespace loadify.Spotify
             });
         }
 
-        public async Task<PlaylistModel> GetPlaylist(string url)
+        public Playlist GetPlaylist(string url)
         {
             var link = Link.CreateFromString(url);
             if (link == null) throw new InvalidSpotifyUrlException(url);
 
             var unmanagedPlaylist = Playlist.Create(_Session, link);
             if (unmanagedPlaylist == null) throw new InvalidSpotifyUrlException(url);
-
-            var managedPlaylist = await PlaylistModel.FromLibrary(unmanagedPlaylist, this);
-            return managedPlaylist;
+            return unmanagedPlaylist;
         }
 
-        public async Task<TrackModel> GetTrack(string url)
+        public Track GetTrack(string url)
         {
             var link = Link.CreateFromString(url);
             if (link == null) throw new InvalidSpotifyUrlException(url);
@@ -128,8 +124,7 @@ namespace loadify.Spotify
             var track = link.AsTrack();
             if (track == null) throw new InvalidSpotifyUrlException(url);
 
-            var managedTrack = await TrackModel.FromLibrary(track, this);
-            return managedTrack;
+            return track;
         }
 
         private void InvokeProcessEvents()

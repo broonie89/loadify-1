@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace loadify.Audio
+﻿namespace loadify.Audio
 {
     /// <summary>
     /// Base class for audio processors that convert raw binary data into audio files

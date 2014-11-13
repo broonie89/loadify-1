@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Forms.VisualStyles;
 using Caliburn.Micro;
 using loadify.Configuration;
 using loadify.Event;
