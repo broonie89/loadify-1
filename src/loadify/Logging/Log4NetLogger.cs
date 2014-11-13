@@ -40,5 +40,15 @@ namespace loadify.Logging
         {
             _Log.Error(message);
         }
+
+        public void Fatal(string message)
+        {
+            _Log.Fatal(message);
+        }
+
+        public void Fatal(string message, Exception exception)
+        {
+            _Log.Fatal(message, exception);
+        }
     }
 }

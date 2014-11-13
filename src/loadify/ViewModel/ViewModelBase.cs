@@ -1,4 +1,5 @@
-﻿using System.Windows.Threading;
+﻿using System;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using loadify.Configuration;
 using loadify.Logging;

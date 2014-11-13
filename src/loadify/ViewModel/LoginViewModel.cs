@@ -70,6 +70,7 @@ namespace loadify.ViewModel
             {
                 _SettingsManager.CredentialsSetting.Username = User.Name;
                 _SettingsManager.CredentialsSetting.Password = loginView.Password.Password;
+                _Logger.Debug("Remember me option was enabled, credentials were saved into the configuration");
             }
             else
             {
@@ -77,12 +78,18 @@ namespace loadify.ViewModel
                 _SettingsManager.CredentialsSetting.Password = String.Empty;
             }
 
+            _Logger.Debug(String.Format("Login triggered, trying to login with Username {0}", User.Name));
             _Session.Login(User.Name, password, async error =>
             {
+                _Logger.Debug(String.Format("Login completed, Error: {0}", error));
                 if (error == SpotifyError.Ok)
                 {
+                    _Logger.Info(String.Format("Login successful, logged in as User {0}", User.Name));
+                    _Logger.Debug("Opening the main window...");
                     _WindowManager.ShowWindow(new MainViewModel(_Session, _User, _EventAggregator, _WindowManager, _SettingsManager));
-                    loginView.Close();            
+                    _Logger.Debug("Main window opened. Attempting to close the login window...");
+                    loginView.Close();
+                    _Logger.Debug("Login window closed");
                 }
                 else
                 {
@@ -92,17 +99,20 @@ namespace loadify.ViewModel
                     {
                         case SpotifyError.BadUsernameOrPassword:
                         {
+                            _Logger.Fatal("Login failed, wrong username or password has been entered");
                             await loginView.ShowMessageAsync("Login failed", "Name or password is wrong");
                             break;
                         }
                         case SpotifyError.UnableToContactServer:
                         {
+                            _Logger.Fatal("Login failed, no connection to the Spotify servers could be made");
                             await loginView.ShowMessageAsync("Login failed", "No connection to the Spotify servers could be made");
                             break;
                         }
                         default:
                         {
-                            await loginView.ShowMessageAsync("Login failed", "Unknown error: " + error);
+                            _Logger.Fatal("Login failed due to unhandled reasons");
+                            await loginView.ShowMessageAsync("Login failed", "Unknown error");
                             break;
                         }
                     }
@@ -113,7 +123,10 @@ namespace loadify.ViewModel
         public void OnKeyUp(Key key)
         {
             if (key == Key.Enter)
+            {
+                _Logger.Debug("The enter key was pressed");
                 Login();
+            }
         }
 
         protected override void OnViewLoaded(object view)
@@ -124,7 +137,12 @@ namespace loadify.ViewModel
                 RememberMe = true;
                 User.Name = _SettingsManager.CredentialsSetting.Username;
                 loginView.Password.Password = _SettingsManager.CredentialsSetting.Password;
-            }        
+                _Logger.Info("Stored credentials were found and loaded");
+            }
+            else
+            {
+                _Logger.Info("No credential configuration was found");
+            }
         }
     }
 }

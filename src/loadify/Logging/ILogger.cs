@@ -13,5 +13,7 @@ namespace loadify.Logging
         void Warning(string message);
         void Error(string message, Exception exception);
         void Error(string message);
+        void Fatal(string message);
+        void Fatal(string message, Exception exception);
     }
 }
