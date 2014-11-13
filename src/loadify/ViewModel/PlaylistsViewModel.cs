@@ -6,9 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Data;
+using System.Windows.Navigation;
 using Caliburn.Micro;
 using loadify.Configuration;
 using loadify.Event;
+using loadify.Model;
 using loadify.Spotify;
 using SpotifySharp;
 
@@ -141,8 +143,13 @@ namespace loadify.ViewModel
         public async void Handle(DataRefreshAuthorizedEvent message)
         {
             _EventAggregator.PublishOnUIThread(new DisplayProgressEvent("Retrieving Playlists...", "Please wait while Loadify is retrieving playlists from your Spotify account."));
-            var playlists = await message.Session.GetPlaylists();
-            Playlists = new ObservableCollection<PlaylistViewModel>(playlists.Select(playlist => new PlaylistViewModel(playlist, _EventAggregator, _SettingsManager)));
+            var playlistCollection = await message.Session.GetPlaylistCollection();
+            var playlists = new List<Playlist>(await playlistCollection.GetPlaylists());
+            var playlistViewModels = new ObservableCollection<PlaylistViewModel>();
+            foreach(var playlist in playlists)
+                playlistViewModels.Add(new PlaylistViewModel(await PlaylistModel.FromLibrary(playlist, message.Session), _EventAggregator, _SettingsManager));
+
+            Playlists = playlistViewModels;
             _EventAggregator.PublishOnUIThread(new HideProgressEvent());
         }
 
@@ -176,8 +183,10 @@ namespace loadify.ViewModel
                     Playlists.Add(new PlaylistViewModel(playlist, _EventAggregator, _SettingsManager));
 
                     if (message.Permanent)
-                        await message.Session.AddPlaylist(playlist.UnmanagedPlaylist);
-
+                    {
+                        var playlistCollection = await message.Session.GetPlaylistCollection();
+                        await playlistCollection.Add(playlist.UnmanagedPlaylist);
+                    }
                     _EventAggregator.PublishOnUIThread(new HideProgressEvent());
                 }
                 catch (InvalidSpotifyUrlException)
@@ -243,7 +252,8 @@ namespace loadify.ViewModel
             {
                 _EventAggregator.PublishOnUIThread(new DisplayProgressEvent("Removing Playlist...",
                                                     String.Format("Please wait while Loadify is removing playlist {0} from your account", message.Playlist.Name)));
-                await message.Session.RemovePlaylist(message.Playlist.Playlist.UnmanagedPlaylist);
+                var playlistCollection = await message.Session.GetPlaylistCollection();
+                await playlistCollection.Remove(message.Playlist.Playlist.UnmanagedPlaylist);
                 _EventAggregator.PublishOnUIThread(new HideProgressEvent());
             }
         }

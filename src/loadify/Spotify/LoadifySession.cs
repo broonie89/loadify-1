@@ -71,25 +71,12 @@ namespace loadify.Spotify
             _Session.Login(username, password, false, null);
         }
 
-        public async Task<IEnumerable<PlaylistModel>> GetPlaylists()
+        public async Task<PlaylistCollection> GetPlaylistCollection()
         {
-            var playlists = new List<PlaylistModel>();
-            if (_Session == null) return playlists;
-
             var container = _Session.Playlistcontainer();
-            if (container == null) return playlists;
+            if (container == null) throw new SpotifyException(SpotifyError.SystemFailure, "Playlist container could not be retrieved from the library");
             await SpotifyObject.WaitForInitialization(container.IsLoaded);
-
-            for (var i = 0; i < container.NumPlaylists(); i++)
-            {
-                var unmanagedPlaylist = container.Playlist(i);
-                if (unmanagedPlaylist == null) continue;
-
-                var managedPlaylistModel = await PlaylistModel.FromLibrary(unmanagedPlaylist, this);
-                playlists.Add(managedPlaylistModel);
-            }
-
-            return playlists;
+            return new PlaylistCollection(container);
         }
 
         public Image GetImage(ImageId imageId)
@@ -143,33 +130,6 @@ namespace loadify.Spotify
 
             var managedTrack = await TrackModel.FromLibrary(track, this);
             return managedTrack;
-        }
-
-        public async Task AddPlaylist(Playlist playlist)
-        {
-            var container = _Session.Playlistcontainer();
-            if (container == null) return;
-            await SpotifyObject.WaitForInitialization(container.IsLoaded);
-            container.AddPlaylist(Link.CreateFromPlaylist(playlist));
-        }
-
-        public async Task RemovePlaylist(Playlist playlist)
-        {
-            var container = _Session.Playlistcontainer();
-            if (container == null) return;
-            await SpotifyObject.WaitForInitialization(container.IsLoaded);
-
-            for (int i = 0; i < container.NumPlaylists(); i++)
-            {
-                var unmanagedPlaylist = container.Playlist(i);
-                await SpotifyObject.WaitForInitialization(unmanagedPlaylist.IsLoaded);
-
-                if (unmanagedPlaylist.Name() == playlist.Name())
-                {
-                    container.RemovePlaylist(i);
-                    break;
-                }
-            }
         }
 
         private void InvokeProcessEvents()
