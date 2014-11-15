@@ -50,6 +50,7 @@ namespace loadify.Spotify
         public Action<double> DownloadProgressUpdated = progress => { };
 
         private Statistic _Statistic = new Statistic();
+        private string _DownloadFilePath;
 
         public double Progress
         {
@@ -76,14 +77,9 @@ namespace loadify.Spotify
         public void Start()
         {
             _Statistic = new Statistic(Track.Duration);
-            AudioProcessor.Start(DownloadPathConfigurator.Configure(OutputDirectory, AudioProcessor.TargetFileExtension, Track));
+            _DownloadFilePath = DownloadPathConfigurator.Configure(OutputDirectory, AudioProcessor.TargetFileExtension, Track);
+            AudioProcessor.Start(_DownloadFilePath);
             Active = true;
-        }
-
-        public void Stop()
-        {
-            AudioProcessor.Release();
-            Active = false;
         }
 
         public void ProcessInput(AudioFormat format, IntPtr frames, int numFrames)
@@ -102,30 +98,39 @@ namespace loadify.Spotify
             DownloadProgressUpdated(Progress);
         }
 
-        public void Finish()
+        private void Stop()
+        {
+            AudioProcessor.Release();
+            Active = false;
+        }
+
+        public void Complete()
         {
             Stop();
-
-            var processorOutputPath = DownloadPathConfigurator.Configure(OutputDirectory, AudioProcessor.TargetFileExtension, Track);
             var converterOutputPath = DownloadPathConfigurator.Configure(OutputDirectory, AudioConverter.TargetFileExtension, Track);
 
             if (AudioConverter != null)
-                AudioConverter.Convert(processorOutputPath, converterOutputPath);
+                AudioConverter.Convert(_DownloadFilePath, converterOutputPath);
 
             if (AudioFileDescriptor != null)
-                AudioFileDescriptor.Write(Mp3MetaData, (AudioConverter != null) ? converterOutputPath : processorOutputPath);
+                AudioFileDescriptor.Write(Mp3MetaData, (AudioConverter != null) ? converterOutputPath : _DownloadFilePath);
 
-            if (Cleanup)
-            {
-                if (File.Exists(processorOutputPath))
-                    File.Delete(processorOutputPath);
-            }
+            Finish();
+        }
+
+        private void Finish()
+        {
+            if (!Cleanup) return;
+
+            if (File.Exists(_DownloadFilePath))
+                File.Delete(_DownloadFilePath);
         }
 
         public void Cancel(CancellationReason reason)
         {
-            Cancellation = reason;
             Stop();
+            Finish();
+            Cancellation = reason;
         }
     }
 }

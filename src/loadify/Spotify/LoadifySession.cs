@@ -82,9 +82,9 @@ namespace loadify.Spotify
             return Image.Create(_Session, imageId);
         }
 
-        public async Task<TrackDownloadService.CancellationReason> DownloadTrack(TrackDownloadService trackDownloadService, CancellationToken cancellationToken)
+        public async Task DownloadTrack(TrackDownloadService trackDownloadService, CancellationToken cancellationToken)
         {
-            return await Task.Run(() =>
+            await Task.Run(() =>
             {
                 _TrackDownloadService = trackDownloadService;
                 _TrackDownloadService.Start();
@@ -94,16 +94,15 @@ namespace loadify.Spotify
                 while (true)
                 {
                     if (!_TrackDownloadService.Active)
-                        return _TrackDownloadService.Cancellation;
+                        return;
 
-                    if(cancellationToken.IsCancellationRequested)
+                    if (cancellationToken.IsCancellationRequested)
                     {
-                        _TrackDownloadService.Stop();
-                        _TrackDownloadService.Cancellation = TrackDownloadService.CancellationReason.UserInteraction;
-                        return _TrackDownloadService.Cancellation;
+                        _TrackDownloadService.Cancel(TrackDownloadService.CancellationReason.UserInteraction);
+                        return;
                     }
                 }
-            });
+            }, cancellationToken);
         }
 
         public Playlist GetPlaylist(string url)
@@ -181,7 +180,7 @@ namespace loadify.Spotify
         public override void EndOfTrack(SpotifySession session)
         {
             _Session.PlayerPlay(false);
-            _TrackDownloadService.Finish();
+            _TrackDownloadService.Complete();
         }
     }
 }

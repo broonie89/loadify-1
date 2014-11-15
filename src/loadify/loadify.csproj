@@ -151,7 +151,7 @@
     <Compile Include="Event\UnselectExistingTracksRequestEvent.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Audio\Mp3MetaData.cs" />
-    <Compile Include="Spotify\DownloadInterruptedException.cs" />
+    <Compile Include="Configuration\ConfigurationException.cs" />
     <Compile Include="Event\DataRefreshAuthorizedEvent.cs" />
     <Compile Include="Event\DownloadContractResumedEvent.cs" />
     <Compile Include="Event\DownloadContractCompletedEvent.cs" />
