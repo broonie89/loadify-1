@@ -276,6 +276,7 @@ namespace loadify.ViewModel
 
         public async void Handle(RemovePlaylistRequestEvent message)
         {
+            _Logger.Debug(String.Format("User requested to manually remove playlist {0}", message.Playlist.Name));
             var view = GetView() as MainView;
             var dialogResult = await view.ShowMessageAsync("Remove Playlist",
                                                             "Do you want to permanently remove this playlist from your account?",
