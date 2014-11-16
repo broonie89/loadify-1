@@ -9,6 +9,7 @@ using loadify.Configuration;
 using loadify.Event;
 using loadify.Spotify;
 using System.Threading;
+using SpotifySharp;
 
 namespace loadify.ViewModel
 {
@@ -108,15 +109,16 @@ namespace loadify.ViewModel
         {
             _CancellationToken = new CancellationTokenSource();
 
-            foreach(var track in new ObservableCollection<TrackViewModel>(RemainingTracks.Skip(startIndex)))
+            var remainingTracksToDownload = new ObservableCollection<TrackViewModel>(RemainingTracks.Count > startIndex ? RemainingTracks.Skip(startIndex) : RemainingTracks);
+            foreach (var track in remainingTracksToDownload)
             {
                 CurrentTrack = track;
 
                 try
                 {
                     var trackDownloadService = new TrackDownloadService(CurrentTrack.Track,
-                                                                        _SettingsManager.BehaviorSetting.AudioProcessor, 
-                                                                        _SettingsManager.BehaviorSetting.DownloadPathConfigurator)
+                        _SettingsManager.BehaviorSetting.AudioProcessor,
+                        _SettingsManager.BehaviorSetting.DownloadPathConfigurator)
                     {
                         Cleanup = _SettingsManager.BehaviorSetting.CleanupAfterConversion,
                         OutputDirectory = _SettingsManager.DirectorySetting.DownloadDirectory,
@@ -137,7 +139,7 @@ namespace loadify.ViewModel
                     };
 
                     _Logger.Debug(String.Format("Configured Track download service: OutputDirectory {0}, Cleanup? {1}, Track: {2}",
-                                                trackDownloadService.OutputDirectory, 
+                                                trackDownloadService.OutputDirectory,
                                                 trackDownloadService.Cleanup ? "Yes" : "No",
                                                 CurrentTrack.ToString()));
                     _Logger.Info(String.Format("Downloading {0}...", CurrentTrack.ToString()));
@@ -147,13 +149,14 @@ namespace loadify.ViewModel
                     if (trackDownloadService.Cancellation == TrackDownloadService.CancellationReason.UserInteraction)
                     {
                         _Logger.Info("Download contract was cancelled");
-                        _EventAggregator.PublishOnUIThread(new NotificationEvent("Download cancelled", String.Format("The download contract was cancelled. \n" +
-                                                                                                        "Tracks downloaded: {0}\n" +
-                                                                                                        "Tracks remaining: {1}\n",
-                                                                                                        DownloadedTracks.Count, RemainingTracks.Count)));
+                        _EventAggregator.PublishOnUIThread(new NotificationEvent("Download cancelled",
+                                                                                String.Format("The download contract was cancelled. \n" +
+                                                                                              "Tracks downloaded: {0}\n" +
+                                                                                              "Tracks remaining: {1}\n",
+                                                                                    DownloadedTracks.Count, RemainingTracks.Count)));
                         break;
                     }
-  
+
                     if (trackDownloadService.Cancellation == TrackDownloadService.CancellationReason.None)
                     {
                         DownloadedTracks.Add(CurrentTrack);
@@ -163,7 +166,7 @@ namespace loadify.ViewModel
                         NotifyOfPropertyChange(() => DownloadedTracks);
                         NotifyOfPropertyChange(() => RemainingTracks);
                         NotifyOfPropertyChange(() => CurrentTrackIndex);
-                        _EventAggregator.PublishOnUIThread(new TrackDownloadComplete(CurrentTrack));        
+                        _EventAggregator.PublishOnUIThread(new TrackDownloadComplete(CurrentTrack));
                         _Logger.Info(String.Format("{0} was successfully downloaded to directory {1}", CurrentTrack.ToString(), trackDownloadService.OutputDirectory));
                     }
                     else
@@ -178,9 +181,16 @@ namespace loadify.ViewModel
                 }
                 catch (ConfigurationException exception)
                 {
-                    _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(exception.ToString(),
-                                                                                        RemainingTracks.IndexOf(CurrentTrack)));
+                    _Logger.Error("A configuration error occured", exception);
+                    _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(exception.ToString(), RemainingTracks.IndexOf(CurrentTrack)));
                     return;
+                }
+                catch (SpotifyException exception)
+                {
+                    _Logger.Error("A Spotify error occured", exception);
+                    _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(String.Format("{0} could not be download because a Spotify error occured.", 
+                                                                                                    CurrentTrack.ToString()), 
+                                                                                                    RemainingTracks.IndexOf(CurrentTrack)));
                 }
             }
 

@@ -33,9 +33,9 @@ namespace loadify.ViewModel
                                                 : _SettingsManager.BehaviorSetting.AudioProcessor.TargetFileExtension),
                                             track);
 
-                        _Logger.Debug(String.Format("Checking if track {0} exists locally ({1})...", track.ToString(), path));
+                        _Logger.Debug(String.Format("Checking if track {0} exists locally ({1})...", track.Name, path));
                         track.ExistsLocally = File.Exists(path);
-                        _Logger.Debug(track.ExistsLocally ? String.Format("Track {0} does exist", track.ToString()) : String.Format("Track {0} does not exist locally", track.ToString()));
+                        _Logger.Debug(track.ExistsLocally ? String.Format("Track {0} does exist", track.Name) : String.Format("Track {0} does not exist locally", track.Name));
                     }
 
                     _Logger.Info(String.Format("{0}/{1} tracks in playlist {2} were detected as existing on the local filesystem",

@@ -159,17 +159,34 @@ namespace loadify.ViewModel
             var dialogResult = await view.ShowMessageAsync("Download Paused", 
                                                             message.Reason
                                                             + "\nPlease resolve this issue before continuing downloading.",
-                                                            MessageDialogStyle.AffirmativeAndNegative);
+                                                            MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, 
+                                                            new MetroDialogSettings()
+                                                            {
+                                                                AffirmativeButtonText = "retry",
+                                                                NegativeButtonText = "skip",
+                                                                FirstAuxiliaryButtonText = "cancel download"
+                                                            });
 
-            if (dialogResult == MessageDialogResult.Affirmative) // pressed "OK"
+            switch (dialogResult) // pressed "retry"
             {
-                _Logger.Debug("User accepted the pause dialog and claimed to have resolved all issues. Broadcasting the download contract resume event...");
-                _EventAggregator.PublishOnUIThread(new DownloadContractResumedEvent(_Session));
-            }
-            else
-            {
-                _Logger.Debug("User cancelled the download contract after it was paused. Broadcasting the download contract complete event...");
-                _EventAggregator.PublishOnUIThread(new DownloadContractCompletedEvent());
+                case MessageDialogResult.Affirmative:
+                {
+                    _Logger.Debug("User wants to retry downloading the current track and claims to have resolved all issues. Broadcasting the download contract resume event...");
+                    _EventAggregator.PublishOnUIThread(new DownloadContractResumedEvent(_Session, message.DownloadIndex));
+                    break;
+                }
+                case MessageDialogResult.Negative: // pressed "skip"
+                {
+                    _Logger.Debug("User wants to skip the current track and claims to have resolved all issues. Broadcasting the download contract resume event with the next track...");
+                    _EventAggregator.PublishOnUIThread(new DownloadContractResumedEvent(_Session, message.DownloadIndex + 1));
+                    break;
+                }
+                case MessageDialogResult.FirstAuxiliary: // pressed "cancel download"
+                {
+                    _Logger.Debug("User cancelled the download contract after it was paused. Broadcasting the download contract complete event...");
+                    _EventAggregator.PublishOnUIThread(new DownloadContractCompletedEvent());
+                    break;
+                }
             }
         }
 
