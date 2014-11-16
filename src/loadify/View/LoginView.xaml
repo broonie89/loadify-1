@@ -25,7 +25,7 @@
             <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
         <TextBox x:Name="Username" Text="{Binding User.Name, Mode=TwoWay}" controls:TextboxHelper.Watermark="Spotify username" 
-                 TextWrapping="Wrap" VerticalContentAlignment="Center" TabIndex="0" Margin="3" Grid.Column="1" Grid.Row="2"/>
+                 VerticalContentAlignment="Center" TabIndex="0" Margin="3" Grid.Column="1" Grid.Row="2" />
         <PasswordBox x:Name="Password" Grid.Column="1"
                      controls:TextboxHelper.Watermark="Spotify password" VerticalContentAlignment="Center" TabIndex="1"
                      Margin="3" Grid.Row="3"/>

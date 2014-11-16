@@ -108,94 +108,78 @@ namespace loadify.ViewModel
         {
             _CancellationToken = new CancellationTokenSource();
 
-            try
-            {
-                if (!Directory.Exists(_SettingsManager.DirectorySetting.DownloadDirectory))
-                    Directory.CreateDirectory(_SettingsManager.DirectorySetting.DownloadDirectory);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(
-                                                       String.Format("{0} could not be downloaded because the application is not " +
-                                                                     "authorized to create the download directory",
-                                                       CurrentTrack.ToString()),
-                                                       RemainingTracks.IndexOf(CurrentTrack)));
-                return;
-            }
-            catch (IOException)
-            {
-                _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(
-                                                       String.Format("{0} could not be downloaded because the path to " +
-                                                                     "the download directory is not valid",
-                                                       CurrentTrack.ToString()),
-                                                       RemainingTracks.IndexOf(CurrentTrack)));
-                return;
-            }
-
             foreach(var track in new ObservableCollection<TrackViewModel>(RemainingTracks.Skip(startIndex)))
             {
                 CurrentTrack = track;
 
-                var trackDownloadService = new TrackDownloadService(CurrentTrack.Track,
-                                                                    _SettingsManager.BehaviorSetting.AudioProcessor, 
-                                                                    _SettingsManager.BehaviorSetting.DownloadPathConfigurator)
+                try
                 {
-                    Cleanup = _SettingsManager.BehaviorSetting.CleanupAfterConversion,
-                    OutputDirectory = _SettingsManager.DirectorySetting.DownloadDirectory,
-                    AudioConverter = _SettingsManager.BehaviorSetting.AudioConverter,
-                    AudioFileDescriptor = _SettingsManager.BehaviorSetting.AudioFileDescriptor,
-                    Mp3MetaData = new Mp3MetaData()
+                    var trackDownloadService = new TrackDownloadService(CurrentTrack.Track,
+                                                                        _SettingsManager.BehaviorSetting.AudioProcessor, 
+                                                                        _SettingsManager.BehaviorSetting.DownloadPathConfigurator)
                     {
-                        Title = CurrentTrack.Name,
-                        Artists = CurrentTrack.Artists.Select(artist => artist.Name),
-                        Album = CurrentTrack.Album.Name,
-                        Year = CurrentTrack.Album.ReleaseYear,
-                        Cover = CurrentTrack.Album.Cover
-                    },
-                    DownloadProgressUpdated = progress =>
+                        Cleanup = _SettingsManager.BehaviorSetting.CleanupAfterConversion,
+                        OutputDirectory = _SettingsManager.DirectorySetting.DownloadDirectory,
+                        AudioConverter = _SettingsManager.BehaviorSetting.AudioConverter,
+                        AudioFileDescriptor = _SettingsManager.BehaviorSetting.AudioFileDescriptor,
+                        Mp3MetaData = new Mp3MetaData()
+                        {
+                            Title = CurrentTrack.Name,
+                            Artists = CurrentTrack.Artists.Select(artist => artist.Name),
+                            Album = CurrentTrack.Album.Name,
+                            Year = CurrentTrack.Album.ReleaseYear,
+                            Cover = CurrentTrack.Album.Cover
+                        },
+                        DownloadProgressUpdated = progress =>
+                        {
+                            TrackProgress = progress;
+                        }
+                    };
+
+                    _Logger.Debug(String.Format("Configured Track download service: OutputDirectory {0}, Cleanup? {1}, Track: {2}",
+                                                trackDownloadService.OutputDirectory, 
+                                                trackDownloadService.Cleanup ? "Yes" : "No",
+                                                CurrentTrack.ToString()));
+                    _Logger.Info(String.Format("Downloading {0}...", CurrentTrack.ToString()));
+                    await session.DownloadTrack(trackDownloadService, _CancellationToken.Token);
+                    _Logger.Debug(String.Format("Track downloaded with result: {0}", trackDownloadService.Cancellation.ToString()));
+
+                    if (trackDownloadService.Cancellation == TrackDownloadService.CancellationReason.UserInteraction)
                     {
-                        TrackProgress = progress;
+                        _Logger.Info("Download contract was cancelled");
+                        _EventAggregator.PublishOnUIThread(new NotificationEvent("Download cancelled", String.Format("The download contract was cancelled. \n" +
+                                                                                                        "Tracks downloaded: {0}\n" +
+                                                                                                        "Tracks remaining: {1}\n",
+                                                                                                        DownloadedTracks.Count, RemainingTracks.Count)));
+                        break;
                     }
-                };
-
-                _Logger.Debug(String.Format("Configured Track download service: OutputDirectory {0}, Cleanup? {1}, Track: {2}",
-                                            trackDownloadService.OutputDirectory, 
-                                            trackDownloadService.Cleanup ? "Yes" : "No",
-                                            CurrentTrack.ToString()));
-                _Logger.Info(String.Format("Downloading {0}...", CurrentTrack.ToString()));
-
-                var result = await session.DownloadTrack(trackDownloadService, _CancellationToken.Token);
-                _Logger.Debug(String.Format("Track downloaded with result: {0}", result.ToString()));
-
-                if (result == TrackDownloadService.CancellationReason.UserInteraction)
-                {
-                    _Logger.Info("Download contract was cancelled");
-                    _EventAggregator.PublishOnUIThread(new NotificationEvent("Download cancelled", String.Format("The download contract was cancelled. \n" +
-                                                                                                    "Tracks downloaded: {0}\n" +
-                                                                                                    "Tracks remaining: {1}\n",
-                                                                                                    DownloadedTracks.Count, RemainingTracks.Count)));
-                    break;
-                }
   
-                if (result == TrackDownloadService.CancellationReason.None)
-                {
-                    DownloadedTracks.Add(CurrentTrack);
-                    RemainingTracks.Remove(CurrentTrack);
-                    NotifyOfPropertyChange(() => TotalProgress);
-                    NotifyOfPropertyChange(() => Active);
-                    NotifyOfPropertyChange(() => DownloadedTracks);
-                    NotifyOfPropertyChange(() => RemainingTracks);
-                    NotifyOfPropertyChange(() => CurrentTrackIndex);
-                    _EventAggregator.PublishOnUIThread(new TrackDownloadComplete(CurrentTrack));        
-                    _Logger.Info(String.Format("{0} was successfully downloaded to directory {1}", CurrentTrack.ToString(), trackDownloadService.OutputDirectory));
+                    if (trackDownloadService.Cancellation == TrackDownloadService.CancellationReason.None)
+                    {
+                        DownloadedTracks.Add(CurrentTrack);
+                        RemainingTracks.Remove(CurrentTrack);
+                        NotifyOfPropertyChange(() => TotalProgress);
+                        NotifyOfPropertyChange(() => Active);
+                        NotifyOfPropertyChange(() => DownloadedTracks);
+                        NotifyOfPropertyChange(() => RemainingTracks);
+                        NotifyOfPropertyChange(() => CurrentTrackIndex);
+                        _EventAggregator.PublishOnUIThread(new TrackDownloadComplete(CurrentTrack));        
+                        _Logger.Info(String.Format("{0} was successfully downloaded to directory {1}", CurrentTrack.ToString(), trackDownloadService.OutputDirectory));
+                    }
+                    else
+                    {
+                        _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(
+                                                            String.Format("{0} could not be downloaded because the account being used triggered an action in another client.",
+                                                            CurrentTrack.ToString()),
+                                                            RemainingTracks.IndexOf(CurrentTrack)));
+                        _Logger.Info("Download was paused because the account being used triggered an action in another client");
+                        return;
+                    }
                 }
-                else
+                catch (ConfigurationException exception)
                 {
-                    _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(
-                                                        String.Format("{0} could not be downloaded because the account being used triggered an action in another client.",
-                                                        CurrentTrack.ToString()),
-                                                        RemainingTracks.IndexOf(CurrentTrack)));
-                    _Logger.Info("Download was paused because the account being used triggered an action in another client");
+                    _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(exception.ToString(),
+                                                                                        RemainingTracks.IndexOf(CurrentTrack)));
                     return;
                 }
             }
