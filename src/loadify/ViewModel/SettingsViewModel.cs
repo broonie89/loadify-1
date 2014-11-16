@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Caliburn.Micro;
 using loadify.Configuration;
@@ -14,6 +15,9 @@ namespace loadify.ViewModel
             set
             {
                 if (_SettingsManager.ConnectionSetting.UseProxy == value) return;
+                _Logger.Debug(String.Format("UseProxy setting has been changed. Old value: {0}, new value: {1}",
+                                            _SettingsManager.ConnectionSetting.UseProxy, value));
+
                 _SettingsManager.ConnectionSetting.UseProxy = value;
                 NotifyOfPropertyChange(() => UseProxy);
             }
@@ -33,6 +37,9 @@ namespace loadify.ViewModel
                             "The proxy IP address that was entered is not a valid IP address."));
                 }
 
+                _Logger.Debug(String.Format("ProxyIp setting has been changed. Old value: {0}, new value: {1}",
+                                            _SettingsManager.ConnectionSetting.ProxyIp, value));
+
                 _SettingsManager.ConnectionSetting.ProxyIp = value;
                 NotifyOfPropertyChange(() => ProxyIp);
             }
@@ -44,6 +51,9 @@ namespace loadify.ViewModel
             set
             {
                 if (_SettingsManager.ConnectionSetting.ProxyPort == value) return;
+                _Logger.Debug(String.Format("ProxyPort setting has been changed. Old value: {0}, new value: {1}",
+                            _SettingsManager.ConnectionSetting.ProxyPort, value));
+
                 _SettingsManager.ConnectionSetting.ProxyPort = value;
                 NotifyOfPropertyChange(() => ProxyPort);
             }
@@ -55,6 +65,9 @@ namespace loadify.ViewModel
             set
             {
                 if (_SettingsManager.DirectorySetting.DownloadDirectory == value) return;
+                _Logger.Debug(String.Format("DownloadDirectory setting has been changed. Old value: {0}, new value: {1}",
+                                            _SettingsManager.DirectorySetting.DownloadDirectory, value));
+
                 _SettingsManager.DirectorySetting.DownloadDirectory = value;
                 NotifyOfPropertyChange(() => DownloadDirectory);
             }
@@ -66,6 +79,9 @@ namespace loadify.ViewModel
             set
             {
                 if (_SettingsManager.DirectorySetting.CacheDirectory == value) return;
+                _Logger.Debug(String.Format("CacheDirectory setting has been changed. Old value: {0}, new value: {1}",
+                                            _SettingsManager.DirectorySetting.CacheDirectory, value));
+
                 _SettingsManager.DirectorySetting.CacheDirectory = value;
                 NotifyOfPropertyChange(() => CacheDirectory);
             }
@@ -77,6 +93,9 @@ namespace loadify.ViewModel
             set
             {
                 if (_SettingsManager.BehaviorSetting.NotifyLocalTrackDetections == value) return;
+                _Logger.Debug(String.Format("NotifyLocalTrackDetections setting has been changed. Old value: {0}, new value: {1}",
+                                            _SettingsManager.BehaviorSetting.NotifyLocalTrackDetections, value));
+
                 _SettingsManager.BehaviorSetting.NotifyLocalTrackDetections = value;
                 NotifyOfPropertyChange(() => CacheDirectory);
             }
@@ -88,6 +107,9 @@ namespace loadify.ViewModel
             set
             {
                 if (_SettingsManager.BehaviorSetting.CleanupAfterConversion == value) return;
+                _Logger.Debug(String.Format("CleanupAfterConversion setting has been changed. Old value: {0}, new value: {1}",
+                                            _SettingsManager.BehaviorSetting.CleanupAfterConversion, value));
+
                 _SettingsManager.BehaviorSetting.CleanupAfterConversion = value;
                 NotifyOfPropertyChange(() => CacheDirectory);
             }
