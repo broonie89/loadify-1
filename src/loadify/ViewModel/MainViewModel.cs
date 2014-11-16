@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Windows.Forms.VisualStyles;
 using Caliburn.Micro;
 using loadify.Configuration;
 using loadify.Event;
@@ -126,6 +128,7 @@ namespace loadify.ViewModel
 
         public void StartDownload()
         {
+            _Logger.Debug("Download contract has been requested, Buttons locked");
             _EventAggregator.PublishOnUIThread(new DownloadContractRequestEvent(_Session));
             CanCancelDownload = true;
             CanStartDownload = false;
@@ -133,39 +136,51 @@ namespace loadify.ViewModel
 
         public void CancelDownload()
         {
+            _Logger.Debug("Download contract has been requested to cancel");
             _EventAggregator.PublishOnUIThread(new DownloadContractCancelledEvent());
         }
 
         protected override void OnViewLoaded(object view)
         {
+            _Logger.Debug("Main window was loaded. Broadcasting the data update event...");
             _EventAggregator.PublishOnUIThread(new DataRefreshAuthorizedEvent(_Session));
         }
 
         public void Handle(DataRefreshRequestEvent message)
         {
+            _Logger.Debug("Data update has been requested. Authorizing the request...");
             _EventAggregator.PublishOnUIThread(new DataRefreshAuthorizedEvent(_Session));
         }
 
         public async void Handle(DownloadContractPausedEvent message)
         {
+            _Logger.Info(String.Format("Download contract was paused. Reason: {0}", message.Reason));
             var view = GetView() as MainView;
             var dialogResult = await view.ShowMessageAsync("Download Paused", 
-                                        message.Reason
-                                        + "\nPlease resolve this issue before continuing downloading.",
-                                        MessageDialogStyle.AffirmativeAndNegative);
-            
-            if(dialogResult == MessageDialogResult.Affirmative) // pressed "OK"
+                                                            message.Reason
+                                                            + "\nPlease resolve this issue before continuing downloading.",
+                                                            MessageDialogStyle.AffirmativeAndNegative);
+
+            if (dialogResult == MessageDialogResult.Affirmative) // pressed "OK"
+            {
+                _Logger.Debug("User accepted the pause dialog and claimed to have resolved all issues. Broadcasting the download contract resume event...");
                 _EventAggregator.PublishOnUIThread(new DownloadContractResumedEvent(_Session));
+            }
             else
+            {
+                _Logger.Debug("User cancelled the download contract after it was paused. Broadcasting the download contract complete event...");
                 _EventAggregator.PublishOnUIThread(new DownloadContractCompletedEvent());
+            }
         }
 
         public async void Handle(AddPlaylistRequestEvent message)
         {
+            _Logger.Debug("User requested to manually add a playlist");
             var view = GetView() as MainView;
             var response = await view.ShowInputAsync("Add Playlist", "Please insert the link to the Spotify playlist you want to add.");
             if (!String.IsNullOrEmpty(response))
             {
+                _Logger.Debug(String.Format("Following text was entered by the user: {0}", response));
                 var dialogResult =  await view.ShowMessageAsync("Add Playlist",
                                                                 "Do you want to permanently add this playlist to your account?",
                                                                 MessageDialogStyle.AffirmativeAndNegative,
@@ -174,6 +189,9 @@ namespace loadify.ViewModel
                                                                     AffirmativeButtonText = "yes",
                                                                     NegativeButtonText = "no"
                                                                 });
+                _Logger.Debug(dialogResult == MessageDialogResult.Affirmative
+                            ? "The playlist will be permanently added to the logged-in Spotify account"
+                            : "The playlist won't be permanently added to the logged-in Spotify account");
 
                 _EventAggregator.PublishOnUIThread(new AddPlaylistReplyEvent(response, _Session, dialogResult == MessageDialogResult.Affirmative));
             }
@@ -187,10 +205,19 @@ namespace loadify.ViewModel
 
         public async void Handle(AddTrackRequestEvent message)
         {
+            _Logger.Debug(String.Format("User requested to manually add a track to playlist {0}", message.Playlist.Name));
             var view = GetView() as MainView;
             var response = await view.ShowInputAsync(String.Format("Add Track to Playlist {0}", message.Playlist.Name), "Please insert the link to the Spotify track you want to add.");
 
-            _EventAggregator.PublishOnUIThread(new AddTrackReplyEvent(response, message.Playlist, _Session));
+            if (!String.IsNullOrEmpty(response))
+            {
+                _Logger.Debug(String.Format("Following text was entered by the user: {0}", response));
+                _EventAggregator.PublishOnUIThread(new AddTrackReplyEvent(response, message.Playlist, _Session));
+            }
+            else
+            {
+                _Logger.Debug(String.Format("User cancelled the dialog to manually add a track to playlist {0}", message.Playlist.Name));
+            }
         }
 
         public void Handle(SelectedTracksChangedEvent message)
@@ -236,17 +263,20 @@ namespace loadify.ViewModel
         {
             if (message.ExistingTracks.Count == 0) return;
 
+            _Logger.Debug(String.Format("{0} tracks were detected as existing, awaiting user instructions...", message.ExistingTracks.Count));
             var view = GetView() as MainView;
             var dialogResult = await view.ShowMessageAsync("Detected existing Tracks", 
                                                             String.Format("Loadify detected that you already have {0} of the selected tracks in your download directory.\n" +
                                                             "Do you want to remove them from your download contract?",
                                                             message.ExistingTracks.Count), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "yes", NegativeButtonText = "no" });
-
+            
+            _Logger.Debug("User requested to remove existing tracks");
             _EventAggregator.PublishOnUIThread(new UnselectExistingTracksReplyEvent(dialogResult == MessageDialogResult.Affirmative));
         }
 
         public async void Handle(RemovePlaylistRequestEvent message)
         {
+            _Logger.Debug(String.Format("User requested to manually remove playlist {0}", message.Playlist.Name));
             var view = GetView() as MainView;
             var dialogResult = await view.ShowMessageAsync("Remove Playlist",
                                                             "Do you want to permanently remove this playlist from your account?",
@@ -256,7 +286,11 @@ namespace loadify.ViewModel
                                                                 AffirmativeButtonText = "yes",
                                                                 NegativeButtonText = "no"
                                                             });
-
+            _Logger.Debug(dialogResult == MessageDialogResult.Affirmative
+                        ? String.Format("Playlist {0} will be removed permanently from the logged-in Spotify account",
+                            message.Playlist.Name)
+                        : String.Format("Playlist {0} won't be removed permanently from the logged-in Spotify account",
+                            message.Playlist.Name));
             _EventAggregator.PublishOnUIThread(new RemovePlaylistReplyEvent(_Session, message.Playlist, dialogResult == MessageDialogResult.Affirmative));
         }
     }

@@ -9,6 +9,9 @@ namespace loadify
         {
             InitializeComponent();
 
+            // Initialize log4net
+            log4net.Config.XmlConfigurator.Configure();
+
             // Configure Caliburn.Micro to look for views and viewmodels at the specified namespaces.
             // By default, Caliburn.Micro looks in the root namespace which'd be just 'loadify'
             var config = new TypeMappingConfiguration

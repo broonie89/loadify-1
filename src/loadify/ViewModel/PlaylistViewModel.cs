@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Caliburn.Micro;
@@ -22,6 +23,7 @@ namespace loadify.ViewModel
 
                 if (_SettingsManager != null)
                 {
+                    _Logger.Debug(String.Format("Checking local existance of tracks in playlist {0}", Playlist.Name));
                     foreach (var track in Playlist.Tracks)
                     {
                         var path = _SettingsManager.BehaviorSetting.DownloadPathConfigurator.Configure(
@@ -31,8 +33,15 @@ namespace loadify.ViewModel
                                                 : _SettingsManager.BehaviorSetting.AudioProcessor.TargetFileExtension),
                                             track);
 
+                        _Logger.Debug(String.Format("Checking if track {0} exists locally ({1})...", track.ToString(), path));
                         track.ExistsLocally = File.Exists(path);
+                        _Logger.Debug(track.ExistsLocally ? String.Format("Track {0} does exist", track.ToString()) : String.Format("Track {0} does not exist locally", track.ToString()));
                     }
+
+                    _Logger.Info(String.Format("{0}/{1} tracks in playlist {2} were detected as existing on the local filesystem",
+                                                Playlist.Tracks.Count(track => track.ExistsLocally),
+                                                Playlist.Tracks.Count,
+                                                Playlist.Name));
                 }
 
                 NotifyOfPropertyChange(() => Playlist);
@@ -166,6 +175,8 @@ namespace loadify.ViewModel
             {
                 foreach (var existingTrack in Tracks.Where(track => track.ExistsLocally))
                     existingTrack.Selected = false;
+
+                _Logger.Info(String.Format("{0} tracks were automatically unselected since they already exist locally", Tracks.Count(track => track.ExistsLocally)));
             }
         }
     }

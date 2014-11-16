@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using Caliburn.Micro;
@@ -135,18 +136,24 @@ namespace loadify.ViewModel
                         }
                     };
 
+                    _Logger.Debug(String.Format("Configured Track download service: OutputDirectory {0}, Cleanup? {1}, Track: {2}",
+                                                trackDownloadService.OutputDirectory, 
+                                                trackDownloadService.Cleanup ? "Yes" : "No",
+                                                CurrentTrack.ToString()));
+                    _Logger.Info(String.Format("Downloading {0}...", CurrentTrack.ToString()));
                     await session.DownloadTrack(trackDownloadService, _CancellationToken.Token);
-
+                    _Logger.Debug(String.Format("Track downloaded with result: {0}", trackDownloadService.Cancellation.ToString()));
 
                     if (trackDownloadService.Cancellation == TrackDownloadService.CancellationReason.UserInteraction)
                     {
+                        _Logger.Info("Download contract was cancelled");
                         _EventAggregator.PublishOnUIThread(new NotificationEvent("Download cancelled", String.Format("The download contract was cancelled. \n" +
                                                                                                         "Tracks downloaded: {0}\n" +
                                                                                                         "Tracks remaining: {1}\n",
                                                                                                         DownloadedTracks.Count, RemainingTracks.Count)));
                         break;
                     }
-
+  
                     if (trackDownloadService.Cancellation == TrackDownloadService.CancellationReason.None)
                     {
                         DownloadedTracks.Add(CurrentTrack);
@@ -157,6 +164,7 @@ namespace loadify.ViewModel
                         NotifyOfPropertyChange(() => RemainingTracks);
                         NotifyOfPropertyChange(() => CurrentTrackIndex);
                         _EventAggregator.PublishOnUIThread(new TrackDownloadComplete(CurrentTrack));        
+                        _Logger.Info(String.Format("{0} was successfully downloaded to directory {1}", CurrentTrack.ToString(), trackDownloadService.OutputDirectory));
                     }
                     else
                     {
@@ -164,13 +172,14 @@ namespace loadify.ViewModel
                                                             String.Format("{0} could not be downloaded because the account being used triggered an action in another client.",
                                                             CurrentTrack.ToString()),
                                                             RemainingTracks.IndexOf(CurrentTrack)));
+                        _Logger.Info("Download was paused because the account being used triggered an action in another client");
                         return;
                     }
                 }
                 catch (ConfigurationException exception)
                 {
                     _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(exception.ToString(),
-                                                                                       RemainingTracks.IndexOf(CurrentTrack)));
+                                                                                        RemainingTracks.IndexOf(CurrentTrack)));
                     return;
                 }
             }
@@ -181,6 +190,7 @@ namespace loadify.ViewModel
 
         public void Handle(DownloadContractStartedEvent message)
         {
+            _Logger.Info(String.Format("Download contract was started for {0} tracks", message.SelectedTracks.Count()));
             DownloadedTracks = new ObservableCollection<TrackViewModel>();
             RemainingTracks = new ObservableCollection<TrackViewModel>(message.SelectedTracks);
             StartDownload(message.Session);
@@ -188,11 +198,13 @@ namespace loadify.ViewModel
 
         public void Handle(DownloadContractResumedEvent message)
         {
+            _Logger.Info(String.Format("Download contract has been resumed and will be continued with track {0} of {1}", message.DownloadIndex, TotalTracks.Count));
             StartDownload(message.Session, message.DownloadIndex);
         }
 
         public void Handle(DownloadContractCompletedEvent message)
         {
+            _Logger.Info(String.Format("Download contract has been completed, tracks downloaded: {0}", DownloadedTracks.Count));
             DownloadedTracks = new ObservableCollection<TrackViewModel>();
             RemainingTracks = new ObservableCollection<TrackViewModel>();
             _TrackProgress = 0;
@@ -200,6 +212,7 @@ namespace loadify.ViewModel
 
         public void Handle(DownloadContractCancelledEvent message)
         {
+            _Logger.Debug("Attempting to cancel the current download contract...");
             _CancellationToken.Cancel();
         }
     }

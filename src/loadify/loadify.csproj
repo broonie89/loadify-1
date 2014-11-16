@@ -79,6 +79,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\ID3.0.4.0-beta\lib\net40\Id3.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\lib\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro">
       <HintPath>..\..\lib\MahApps.Metro.0.14.0.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -152,6 +155,8 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Audio\Mp3MetaData.cs" />
     <Compile Include="Configuration\ConfigurationException.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\Log4NetLogger.cs" />
     <Compile Include="Event\DataRefreshAuthorizedEvent.cs" />
     <Compile Include="Event\DownloadContractResumedEvent.cs" />
     <Compile Include="Event\DownloadContractCompletedEvent.cs" />
