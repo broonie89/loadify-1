@@ -27,7 +27,7 @@ While this is not important for many other developers that did take hand on desi
 ### Login and Authentication
 The login is as simple as it gets. You just enter your username and password you'd normally use for logging into Spotify and click on `Login`. Please note that the _Remember me_ option works fine but requires to store your password unencrypted into the configuration file. If you can't deal with that, please don't use this feature.
 
-![](http://i.epvpimg.com/JYQCg.png)
+![](http://i.epvpimg.com/nwv4f.png)
 
 
 ***
@@ -41,7 +41,7 @@ The right pane is mainly used for configuration and settings. You may (currently
 
 Once you've selected some tracks (or whole playlists) for downloading, the `Download` button will be enabled that triggers the download contract.
 
-![](http://i.epvpimg.com/LYhwg.png)
+![](http://i.epvpimg.com/dRiYg.jpg)
 
 
 ***
@@ -51,7 +51,7 @@ Playlist or track names are too long to be fully displayed? That isn't a problem
 
 As you have might already found out, just grab the green bar with the dots on it and drag it to the left or right, depending on which panel you expect to be larger.
 
-![](http://i.epvpimg.com/39FGe.png)
+![](http://i.epvpimg.com/ID1Yg.jpg)
 
 
 ***
@@ -63,7 +63,7 @@ Once you expand a playlist in the left pane, all associated tracks will be liste
 
 Additionally if you hover over the tracks, a tooltip will display the track duration.
 
-![](http://i.epvpimg.com/Tdweh.png)
+![](http://i.epvpimg.com/RWiqf.jpg)
 
 Each time you select a track, the software calculates an approximate time span that is needed for downloading all of the selected tracks. The estimated time is displayed below the playlist/track listings.
 
@@ -75,7 +75,7 @@ Once you have started the download contract, the download status bar in the lowe
 * The drawing right from the progress bar contains the name of the track being downloaded
 * (n/x) right from the drawing represents the status of the download contract. **n** being the current track index and **x** being the amount of tracks that the software was contracted with.
 
-![](http://i.epvpimg.com/7xRkd.png)
+![](http://i.epvpimg.com/aQLme.jpg)
 
 
 ***
@@ -83,41 +83,47 @@ Once you have started the download contract, the download status bar in the lowe
 ### Searching for tracks
 Sometimes you don't want to browse your playlists for a certain track you want to download. For quickly searching and finding tracks in your playlists, the search field was implemented:
 
-Typing in __eminem__ for example, will display all tracks that got the word __eminem__ in their name somehow. (case insensitive)
+Typing in __Eminem__ for example, will display all tracks that got the word __Eminem__ in their name somehow. (case insensitive)
 
 Pressing enter will apply the search filter, removing the search text and pressing enter again will restore all playlists without the search filter.
 
-![](http://i.epvpimg.com/cxSdf.png)
+![](http://i.epvpimg.com/gETFe.jpg)
 
 
 ***
 
 ### Adding additional playlists and tracks
-If you want to download playlists/tracks that you've not added to your spotify account, you can temporary add them in Loadify to select them for the download contract.
+If you want to download playlists/tracks that you've not added to your spotify account, you can temporarily or permanently add them in Loadify to select them for the download contract.
 
 #### Playlists
-Right click in an empty area of the panel where the playlists and tracks are shown and select __Add Playlist from Link__
+Right click in an empty area of the panel where the playlists and tracks are shown and select __Add Playlist__
 
-![](http://i.epvpimg.com/WHjrc.png)
+![](http://i.epvpimg.com/zOLIh.jpg)
 
 A dialog will be displayed prompting you to enter the link to the playlist you want to add. There are 2 types of playlist links:
 * HTTP links (example: __http://open.spotify.com/user/spotify_germany/playlist/0QUQf1xMMbtArIbDjwi2Hf__)
 * Spotify links (example: __spotify:user:spotify_germany:playlist:0QUQf1xMMbtArIbDjwi2Hf__)
 
 Note the `/playlist/` and `:playlist:` section of the url.
-If the url provided is a valid url to a playlist, Loadify will fetch all of it's tracks and add the new playlist in the left panel. Once you refresh your playlists, it will be removed if it is not your playlist)
+If the url provided is a valid url to a playlist, Loadify will fetch all of it's tracks and add the new playlist in the left panel. 
 
-![](http://i.epvpimg.com/hECMb.png)
+![](http://i.epvpimg.com/8qh1g.jpg)
+
+Straight after entering the url, Loadify will ask you if you want the playlist to be added permanently to your Spotify account. If you proceed by clicking __yes__, the playlist will be permanently added and should also show up in your Spotify client.
+
+![](http://i.epvpimg.com/yKqlh.jpg)
+
+Once you refresh your playlists, it will be removed if you choose to not permanently add it to your account.
 
 
 #### Tracks
 For adding single tracks into an existing playlist, you need to right click one of the playlists and select __Add Track from Link__. 
 
-![](http://i.epvpimg.com/3TWTd.png)
+![](http://i.epvpimg.com/GAbHc.jpg)
 
 This is basically following the same procedure as the __Add Playlist from Link__ feature explained earlier. The only difference lies in the urls.
 
 While playlist urls contain a `/playlist/` and `:playlist:` section, tracks do not. This section is replaced with the string `/track/` or `:track:`.
 
-![](http://i.epvpimg.com/0kouc.png)
+![](http://i.epvpimg.com/469De.jpg)
 
