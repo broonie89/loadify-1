@@ -3,14 +3,14 @@ Loadify
 Loadify is a Spotify downloader written in .NET for downloading playlists and tracks from Spotify.
 Please keep in mind that the software is currently a work-in-progress. Please let us know if something does not work as expected or if you find the documentation is lacking information.
 
-The Problem
+Problem
 -
 Spotify offers a special mode, the offline mode. Using this offline mode, you are able to download tracks by storing it locally on your device for listening to music even if you don't have a connection to the internet.
 
 Well, why would you develop a software to download tracks if you could simply do that by using the official client? In fact, you just could use the official client and use that offline mode mentioned before but it comes with a huge disadvantage: The only way to listen to downloaded tracks is to use the official Spotify client. Since Spotify encrypts their audio data, you won't be able to listen to the music you've downloaded once your Spotify premium membership expires.
 
 
-The Solution
+Solution
 -
 There isn't much to say about Loadify. It is (yet another) Spotify downloader that is open source - useable for everyone. We have provided some features that we personally found important when it comes to downloading music. But, how does it work?
 
@@ -34,6 +34,8 @@ The login is as simple as it gets. You just enter your username and password you
 
 ### Dashboard
 After logging in, a new window containing your dashboard will open up. The software will start to fetch your playlists and display them in the left pane. 
+
+![](http://i.epvpimg.com/yQNWf.jpg)
 
 The right pane is mainly used for configuration and settings. You may (currently) specify:
 * where to store downloaded tracks
@@ -142,3 +144,7 @@ While playlist urls contain a `/playlist/` and `:playlist:` section, tracks do n
 
 ![](http://i.epvpimg.com/469De.jpg)
 
+### Other screenshots
+
+![](http://i.epvpimg.com/nCQtd.jpg)
+![](http://i.epvpimg.com/eIHUe.jpg)
