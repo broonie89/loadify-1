@@ -67,7 +67,7 @@ Additionally if you hover over the tracks, a tooltip will display the track dura
 
 Each time you select a track, the software calculates an approximate time span that is needed for downloading all of the selected tracks. The estimated time is displayed below the playlist/track listings.
 
-You might have also noted the red crosses before each track listing. This is an indicator that signals if the track already exists on the local file system in the specified download directory. If a red cross is shown, the track does not exist. If a green tick is shown, the track exists in the download directory.
+You might have also noted the red crosses before each track listing. This is an indicator that signals if the track already exists on the local file system in the specified download directory.
 
 Once you have started the download contract, the download status bar in the lower left corner will become visible informing you about the current download status: 
 
@@ -77,6 +77,21 @@ Once you have started the download contract, the download status bar in the lowe
 
 ![](http://i.epvpimg.com/aQLme.jpg)
 
+
+***
+
+
+### Local Track detection
+Once you've downloaded some tracks, you probably don't want to download them again on the next time you use Loadify. And since you won't have the time to check each file on your file system if you've already downloaded that particular track, Loadify will do this automatically for you. 
+
+Tracks will be detected as existing if:
+* the filename matches the output format of music files converted by Loadify, i.e. `<Artists> - Track name`, as mentioned above
+* the format of the file is the format currently used by Loadify (mp3 is the only format at the moment and used by default)
+* the file is located within the very own subdirectory of the playlist. If I have my download directory located under `D:\Download` and my associated playlist is called `DnB`, I would need to have the directory `D:\Download\DnB` where the music files are stored in. Don't worry, Loadify will also do this automatically.
+
+If a red cross is shown, the track does not exist (or simply wasn't found). If a green tick is shown, the track exists locally. If you, for example, select a whole playlist to download, the software will ask you whether you want to remove the existing tracks from your contract or not.
+
+![](http://i.epvpimg.com/OCJgf.jpg)
 
 ***
 
@@ -117,11 +132,11 @@ Once you refresh your playlists, it will be removed if you choose to not permane
 
 
 #### Tracks
-For adding single tracks into an existing playlist, you need to right click one of the playlists and select __Add Track from Link__. 
+For adding single tracks into an existing playlist, you need to right click one of the playlists and select __Add Track__. 
 
 ![](http://i.epvpimg.com/GAbHc.jpg)
 
-This is basically following the same procedure as the __Add Playlist from Link__ feature explained earlier. The only difference lies in the urls.
+This is basically following the same procedure as the __Add Playlist__ feature explained earlier. The only difference lies in the urls.
 
 While playlist urls contain a `/playlist/` and `:playlist:` section, tracks do not. This section is replaced with the string `/track/` or `:track:`.
 
