@@ -150,6 +150,6 @@ While playlist urls contain a `/playlist/` and `:playlist:` section, tracks do n
 
 ### Other screenshots
 
-<a href="url"><img src="http://i.epvpimg.com/nCQtd.jpg" align="center" height="100%" width="300"></a>
+<a href="url"><img src="http://i.epvpimg.com/nCQtd.jpg"></a>
 
 <a href="url"><img src="http://i.epvpimg.com/eIHUe.jpg" align="center" height="100%" width="600"></a>
