@@ -144,6 +144,8 @@ While playlist urls contain a `/playlist/` and `:playlist:` section, tracks do n
 
 ![](http://i.epvpimg.com/469De.jpg)
 
+***
+
 ### Other screenshots
 
 ![](http://i.epvpimg.com/nCQtd.jpg)
