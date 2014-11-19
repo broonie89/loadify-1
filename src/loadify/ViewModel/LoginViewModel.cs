@@ -131,7 +131,7 @@ namespace loadify.ViewModel
 
         protected override void OnViewLoaded(object view)
         {
-            if (!String.IsNullOrEmpty(Settings.Default.Username) || !String.IsNullOrEmpty(Settings.Default.Password))
+            if (!String.IsNullOrEmpty(_SettingsManager.CredentialsSetting.Username) || !String.IsNullOrEmpty(_SettingsManager.CredentialsSetting.Password))
             {
                 var loginView = GetView() as LoginView;
                 RememberMe = true;
