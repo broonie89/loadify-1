@@ -1,38 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Loadify by Mostey</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-	<style>
-		.backlink{
-			color: #777; 
-			text-decoration: none;
-		}
-		.backlink:hover{
-			color: #777; 
-			text-decoration: underline;
-		}
-	</style>
+    <meta name="description" content="Loadify : Spotify Downloader written in .NET for downloading playlists and tracks from Spotify">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Loadify</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
-        <h1>Loadify</h1>
-        <p>Spotify Downloader written in .NET for downloading playlists and tracks from Spotify</p>
-        <ul>
-          <li><a href="https://github.com/Mostey/loadify/releases">Download <strong>Build</strong></a></li>
-          <li><a href="https://github.com/Mostey/loadify/tarball/master">Download <strong>Source</strong></a></li>
-          <li><a href="https://github.com/Mostey/loadify">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/Mostey/loadify">View on GitHub</a>
+
+          <h1 id="project_title">Loadify</h1>
+          <h2 id="project_tagline">Spotify Downloader written in .NET for downloading playlists and tracks from Spotify</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/Mostey/loadify/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/Mostey/loadify/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
         <h1>
 <a id="loadify" class="anchor" href="#loadify" aria-hidden="true"><span class="octicon octicon-link"></span></a>Loadify</h1>
 
@@ -40,14 +38,14 @@
 Please keep in mind that the software is currently a work-in-progress. Please let us know if something does not work as expected or if you find the documentation is lacking information.</p>
 
 <h2>
-<a id="the-problem" class="anchor" href="#the-problem" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Problem</h2>
+<a id="problem" class="anchor" href="#problem" aria-hidden="true"><span class="octicon octicon-link"></span></a>Problem</h2>
 
 <p>Spotify offers a special mode, the offline mode. Using this offline mode, you are able to download tracks by storing it locally on your device for listening to music even if you don't have a connection to the internet.</p>
 
 <p>Well, why would you develop a software to download tracks if you could simply do that by using the official client? In fact, you just could use the official client and use that offline mode mentioned before but it comes with a huge disadvantage: The only way to listen to downloaded tracks is to use the official Spotify client. Since Spotify encrypts their audio data, you won't be able to listen to the music you've downloaded once your Spotify premium membership expires.</p>
 
 <h2>
-<a id="the-solution" class="anchor" href="#the-solution" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Solution</h2>
+<a id="solution" class="anchor" href="#solution" aria-hidden="true"><span class="octicon octicon-link"></span></a>Solution</h2>
 
 <p>There isn't much to say about Loadify. It is (yet another) Spotify downloader that is open source - useable for everyone. We have provided some features that we personally found important when it comes to downloading music. But, how does it work?</p>
 
@@ -68,7 +66,7 @@ Please keep in mind that the software is currently a work-in-progress. Please le
 
 <p>The login is as simple as it gets. You just enter your username and password you'd normally use for logging into Spotify and click on <code>Login</code>. Please note that the <em>Remember me</em> option works fine but requires to store your password unencrypted into the configuration file. If you can't deal with that, please don't use this feature.</p>
 
-<p><img src="http://i.epvpimg.com/JYQCg.png" alt=""></p>
+<p><img src="http://i.epvpimg.com/nwv4f.png" alt=""></p>
 
 <hr>
 
@@ -76,6 +74,8 @@ Please keep in mind that the software is currently a work-in-progress. Please le
 <a id="dashboard" class="anchor" href="#dashboard" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dashboard</h3>
 
 <p>After logging in, a new window containing your dashboard will open up. The software will start to fetch your playlists and display them in the left pane. </p>
+
+<p><a href="url"><img src="http://i.epvpimg.com/yQNWf.jpg" align="center" height="100%" width="700"></a></p>
 
 <p>The right pane is mainly used for configuration and settings. You may (currently) specify:</p>
 
@@ -86,7 +86,7 @@ Please keep in mind that the software is currently a work-in-progress. Please le
 
 <p>Once you've selected some tracks (or whole playlists) for downloading, the <code>Download</code> button will be enabled that triggers the download contract.</p>
 
-<p><img src="http://i.epvpimg.com/LYhwg.png" alt=""></p>
+<p><a href="url"><img src="http://i.epvpimg.com/dRiYg.jpg" align="center" height="100%" width="700"></a></p>
 
 <hr>
 
@@ -97,7 +97,7 @@ Please keep in mind that the software is currently a work-in-progress. Please le
 
 <p>As you have might already found out, just grab the green bar with the dots on it and drag it to the left or right, depending on which panel you expect to be larger.</p>
 
-<p><img src="http://i.epvpimg.com/39FGe.png" alt=""></p>
+<p><a href="url"><img src="http://i.epvpimg.com/ID1Yg.jpg" align="center" height="100%" width="700"></a></p>
 
 <hr>
 
@@ -110,11 +110,11 @@ Please keep in mind that the software is currently a work-in-progress. Please le
 
 <p>Additionally if you hover over the tracks, a tooltip will display the track duration.</p>
 
-<p><img src="http://i.epvpimg.com/Tdweh.png" alt=""></p>
+<p><a href="url"><img src="http://i.epvpimg.com/RWiqf.jpg" align="center" height="100%" width="250"></a></p>
 
 <p>Each time you select a track, the software calculates an approximate time span that is needed for downloading all of the selected tracks. The estimated time is displayed below the playlist/track listings.</p>
 
-<p>You might have also noted the red crosses before each track listing. This is an indicator that signals if the track already exists on the local file system in the specified download directory. If a red cross is shown, the track does not exist. If a green tick is shown, the track exists in the download directory.</p>
+<p>You might have also noted the red crosses before each track listing. This is an indicator that signals if the track already exists on the local file system in the specified download directory.</p>
 
 <p>Once you have started the download contract, the download status bar in the lower left corner will become visible informing you about the current download status: </p>
 
@@ -124,7 +124,26 @@ Please keep in mind that the software is currently a work-in-progress. Please le
 <li>(n/x) right from the drawing represents the status of the download contract. <strong>n</strong> being the current track index and <strong>x</strong> being the amount of tracks that the software was contracted with.</li>
 </ul>
 
-<p><img src="http://i.epvpimg.com/7xRkd.png" alt=""></p>
+<p><a href="url"><img src="http://i.epvpimg.com/aQLme.jpg" align="center" height="100%" width="700"></a></p>
+
+<hr>
+
+<h3>
+<a id="local-track-detection" class="anchor" href="#local-track-detection" aria-hidden="true"><span class="octicon octicon-link"></span></a>Local Track detection</h3>
+
+<p>Once you've downloaded some tracks, you probably don't want to download them again on the next time you use Loadify. And since you won't have the time to check each file on your file system if you've already downloaded that particular track, Loadify will do this automatically for you. </p>
+
+<p>Tracks will be detected as existing if:</p>
+
+<ul>
+<li>the filename matches the output format of music files converted by Loadify, i.e. <code>&lt;Artists&gt; - Track name</code>, as mentioned above</li>
+<li>the format of the file is the format currently used by Loadify (mp3 is the only format at the moment and used by default)</li>
+<li>the file is located within the very own subdirectory of the playlist. If I have my download directory located under <code>D:\Download</code> and my associated playlist is called <code>DnB</code>, I would need to have the directory <code>D:\Download\DnB</code> where the music files are stored in. Don't worry, Loadify will also do this automatically.</li>
+</ul>
+
+<p>If a red cross is shown, the track does not exist (or simply wasn't found). If a green tick is shown, the track exists locally. If you, for example, select a whole playlist to download, the software will ask you whether you want to remove the existing tracks from your contract or not.</p>
+
+<p><a href="url"><img src="http://i.epvpimg.com/OCJgf.jpg" align="center" height="100%" width="650"></a></p>
 
 <hr>
 
@@ -133,25 +152,25 @@ Please keep in mind that the software is currently a work-in-progress. Please le
 
 <p>Sometimes you don't want to browse your playlists for a certain track you want to download. For quickly searching and finding tracks in your playlists, the search field was implemented:</p>
 
-<p>Typing in <strong>eminem</strong> for example, will display all tracks that got the word <strong>eminem</strong> in their name somehow. (case insensitive)</p>
+<p>Typing in <strong>Eminem</strong> for example, will display all tracks that got the word <strong>Eminem</strong> in their name somehow. (case insensitive)</p>
 
 <p>Pressing enter will apply the search filter, removing the search text and pressing enter again will restore all playlists without the search filter.</p>
 
-<p><img src="http://i.epvpimg.com/cxSdf.png" alt=""></p>
+<p><a href="url"><img src="http://i.epvpimg.com/gETFe.jpg" align="center" height="100%" width="300"></a></p>
 
 <hr>
 
 <h3>
 <a id="adding-additional-playlists-and-tracks" class="anchor" href="#adding-additional-playlists-and-tracks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adding additional playlists and tracks</h3>
 
-<p>If you want to download playlists/tracks that you've not added to your spotify account, you can temporary add them in Loadify to select them for the download contract.</p>
+<p>If you want to download playlists/tracks that you've not added to your spotify account, you can temporarily or permanently add them in Loadify to select them for the download contract.</p>
 
 <h4>
 <a id="playlists" class="anchor" href="#playlists" aria-hidden="true"><span class="octicon octicon-link"></span></a>Playlists</h4>
 
-<p>Right click in an empty area of the panel where the playlists and tracks are shown and select <strong>Add Playlist from Link</strong></p>
+<p>Right click in an empty area of the panel where the playlists and tracks are shown and select <strong>Add Playlist</strong></p>
 
-<p><img src="http://i.epvpimg.com/WHjrc.png" alt=""></p>
+<p><a href="url"><img src="http://i.epvpimg.com/zOLIh.jpg" align="center" height="100%" width="350"></a></p>
 
 <p>A dialog will be displayed prompting you to enter the link to the playlist you want to add. There are 2 types of playlist links:</p>
 
@@ -161,29 +180,49 @@ Please keep in mind that the software is currently a work-in-progress. Please le
 </ul>
 
 <p>Note the <code>/playlist/</code> and <code>:playlist:</code> section of the url.
-If the url provided is a valid url to a playlist, Loadify will fetch all of it's tracks and add the new playlist in the left panel. Once you refresh your playlists, it will be removed if it is not your playlist)</p>
+If the url provided is a valid url to a playlist, Loadify will fetch all of it's tracks and add the new playlist in the left panel. </p>
 
-<p><img src="http://i.epvpimg.com/hECMb.png" alt=""></p>
+<p><a href="url"><img src="http://i.epvpimg.com/8qh1g.jpg" align="center" height="100%" width="650"></a></p>
+
+<p>Straight after entering the url, Loadify will ask you if you want the playlist to be added permanently to your Spotify account. If you proceed by clicking <strong>yes</strong>, the playlist will be permanently added and should also show up in your Spotify client.</p>
+
+<p><a href="url"><img src="http://i.epvpimg.com/yKqlh.jpg" align="center" height="100%" width="700"></a></p>
+
+<p>Once you refresh your playlists, it will be removed if you choose to not permanently add it to your account.</p>
 
 <h4>
 <a id="tracks" class="anchor" href="#tracks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tracks</h4>
 
-<p>For adding single tracks into an existing playlist, you need to right click one of the playlists and select <strong>Add Track from Link</strong>. </p>
+<p>For adding single tracks into an existing playlist, you need to right click one of the playlists and select <strong>Add Track</strong>. </p>
 
-<p><img src="http://i.epvpimg.com/3TWTd.png" alt=""></p>
+<p><a href="url"><img src="http://i.epvpimg.com/GAbHc.jpg" align="center" height="100%" width="350"></a></p>
 
-<p>This is basically following the same procedure as the <strong>Add Playlist from Link</strong> feature explained earlier. The only difference lies in the urls.</p>
+<p>This is basically following the same procedure as the <strong>Add Playlist</strong> feature explained earlier. The only difference lies in the urls.</p>
 
 <p>While playlist urls contain a <code>/playlist/</code> and <code>:playlist:</code> section, tracks do not. This section is replaced with the string <code>/track/</code> or <code>:track:</code>.</p>
 
-<p><img src="http://i.epvpimg.com/0kouc.png" alt=""></p>
+<p><a href="url"><img src="http://i.epvpimg.com/469De.jpg" align="center" height="100%" width="650"></a></p>
+
+<hr>
+
+<h3>
+<a id="other-screenshots" class="anchor" href="#other-screenshots" aria-hidden="true"><span class="octicon octicon-link"></span></a>Other screenshots</h3>
+
+<p><a href="url"><img src="http://i.epvpimg.com/nCQtd.jpg"></a></p>
+
+<p><a href="url"><img src="http://i.epvpimg.com/eIHUe.jpg" align="center" height="100%" width="600"></a></p>
       </section>
-      <footer>
-        <p>This project is maintained by <a class="backlink" href="https://github.com/Mostey">Mostey</a></p>		
-        <p><small>Proudly powered by <a class="backlink" href="http://github.io">GitHub Pages</a></small></p>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Loadify maintained by <a href="https://github.com/Mostey">Mostey</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
+
     
+
   </body>
 </html>
