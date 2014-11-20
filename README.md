@@ -7,7 +7,7 @@ Problem
 -
 Spotify offers a special mode, the offline mode. Using this offline mode, you are able to download tracks by storing it locally on your device for listening to music even if you don't have a connection to the internet.
 
-Well, why would you develop a software to download tracks if you could simply do that by using the official client? In fact, you just could use the official client and use that offline mode mentioned before but it comes with a huge disadvantage: The only way to listen to downloaded tracks is to use the official Spotify client. Since Spotify encrypts their audio data, you won't be able to listen to the music you've downloaded once your Spotify premium membership expires.
+Well, why would you use a software to download tracks if you could simply do that by using the official client? In fact, you just could use the official client and use that offline mode mentioned before but it comes with a huge disadvantage: The only way to listen to downloaded tracks is to use the official Spotify client. Since Spotify encrypts their audio data, you won't be able to listen to the music you've downloaded once your Spotify premium membership has expired.
 
 
 Solution
@@ -41,7 +41,7 @@ The right pane is mainly used for configuration and settings. You may (currently
 * where to store downloaded tracks
 * where to store cache files for speeding up the login/playlist fetching process
 
-Once you've selected some tracks (or whole playlists) for downloading, the `Download` button will be enabled that triggers the download contract.
+Once you've selected some tracks (or whole playlists) for downloading, the `Download` button will be enabled that triggers the download contract once it has been clicked.
 
 <a href="url"><img src="http://i.epvpimg.com/dRiYg.jpg" align="center" height="100%" width="700" ></a>
 
@@ -49,7 +49,7 @@ Once you've selected some tracks (or whole playlists) for downloading, the `Down
 ***
 
 ### Resizable Panes
-Playlist or track names are too long to be fully displayed? That isn't a problem anymore if you know that you can easily use the slider to rule the sizes of both panes.
+Playlist or track names are too long to be fully displayed? That isn't a problem anymore since you can easily use the slider to adjust the sizes of both panes.
 
 As you have might already found out, just grab the green bar with the dots on it and drag it to the left or right, depending on which panel you expect to be larger.
 
@@ -61,13 +61,13 @@ As you have might already found out, just grab the green bar with the dots on it
 ### Tracks and Playlists
 Once you expand a playlist in the left pane, all associated tracks will be listed in the following format:
 
-`<Artists> - Track name`
+`<Artists> - <Track name>`
 
-Additionally if you hover over the tracks, a tooltip will display the track duration.
+If you hover over the tracks, a tooltip will display the track duration.
 
 <a href="url"><img src="http://i.epvpimg.com/RWiqf.jpg" align="center" height="100%" width="250"></a>
 
-Each time you select a track, the software calculates an approximate time span that is needed for downloading all of the selected tracks. The estimated time is displayed below the playlist/track listings.
+Each time you select a track, the software calculates the approximate time that is needed for downloading all of the selected tracks. The estimated time is displayed below the playlist/track listings.
 
 You might have also noted the red crosses before each track listing. This is an indicator that signals if the track already exists on the local file system in the specified download directory.
 
@@ -141,7 +141,10 @@ For adding single tracks into an existing playlist, you need to right click one 
 
 This is basically following the same procedure as the __Add Playlist__ feature explained earlier. The only difference lies in the urls.
 
-While playlist urls contain a `/playlist/` and `:playlist:` section, tracks do not. This section is replaced with the string `/track/` or `:track:`.
+While playlist urls contain a `/playlist/` and `:playlist:` section, tracks do not. This section is replaced with the string `/track/` or `:track:`:
+
+* HTTP links (example: __http://open.spotify.com/track/1B20QutZwNPRrlQ2tDKuOe__)
+* Spotify links (example: __spotify:track:1B20QutZwNPRrlQ2tDKuOe__)
 
 <a href="url"><img src="http://i.epvpimg.com/469De.jpg" align="center" height="100%" width="650"></a>
 
