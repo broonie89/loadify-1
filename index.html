@@ -39,7 +39,7 @@ Please keep in mind that the software is currently a work-in-progress. Please le
 
 <p>Spotify offers a special mode, the offline mode. Using this offline mode, you are able to download tracks by storing it locally on your device for listening to music even if you don't have a connection to the internet.</p>
 
-<p>Well, why would you develop a software to download tracks if you could simply do that by using the official client? In fact, you just could use the official client and use that offline mode mentioned before but it comes with a huge disadvantage: The only way to listen to downloaded tracks is to use the official Spotify client. Since Spotify encrypts their audio data, you won't be able to listen to the music you've downloaded once your Spotify premium membership expires.</p>
+<p>Well, why would you use a software to download tracks if you could simply do that by using the official client? In fact, you just could use the official client and use that offline mode mentioned before but it comes with a huge disadvantage: The only way to listen to downloaded tracks is to use the official Spotify client. Since Spotify encrypts their audio data, you won't be able to listen to the music you've downloaded once your Spotify premium membership has expired.</p>
 
 <h2>
 <a id="solution" class="anchor" href="#solution" aria-hidden="true"><span class="octicon octicon-link"></span></a>Solution</h2>
@@ -81,7 +81,7 @@ Please keep in mind that the software is currently a work-in-progress. Please le
 <li>where to store cache files for speeding up the login/playlist fetching process</li>
 </ul>
 
-<p>Once you've selected some tracks (or whole playlists) for downloading, the <code>Download</code> button will be enabled that triggers the download contract.</p>
+<p>Once you've selected some tracks (or whole playlists) for downloading, the <code>Download</code> button will be enabled that triggers the download contract once it has been clicked.</p>
 
 <p><a href="url"><img src="http://i.epvpimg.com/dRiYg.jpg" align="center" height="100%" width="700"></a></p>
 
@@ -90,7 +90,7 @@ Please keep in mind that the software is currently a work-in-progress. Please le
 <h3>
 <a id="resizable-panes" class="anchor" href="#resizable-panes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resizable Panes</h3>
 
-<p>Playlist or track names are too long to be fully displayed? That isn't a problem anymore if you know that you can easily use the slider to rule the sizes of both panes.</p>
+<p>Playlist or track names are too long to be fully displayed? That isn't a problem anymore since you can easily use the slider to adjust the sizes of both panes.</p>
 
 <p>As you have might already found out, just grab the green bar with the dots on it and drag it to the left or right, depending on which panel you expect to be larger.</p>
 
@@ -103,13 +103,13 @@ Please keep in mind that the software is currently a work-in-progress. Please le
 
 <p>Once you expand a playlist in the left pane, all associated tracks will be listed in the following format:</p>
 
-<p><code>&lt;Artists&gt; - Track name</code></p>
+<p><code>&lt;Artists&gt; - &lt;Track name&gt;</code></p>
 
-<p>Additionally if you hover over the tracks, a tooltip will display the track duration.</p>
+<p>If you hover over the tracks, a tooltip will display the track duration.</p>
 
 <p><a href="url"><img src="http://i.epvpimg.com/RWiqf.jpg" align="center" height="100%" width="250"></a></p>
 
-<p>Each time you select a track, the software calculates an approximate time span that is needed for downloading all of the selected tracks. The estimated time is displayed below the playlist/track listings.</p>
+<p>Each time you select a track, the software calculates the approximate time that is needed for downloading all of the selected tracks. The estimated time is displayed below the playlist/track listings.</p>
 
 <p>You might have also noted the red crosses before each track listing. This is an indicator that signals if the track already exists on the local file system in the specified download directory.</p>
 
@@ -196,7 +196,12 @@ If the url provided is a valid url to a playlist, Loadify will fetch all of it's
 
 <p>This is basically following the same procedure as the <strong>Add Playlist</strong> feature explained earlier. The only difference lies in the urls.</p>
 
-<p>While playlist urls contain a <code>/playlist/</code> and <code>:playlist:</code> section, tracks do not. This section is replaced with the string <code>/track/</code> or <code>:track:</code>.</p>
+<p>While playlist urls contain a <code>/playlist/</code> and <code>:playlist:</code> section, tracks do not. This section is replaced with the string <code>/track/</code> or <code>:track:</code>:</p>
+
+<ul>
+<li>HTTP links (example: <strong><a href="http://open.spotify.com/track/1B20QutZwNPRrlQ2tDKuOe">http://open.spotify.com/track/1B20QutZwNPRrlQ2tDKuOe</a></strong>)</li>
+<li>Spotify links (example: <strong>spotify:track:1B20QutZwNPRrlQ2tDKuOe</strong>)</li>
+</ul>
 
 <p><a href="url"><img src="http://i.epvpimg.com/469De.jpg" align="center" height="100%" width="650"></a></p>
 
