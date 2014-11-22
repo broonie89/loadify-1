@@ -86,21 +86,29 @@ namespace loadify.Spotify
         {
             await Task.Run(() =>
             {
-                _TrackDownloadService = trackDownloadService;
-                _TrackDownloadService.Start();
-                _Session.PlayerLoad(trackDownloadService.Track.UnmanagedTrack);
-                _Session.PlayerPlay(true);
-
-                while (true)
+                try
                 {
-                    if (!_TrackDownloadService.Active)
-                        return;
+                    _TrackDownloadService = trackDownloadService;
+                    _TrackDownloadService.Start();
+                    _Session.PlayerLoad(trackDownloadService.Track.UnmanagedTrack);
+                    _Session.PlayerPlay(true);
 
-                    if (cancellationToken.IsCancellationRequested)
+                    while (true)
                     {
-                        _TrackDownloadService.Cancel(TrackDownloadService.CancellationReason.UserInteraction);
-                        return;
+                        if (!_TrackDownloadService.Active)
+                            return;
+
+                        if (cancellationToken.IsCancellationRequested)
+                        {
+                            _TrackDownloadService.Cancel(TrackDownloadService.CancellationReason.UserInteraction);
+                            return;
+                        }
                     }
+                }
+                catch (Exception)
+                {
+                    _TrackDownloadService.Cancel(TrackDownloadService.CancellationReason.Unknown);
+                    throw;
                 }
             }, cancellationToken);
         }

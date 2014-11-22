@@ -25,6 +25,16 @@ namespace loadify.Configuration
             }
         }
 
+        public bool SkipOnDownloadFailures
+        {
+            get { return Settings.Default.SkipOnDownloadFailures; }
+            set
+            {
+                Settings.Default.SkipOnDownloadFailures = value;
+                Settings.Default.Save();
+            }
+        }
+
         public AudioProcessor AudioProcessor { get; set; }
         public AudioConverter AudioConverter { get; set; }
         public IAudioFileDescriptor AudioFileDescriptor { get; set; }

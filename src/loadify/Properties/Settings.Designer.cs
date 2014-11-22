@@ -94,5 +94,17 @@ namespace loadify.Properties {
                 this["CleanupAfterConversion"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SkipOnDownloadFailures {
+            get {
+                return ((bool)(this["SkipOnDownloadFailures"]));
+            }
+            set {
+                this["SkipOnDownloadFailures"] = value;
+            }
+        }
     }
 }

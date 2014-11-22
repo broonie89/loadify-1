@@ -10,5 +10,6 @@ namespace loadify.Configuration
         AudioConverter AudioConverter { get; set; }
         IAudioFileDescriptor AudioFileDescriptor { get; set; }
         IDownloadPathConfigurator DownloadPathConfigurator { get; set; }
+        bool SkipOnDownloadFailures { get; set; }
     }
 }

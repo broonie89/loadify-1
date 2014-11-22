@@ -155,6 +155,13 @@ namespace loadify.ViewModel
         public async void Handle(DownloadContractPausedEvent message)
         {
             _Logger.Info(String.Format("Download contract was paused. Reason: {0}", message.Reason));
+            if (_SettingsManager.BehaviorSetting.SkipOnDownloadFailures)
+            {
+                _Logger.Debug("SkipOnDownloadFailures settings has been enabled, skipping...");
+                _EventAggregator.PublishOnUIThread(new DownloadContractResumedEvent(_Session, message.DownloadIndex + 1));
+                return;
+            }
+
             var view = GetView() as MainView;
             var dialogResult = await view.ShowMessageAsync("Download Paused", 
                                                             message.Reason

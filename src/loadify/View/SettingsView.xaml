@@ -35,9 +35,10 @@
                 <Grid Background="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" MinWidth="220"/>
-                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -48,6 +49,8 @@
                     <CheckBox x:Name="NotifyLocalTrackDetections" Content="Ask me for removing tracks that were detected to be already downloaded" Margin="7 5" Grid.Row="1"/>
                     <Label Grid.Row="2" Content="File Management" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="Customization settings of the track detection system" />
                     <CheckBox Grid.Row="3"  x:Name="CleanupAfterConversion" Content="Remove uncompressed audio files after they were converted" Margin="7 5"/>
+                    <Label Grid.Row="4" Content="Download" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="Customization settings of the track detection system" />
+                    <CheckBox Grid.Row="5"  x:Name="SkipOnDownloadFailures" Content="Skip tracks that can not be downloaded automatically" Margin="7 5"/>
                 </Grid>
             </TabItem> 
         </TabControl>

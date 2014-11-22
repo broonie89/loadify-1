@@ -47,7 +47,7 @@ namespace loadify.ViewModel
                                             _SettingsManager.BehaviorSetting.NotifyLocalTrackDetections, value));
 
                 _SettingsManager.BehaviorSetting.NotifyLocalTrackDetections = value;
-                NotifyOfPropertyChange(() => CacheDirectory);
+                NotifyOfPropertyChange(() => NotifyLocalTrackDetections);
             }
         }
 
@@ -61,7 +61,22 @@ namespace loadify.ViewModel
                                             _SettingsManager.BehaviorSetting.CleanupAfterConversion, value));
 
                 _SettingsManager.BehaviorSetting.CleanupAfterConversion = value;
-                NotifyOfPropertyChange(() => CacheDirectory);
+                NotifyOfPropertyChange(() => CleanupAfterConversion);
+            }
+        }
+
+
+        public bool SkipOnDownloadFailures
+        {
+            get { return _SettingsManager.BehaviorSetting.SkipOnDownloadFailures; }
+            set
+            {
+                if (_SettingsManager.BehaviorSetting.SkipOnDownloadFailures == value) return;
+                _Logger.Debug(String.Format("SkipOnDownloadFailures setting has been changed. Old value: {0}, new value: {1}",
+                                            _SettingsManager.BehaviorSetting.SkipOnDownloadFailures, value));
+
+                _SettingsManager.BehaviorSetting.SkipOnDownloadFailures = value;
+                NotifyOfPropertyChange(() => SkipOnDownloadFailures);
             }
         }
 
