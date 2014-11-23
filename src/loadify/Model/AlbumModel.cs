@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using loadify.Spotify;
 using SpotifySharp;
 
@@ -27,13 +28,22 @@ namespace loadify.Model
             if (unmanagedAlbum == null) return albumModel;
             await SpotifyObject.WaitForInitialization(unmanagedAlbum.IsLoaded);
 
-            var coverImage = session.GetImage(unmanagedAlbum.Cover(ImageSize.Large));
-            await SpotifyObject.WaitForInitialization(coverImage.IsLoaded);
-
             albumModel.Name = unmanagedAlbum.Name();
             albumModel.ReleaseYear = unmanagedAlbum.Year();
             albumModel.AlbumType = unmanagedAlbum.Type();
-            albumModel.Cover = coverImage.Data();
+
+            try
+            {
+                // retrieve the cover image of the album...
+                var coverImage = session.GetImage(unmanagedAlbum.Cover(ImageSize.Large));
+                await SpotifyObject.WaitForInitialization(coverImage.IsLoaded);
+                albumModel.Cover = coverImage.Data();
+            }
+            catch (AccessViolationException)
+            {
+                // nasty work-around - swallow if the cover image could not be retrieved
+                // since the ImageId class does not expose a property or function for checking if the buffer/handle is null/0
+            }
             
             return albumModel;
         }
