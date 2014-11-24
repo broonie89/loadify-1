@@ -109,7 +109,9 @@ namespace loadify.ViewModel
         {
             _CancellationToken = new CancellationTokenSource();
 
-            var remainingTracksToDownload = new ObservableCollection<TrackViewModel>(RemainingTracks.Count > startIndex ? RemainingTracks.Skip(startIndex) : RemainingTracks);
+            var remainingTracksToDownload = RemainingTracks.Count > startIndex
+                                            ? new ObservableCollection<TrackViewModel>(RemainingTracks.Skip(startIndex))
+                                            : new ObservableCollection<TrackViewModel>();
             foreach (var track in remainingTracksToDownload)
             {
                 CurrentTrack = track;
@@ -191,6 +193,7 @@ namespace loadify.ViewModel
                     _EventAggregator.PublishOnUIThread(new DownloadContractPausedEvent(String.Format("{0} could not be download because a Spotify error occured.", 
                                                                                                     CurrentTrack.ToString()), 
                                                                                                     RemainingTracks.IndexOf(CurrentTrack)));
+                    return;
                 }
             }
 
