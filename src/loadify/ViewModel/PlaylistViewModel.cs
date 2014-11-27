@@ -165,8 +165,6 @@ namespace loadify.ViewModel
 
             NotifyOfPropertyChange(() => SelectedTracks);
             NotifyOfPropertyChange(() => AllTracksSelected);
-
-            _EventAggregator.PublishOnUIThread(new SelectedTracksChangedEvent(SelectedTracks));
         }
 
         public void Handle(UnselectExistingTracksReplyEvent message)

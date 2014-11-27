@@ -250,6 +250,8 @@ namespace loadify.ViewModel
         {
             NotifyOfPropertyChange(() => SelectedTracks);
             NotifyOfPropertyChange(() => EstimatedDownloadTime);
+
+            _EventAggregator.PublishOnUIThread(new SelectedTracksChangedEvent(new List<TrackViewModel>(SelectedTracks)));
         }
 
         public void Handle(TrackDownloadComplete message)
