@@ -17,7 +17,7 @@ namespace loadify.Mock
         {
             SelectedTracks = new List<TrackViewModel>
             {
-                new TrackViewModel(new TrackModel() {Name = "Test"}, new EventAggregator())
+                new TrackViewModel(new TrackModel() {Name = "Test"}, new EventAggregator(), new NETSettingsManager())
             };
 
             EstimatedDownloadTime = "48:54:22";
@@ -30,8 +30,8 @@ namespace loadify.Mock
                     Name = "Rock",
                     Tracks = new ObservableCollection<TrackViewModel>
                     {
-                        new TrackViewModel(new EventAggregator()) {Name = "Rock this Shit"},
-                        new TrackViewModel(new EventAggregator()) {Name = "Could it be"}
+                        new TrackViewModel(new EventAggregator(), new NETSettingsManager()) {Name = "Rock this Shit"},
+                        new TrackViewModel(new EventAggregator(), new NETSettingsManager()) {Name = "Could it be"}
                     }
                 },
                 new PlaylistViewModel(new EventAggregator(), new NETSettingsManager()) {Creator = "Mostey", Description = "Test2", Name = "Hardcore"}

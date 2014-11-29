@@ -230,7 +230,7 @@ namespace loadify.ViewModel
                     var track = await TrackModel.FromLibrary(message.Session.GetTrack(message.Content), message.Session);
                     track.Playlist = message.Playlist.Playlist;
                     _Logger.Info(String.Format("Track {0} was resolved and added to playlist {1}", track.Name, track.Playlist.Name));
-                    message.Playlist.Tracks.Add(new TrackViewModel(track, _EventAggregator));
+                    message.Playlist.Tracks.Add(new TrackViewModel(track, _EventAggregator, _SettingsManager));
                     _EventAggregator.PublishOnUIThread(new HideProgressEvent());
                 }
                 catch (InvalidSpotifyUrlException exception)

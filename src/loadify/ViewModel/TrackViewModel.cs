@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Windows.Input;
 using Caliburn.Micro;
+using loadify.Configuration;
 using loadify.Event;
 using loadify.Model;
 
@@ -101,15 +105,46 @@ namespace loadify.ViewModel
             }
         }
 
-        public TrackViewModel(TrackModel track, IEventAggregator eventAggregator):
-            base(eventAggregator)
+        public TrackViewModel(TrackModel track, IEventAggregator eventAggregator, ISettingsManager settingsManager):
+            base(eventAggregator, settingsManager)
         {
             _Track = track;
         }
 
-        public TrackViewModel(IEventAggregator eventAggregator) :
-            this(new TrackModel(), eventAggregator)
+        public TrackViewModel(IEventAggregator eventAggregator, ISettingsManager settingsManager) :
+            this(new TrackModel(), eventAggregator, settingsManager)
         { }
+
+        public void OnMouseDown(MouseButtonEventArgs eventArgs)
+        {
+            if(eventArgs.ClickCount >= 2)
+                OpenContainingDirectory();
+        }
+
+        /// <summary>
+        /// Opens the directory that contains the track in the windows explorer
+        /// </summary>
+        public void OpenContainingDirectory()
+        {
+            try
+            {
+                var trackAudioFilePath = _SettingsManager.BehaviorSetting.DownloadPathConfigurator.Configure(
+                                                        _SettingsManager.DirectorySetting.DownloadDirectory,
+                                                        _SettingsManager.BehaviorSetting.AudioConverter.TargetFileExtension,
+                                                        Track);
+
+                // if the audio file for that track exists, open the explorer and select (or highlight) the track using the
+                // /select command line switch. Note that the path should be wrapped by quotes (") since the explorer will treat the path
+                // as list of arguments otherwise if it contains whitespaces
+                if (File.Exists(trackAudioFilePath))
+                    Process.Start("explorer.exe", String.Format("/select, \"{0}\"", trackAudioFilePath));
+            }
+            catch (InvalidOperationException exception)
+            {
+                _EventAggregator.PublishOnUIThread(new NotificationEvent("Error", "The folder cannot be opened because there was an unhandled error"));
+                _Logger.Error("The folder cannot be opened because there was an unhandled error", exception);
+            }
+        }
 
         public override string ToString()
         {

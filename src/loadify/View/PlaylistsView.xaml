@@ -23,7 +23,7 @@
                 </StackPanel.ToolTip>
                 <Image Source="{Binding ExistsLocally, Converter={StaticResource ExistsToImageSourceConverter}}" Width="20" Height="20" Margin="3 0"/>
                 <CheckBox IsChecked="{Binding Selected, Mode=TwoWay}"/>
-                <TextBlock>
+                <TextBlock cal:Message.Attach="[Event MouseDown] = [Action OnMouseDown($eventArgs)]">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{} {0} - {1}">
                             <Binding Path="Artists" Converter="{StaticResource ArtistsToStringConverter}"/>

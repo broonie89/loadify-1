@@ -102,7 +102,7 @@ namespace loadify.ViewModel
         {
             _DownloadedTracks = new ObservableCollection<TrackViewModel>();
             _RemainingTracks = new ObservableCollection<TrackViewModel>();
-            _CurrentTrack = new TrackViewModel(_EventAggregator);
+            _CurrentTrack = new TrackViewModel(_EventAggregator, _SettingsManager);
         }
 
         public async void StartDownload(LoadifySession session, int startIndex = 0)
