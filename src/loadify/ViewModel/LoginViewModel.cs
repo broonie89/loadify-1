@@ -109,9 +109,15 @@ namespace loadify.ViewModel
                             await loginView.ShowMessageAsync("Login failed", "No connection to the Spotify servers could be made");
                             break;
                         }
+                        case SpotifyError.UserNeedsPremium:
+                        {
+                            _Logger.Fatal("Login failed, the account being used is not a Spotify premium account");
+                            await loginView.ShowMessageAsync("Login failed", "The account being used is not a Spotify premium account");
+                            break;
+                        }
                         default:
                         {
-                            _Logger.Fatal("Login failed due to unhandled reasons");
+                            _Logger.Fatal(String.Format("Login failed due to unhandled reason: {0}", error));
                             await loginView.ShowMessageAsync("Login failed", "Unknown error");
                             break;
                         }
