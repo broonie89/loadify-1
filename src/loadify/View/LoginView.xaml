@@ -8,7 +8,8 @@
                         WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen"
                         GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize"
                         cal:Message.Attach="[Event KeyUp] = [Action OnKeyUp($pressedkey)]"
-                        FocusManager.FocusedElement="{Binding ElementName=Username}">
+                        FocusManager.FocusedElement="{Binding ElementName=Username}"
+                        ResxExtension.DefaultResxName="loadify.Localization.Login" Language="{UICulture}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50*"/>
@@ -29,7 +30,7 @@
         <PasswordBox x:Name="Password" Grid.Column="1"
                      controls:TextboxHelper.Watermark="Spotify password" VerticalContentAlignment="Center" TabIndex="1"
                      Margin="3" Grid.Row="3"/>
-        <Button x:Name="Login" Content="Login" Margin="20 3" Grid.Row="5" Grid.ColumnSpan="3" TabIndex="2"/>
+        <Button x:Name="Login" Content="{Resx LoginButtonText}" Margin="20 3" Grid.Row="5" Grid.ColumnSpan="3" TabIndex="2"/>
         <Label Grid.Column="0" Content="Username:" HorizontalContentAlignment="Right" Grid.Row="2"/>
         <Label Grid.Column="0" Content="Passwort:" HorizontalContentAlignment="Right" Grid.Row="3"/>
         <Label Grid.Column="0" Content="LOADIFY " HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 

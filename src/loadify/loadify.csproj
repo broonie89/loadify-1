@@ -69,7 +69,8 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Unbenannt-1 %285%29.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro">
@@ -136,10 +137,12 @@
     <Compile Include="Configuration\IBehaviorSetting.cs" />
     <Compile Include="Configuration\ICredentialsSetting.cs" />
     <Compile Include="Configuration\IDirectorySetting.cs" />
+    <Compile Include="Configuration\ILocalizationSetting.cs" />
     <Compile Include="Configuration\ISettingsManager.cs" />
     <Compile Include="Configuration\NETBehaviorSetting.cs" />
     <Compile Include="Configuration\NETCredentialsSetting.cs" />
     <Compile Include="Configuration\NETDirectorySetting.cs" />
+    <Compile Include="Configuration\NETLocalizationSetting.cs" />
     <Compile Include="Configuration\NETSettingsManager.cs" />
     <Compile Include="Event\AddPlaylistRequestEvent.cs" />
     <Compile Include="Event\AddPlaylistReplyEvent.cs" />
@@ -159,6 +162,19 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Audio\Mp3MetaData.cs" />
     <Compile Include="Configuration\ConfigurationException.cs" />
+    <Compile Include="Localization\ILocalizationManager.cs" />
+    <Compile Include="Localization\Language.cs" />
+    <Compile Include="Localization\Login.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Login.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Localization\Login.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Login.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Localization\ResxLocalizationManager.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\Log4NetLogger.cs" />
     <Compile Include="Event\DataRefreshAuthorizedEvent.cs" />
@@ -242,6 +258,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Localization\Login.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Login.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\Login.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Login.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -313,15 +337,13 @@
     <Content Include="libmp3lame.64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Unbenannt-1 %285%29.ico" />
-    <Resource Include="Unbenannt-1 %281%29.ico" />
-    <Resource Include="Unbenannt-1.ico" />
     <Resource Include="Resources\minus.png" />
     <Resource Include="Resources\plus.png" />
     <Resource Include="Resources\search.png" />
     <Resource Include="Resources\success_tick.png" />
     <Resource Include="Resources\error_cross.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y /C "$(SolutionDir)..\lib\ohLibSpotify\net45_x86\libspotify.dll" "$(TargetDir)"</PostBuildEvent>

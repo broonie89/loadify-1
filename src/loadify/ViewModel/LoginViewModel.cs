@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Caliburn.Micro;
 using loadify.Configuration;
+using loadify.Localization;
 using loadify.Properties;
 using loadify.Spotify;
 using loadify.View;
@@ -55,6 +56,7 @@ namespace loadify.ViewModel
         {
             _User = new UserViewModel();
             _Session = new LoadifySession();
+            _SettingsManager.LocalizationSetting.LocalizationManager.SetLanguage(Language.English);
         }
 
 
