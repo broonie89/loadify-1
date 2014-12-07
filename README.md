@@ -16,6 +16,14 @@ There isn't much to say about Loadify. It is (yet another) Spotify downloader th
 
 Since audio files supplied by the client are encrypted, we needed to jump in a little bit earlier and thus used **libspotify**, the official Spotify library written in C (we actually use a C# wrapper that manages the transition from unmanaged to managed by marshalling). Since audio data is streamed into some type of callback once we told the API to load a certain track into the audio player, we just need to capture the data flying into this callback. The track is currently saved as `wave` file into the specified folder and then immediately gets converted to a `MP3` file.
 
+
+Contributions
+-
+Feel free to contribute by adding new features or translating Loadify into your native language.
+Don't know how to help with translating? No problem, we've set up a [wiki page](https://github.com/Mostey/loadify/wiki/Translations-and-Localization)  
+that should help you with getting started. Please create an issue if you've any questions.
+
+
 Features
 -
 
@@ -33,7 +41,7 @@ The login is as simple as it gets. You just enter your username and password you
 ***
 
 ### Dashboard
-After logging in, a new window containing your dashboard will open up. The software will start to fetch your playlists and display them in the left pane. 
+After logging in, a new window containing your dashboard will open up. The software will start to fetch your playlists and display them in the left pane.
 
 <a href="url"><img src="http://i.epvpimg.com/yQNWf.jpg" align="center" height="100%" width="700" ></a>
 
@@ -71,7 +79,7 @@ Each time you select a track, the software calculates the approximate time that 
 
 You might have also noted the red crosses before each track listing. This is an indicator that signals if the track already exists on the local file system in the specified download directory.
 
-Once you have started the download contract, the download status bar in the lower left corner will become visible informing you about the current download status: 
+Once you have started the download contract, the download status bar in the lower left corner will become visible informing you about the current download status:
 
 * The progress bar represents the status of the track being download.
 * The drawing right from the progress bar contains the name of the track being downloaded
@@ -84,7 +92,7 @@ Once you have started the download contract, the download status bar in the lowe
 
 
 ### Local Track detection
-Once you've downloaded some tracks, you probably don't want to download them again on the next time you use Loadify. And since you won't have the time to check each file on your file system if you've already downloaded that particular track, Loadify will do this automatically for you. 
+Once you've downloaded some tracks, you probably don't want to download them again on the next time you use Loadify. And since you won't have the time to check each file on your file system if you've already downloaded that particular track, Loadify will do this automatically for you.
 
 Tracks will be detected as existing if:
 * the filename matches the output format of music files converted by Loadify, i.e. `<Artists> - Track name`, as mentioned above
@@ -123,7 +131,7 @@ A dialog will be displayed prompting you to enter the link to the playlist you w
 * Spotify links (example: __spotify:user:spotify_germany:playlist:0QUQf1xMMbtArIbDjwi2Hf__)
 
 Note the `/playlist/` and `:playlist:` section of the url.
-If the url provided is a valid url to a playlist, Loadify will fetch all of it's tracks and add the new playlist in the left panel. 
+If the url provided is a valid url to a playlist, Loadify will fetch all of it's tracks and add the new playlist in the left panel.
 
 <a href="url"><img src="http://i.epvpimg.com/8qh1g.jpg" align="center" height="100%" width="650"></a>
 
@@ -135,7 +143,7 @@ Once you refresh your playlists, it will be removed if you choose to not permane
 
 
 #### Tracks
-For adding single tracks into an existing playlist, you need to right click one of the playlists and select __Add Track__. 
+For adding single tracks into an existing playlist, you need to right click one of the playlists and select __Add Track__.
 
 <a href="url"><img src="http://i.epvpimg.com/GAbHc.jpg" align="center" height="100%" width="350"></a>
 
