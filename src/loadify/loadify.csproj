@@ -68,6 +68,9 @@
     <OutputPath>bin\x86\linux-arm-6\</OutputPath>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Unbenannt-1 %285%29.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro">
       <HintPath>..\..\lib\Caliburn.Micro.Core.2.0.1\lib\net45\Caliburn.Micro.dll</HintPath>
@@ -78,6 +81,9 @@
     <Reference Include="Id3, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\ID3.0.4.0-beta\lib\net40\Id3.dll</HintPath>
+    </Reference>
+    <Reference Include="Infralution.Localization.Wpf">
+      <HintPath>..\..\lib\Infralution.Localization.Wpf\net35\Infralution.Localization.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\lib\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
@@ -307,6 +313,9 @@
     <Content Include="libmp3lame.64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Unbenannt-1 %285%29.ico" />
+    <Resource Include="Unbenannt-1 %281%29.ico" />
+    <Resource Include="Unbenannt-1.ico" />
     <Resource Include="Resources\minus.png" />
     <Resource Include="Resources\plus.png" />
     <Resource Include="Resources\search.png" />
