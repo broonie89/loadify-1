@@ -27,12 +27,23 @@ namespace loadify.ViewModel
                 if (_CurrentTrack == value) return;
                 _CurrentTrack = value;
                 NotifyOfPropertyChange(() => CurrentTrack);
+                NotifyOfPropertyChange(() => TotalProgress);
+                NotifyOfPropertyChange(() => Active);
+                NotifyOfPropertyChange(() => DownloadedTracks);
+                NotifyOfPropertyChange(() => RemainingTracks);
+                NotifyOfPropertyChange(() => CurrentTrackIndex);
+                NotifyOfPropertyChange(() => DownloadStatus);
             }
         }
 
         public int CurrentTrackIndex
         {
             get { return DownloadedTracks.Count + 1; }
+        }
+
+        public string DownloadStatus
+        {
+            get { return String.Format("{0} {1} ({2}/{3})", Localization.Downloader.Downloading, CurrentTrack, CurrentTrackIndex, TotalTracks.Count); }
         }
 
         private ObservableCollection<TrackViewModel> _DownloadedTracks;
@@ -61,6 +72,7 @@ namespace loadify.ViewModel
                 NotifyOfPropertyChange(() => TotalTracks);
                 NotifyOfPropertyChange(() => CurrentTrackIndex);
                 NotifyOfPropertyChange(() => Active);
+                NotifyOfPropertyChange(() => DownloadStatus);
             }
         }
 
@@ -163,11 +175,6 @@ namespace loadify.ViewModel
                     {
                         DownloadedTracks.Add(CurrentTrack);
                         RemainingTracks.Remove(CurrentTrack);
-                        NotifyOfPropertyChange(() => TotalProgress);
-                        NotifyOfPropertyChange(() => Active);
-                        NotifyOfPropertyChange(() => DownloadedTracks);
-                        NotifyOfPropertyChange(() => RemainingTracks);
-                        NotifyOfPropertyChange(() => CurrentTrackIndex);
                         _EventAggregator.PublishOnUIThread(new TrackDownloadComplete(CurrentTrack));
                         _Logger.Info(String.Format("{0} was successfully downloaded to directory {1}", CurrentTrack.ToString(), trackDownloadService.OutputDirectory));
                     }

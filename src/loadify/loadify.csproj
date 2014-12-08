@@ -172,6 +172,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>About.resx</DependentUpon>
     </Compile>
+    <Compile Include="Localization\Downloader.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Downloader.resx</DependentUpon>
+    </Compile>
     <Compile Include="Localization\ILocalizationManager.cs" />
     <Compile Include="Localization\Language.cs" />
     <Compile Include="Localization\Login.de.Designer.cs">
@@ -275,6 +280,10 @@
     <EmbeddedResource Include="Localization\About.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>About.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\Downloader.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Downloader.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Localization\Login.de.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
