@@ -117,7 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="LoginButtonText" xml:space="preserve">
+  <data name="LogIn" xml:space="preserve">
     <value>Login</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Remember me</value>
+  </data>
+  <data name="RememberMeDescription" xml:space="preserve">
+    <value>Password is stored unencrypted, please use with caution</value>
+  </data>
+  <data name="SpotifyPassword" xml:space="preserve">
+    <value>Spotify password</value>
+  </data>
+  <data name="SpotifyUsername" xml:space="preserve">
+    <value>Spotify username</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
   </data>
 </root>

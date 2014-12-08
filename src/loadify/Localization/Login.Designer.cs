@@ -63,9 +63,63 @@ namespace loadify.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
-        public static string LoginButtonText {
+        public static string LogIn {
             get {
-                return ResourceManager.GetString("LoginButtonText", resourceCulture);
+                return ResourceManager.GetString("LogIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remember me.
+        /// </summary>
+        public static string RememberMe {
+            get {
+                return ResourceManager.GetString("RememberMe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password is stored unencrypted, please use with caution.
+        /// </summary>
+        public static string RememberMeDescription {
+            get {
+                return ResourceManager.GetString("RememberMeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spotify password.
+        /// </summary>
+        public static string SpotifyPassword {
+            get {
+                return ResourceManager.GetString("SpotifyPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spotify username.
+        /// </summary>
+        public static string SpotifyUsername {
+            get {
+                return ResourceManager.GetString("SpotifyUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        public static string Username {
+            get {
+                return ResourceManager.GetString("Username", resourceCulture);
             }
         }
     }
