@@ -56,7 +56,7 @@ namespace loadify.ViewModel
         {
             _User = new UserViewModel();
             _Session = new LoadifySession();
-            _SettingsManager.LocalizationSetting.LocalizationManager.SetLanguage(Language.English);
+            _SettingsManager.LocalizationSetting.LocalizationManager.SetLanguage(Language.German);
         }
 
 
@@ -102,25 +102,25 @@ namespace loadify.ViewModel
                         case SpotifyError.BadUsernameOrPassword:
                         {
                             _Logger.Fatal("Login failed, wrong username or password has been entered");
-                            await loginView.ShowMessageAsync("Login failed", "Name or password is wrong");
+                            await loginView.ShowMessageAsync(Localization.Login.LoginFailed, Localization.Login.NameOrPasswordWrong);
                             break;
                         }
                         case SpotifyError.UnableToContactServer:
                         {
                             _Logger.Fatal("Login failed, no connection to the Spotify servers could be made");
-                            await loginView.ShowMessageAsync("Login failed", "No connection to the Spotify servers could be made");
+                            await loginView.ShowMessageAsync(Localization.Login.LoginFailed, Localization.Login.NoConnectionToSpotify);
                             break;
                         }
                         case SpotifyError.UserNeedsPremium:
                         {
                             _Logger.Fatal("Login failed, the account being used is not a Spotify premium account");
-                            await loginView.ShowMessageAsync("Login failed", "The account being used is not a Spotify premium account");
+                            await loginView.ShowMessageAsync(Localization.Login.LoginFailed, Localization.Login.NotAPremiumAccount);
                             break;
                         }
                         default:
                         {
                             _Logger.Fatal(String.Format("Login failed due to unhandled reason: {0}", error));
-                            await loginView.ShowMessageAsync("Login failed", "Unknown error");
+                            await loginView.ShowMessageAsync(Localization.Login.LoginFailed, Localization.Login.UnknownError);
                             break;
                         }
                     }

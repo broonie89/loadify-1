@@ -120,6 +120,18 @@
   <data name="LogIn" xml:space="preserve">
     <value>Einloggen</value>
   </data>
+  <data name="LoginFailed" xml:space="preserve">
+    <value>Login fehlgeschlagen</value>
+  </data>
+  <data name="NameOrPasswordWrong" xml:space="preserve">
+    <value>Falscher Benutzername oder Passwort</value>
+  </data>
+  <data name="NoConnectionToSpotify" xml:space="preserve">
+    <value>Es konnte keine Verbindung zu den Spotify Servern hergestellt werden</value>
+  </data>
+  <data name="NotAPremiumAccount" xml:space="preserve">
+    <value>Der genutzte Account ist kein Spotify Premium Account</value>
+  </data>
   <data name="Password" xml:space="preserve">
     <value>Passwort</value>
   </data>
@@ -134,6 +146,9 @@
   </data>
   <data name="SpotifyUsername" xml:space="preserve">
     <value>Spotify Benutzername</value>
+  </data>
+  <data name="UnknownError" xml:space="preserve">
+    <value>Unbekannter Fehler</value>
   </data>
   <data name="Username" xml:space="preserve">
     <value>Benutzername</value>

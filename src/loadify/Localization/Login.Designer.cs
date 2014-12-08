@@ -70,6 +70,42 @@ namespace loadify.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login failed.
+        /// </summary>
+        public static string LoginFailed {
+            get {
+                return ResourceManager.GetString("LoginFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name or Password is wrong.
+        /// </summary>
+        public static string NameOrPasswordWrong {
+            get {
+                return ResourceManager.GetString("NameOrPasswordWrong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No connection to the Spotify servers could be made.
+        /// </summary>
+        public static string NoConnectionToSpotify {
+            get {
+                return ResourceManager.GetString("NoConnectionToSpotify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The account being used is not a Spotify premium account.
+        /// </summary>
+        public static string NotAPremiumAccount {
+            get {
+                return ResourceManager.GetString("NotAPremiumAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         public static string Password {
@@ -111,6 +147,15 @@ namespace loadify.Localization {
         public static string SpotifyUsername {
             get {
                 return ResourceManager.GetString("SpotifyUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown error.
+        /// </summary>
+        public static string UnknownError {
+            get {
+                return ResourceManager.GetString("UnknownError", resourceCulture);
             }
         }
         
