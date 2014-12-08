@@ -162,6 +162,16 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Audio\Mp3MetaData.cs" />
     <Compile Include="Configuration\ConfigurationException.cs" />
+    <Compile Include="Localization\About.de.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>About.de.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Localization\About.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>About.resx</DependentUpon>
+    </Compile>
     <Compile Include="Localization\ILocalizationManager.cs" />
     <Compile Include="Localization\Language.cs" />
     <Compile Include="Localization\Login.de.Designer.cs">
@@ -258,6 +268,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Localization\About.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>About.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\About.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>About.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\Login.de.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Login.de.Designer.cs</LastGenOutput>
