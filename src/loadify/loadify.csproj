@@ -200,6 +200,11 @@
       <DependentUpon>Playlists.resx</DependentUpon>
     </Compile>
     <Compile Include="Localization\ResxLocalizationManager.cs" />
+    <Compile Include="Localization\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Settings.resx</DependentUpon>
+    </Compile>
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\Log4NetLogger.cs" />
     <Compile Include="Event\DataRefreshAuthorizedEvent.cs" />
@@ -310,6 +315,10 @@
     <EmbeddedResource Include="Localization\Playlists.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Playlists.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\Settings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

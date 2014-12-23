@@ -6,10 +6,11 @@
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="320" d:DesignWidth="400">
+             d:DesignHeight="320" d:DesignWidth="400"
+             ResxExtension.DefaultResxName="loadify.Localization.Settings" Language="{UICulture}">
     <Grid>
         <TabControl Margin="5">
-            <TabItem Header="Directories">
+            <TabItem Header="{Resx Directories}">
                 <Grid Background="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="250"/>
@@ -23,15 +24,15 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="118*"/>
                     </Grid.RowDefinitions>
-                    <Label Content="Download Directory" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="Directory where the downloaded files will be stored"/>
+                    <Label Content="{Resx DownloadDirectory}" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="{Resx DownloadDirectoryInfo}"/>
                     <TextBox x:Name="DownloadDirectory" Grid.Row="1" Margin="6,5" Text=""/>
                     <Button x:Name="BrowseDownloadDirectory" Content="..." Grid.Column="1" Grid.Row="1" Padding="0" MinHeight="0" Height="29" Margin="3"/>
-                    <Label Grid.Row="2" Content="Cache Directory" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="Directory where the cache and other temporary files will be stored"/>
+                    <Label Grid.Row="2" Content="{Resx CacheDirectory}" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="{Resx CacheDirectoryInfo}"/>
                     <TextBox x:Name="CacheDirectory" Grid.Row="3" Margin="6,5" Text=""/>
                     <Button x:Name="BrowseCacheDirectory" Content="..." Grid.Column="1" Grid.Row="3" Padding="0" MinHeight="0" Height="29" Margin="3"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Behavior">
+            <TabItem Header="{Resx Behavior}">
                 <Grid Background="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" MinWidth="220"/>
@@ -45,12 +46,12 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="65*"/>
                     </Grid.RowDefinitions>
-                    <Label Content="Local Track Detection" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="Customization settings of the track detection system" />
-                    <CheckBox x:Name="NotifyLocalTrackDetections" Content="Ask me for removing tracks that were detected to be already downloaded" Margin="7 5" Grid.Row="1"/>
-                    <Label Grid.Row="2" Content="File Management" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="Customization settings of the track detection system" />
-                    <CheckBox Grid.Row="3"  x:Name="CleanupAfterConversion" Content="Remove uncompressed audio files after they were converted" Margin="7 5"/>
-                    <Label Grid.Row="4" Content="Download" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="Customization settings of the track detection system" />
-                    <CheckBox Grid.Row="5"  x:Name="SkipOnDownloadFailures" Content="Skip tracks that can not be downloaded automatically" Margin="7 5"/>
+                    <Label Content="{Resx LocalTrackDetection}" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="Customization settings of the track detection system" />
+                    <CheckBox x:Name="NotifyLocalTrackDetections" Content="{Resx NotifyLocalTrackDetections}" Margin="7 5" Grid.Row="1"/>
+                    <Label Grid.Row="2" Content="{Resx FileManagement}" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="Customization settings of the track detection system" />
+                    <CheckBox Grid.Row="3"  x:Name="CleanupAfterConversion" Content="{Resx CleanupAfterConversion}" Margin="7 5"/>
+                    <Label Grid.Row="4" Content="{Resx Download}" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="Customization settings of the track detection system" />
+                    <CheckBox Grid.Row="5"  x:Name="SkipOnDownloadFailures" Content="{Resx SkipOnDownloadFailures}" Margin="7 5"/>
                 </Grid>
             </TabItem> 
         </TabControl>
