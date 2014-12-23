@@ -43,7 +43,7 @@ namespace loadify.ViewModel
 
         public string DownloadStatus
         {
-            get { return String.Format("{0} {1} ({2}/{3})", Localization.Downloader.Downloading, CurrentTrack, CurrentTrackIndex, TotalTracks.Count); }
+            get { return String.Format(Localization.Downloader.Downloading, CurrentTrack, CurrentTrackIndex, TotalTracks.Count); }
         }
 
         private ObservableCollection<TrackViewModel> _DownloadedTracks;

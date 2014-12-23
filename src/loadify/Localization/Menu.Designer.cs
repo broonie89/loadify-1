@@ -61,7 +61,7 @@ namespace loadify.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to About.
+        ///   Looks up a localized string similar to About Loadify.
         /// </summary>
         public static string About {
             get {

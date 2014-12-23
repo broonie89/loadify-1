@@ -117,10 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Contributors" xml:space="preserve">
-    <value>Mitwirkende</value>
+  <data name="AddPlaylistInvalidLinkDialogMessage" xml:space="preserve">
+    <value>Die Playlist konnte nicht hinzugefügt werden weil {0} kein gültiger Spotify Playlist Link ist</value>
   </data>
-  <data name="License" xml:space="preserve">
-    <value>Lizenz</value>
+  <data name="AddPlaylistProcessingDialogMessage" xml:space="preserve">
+    <value>Bitte warte während Loadify die Playlist zu deiner Playlist Sammlung hinzufügt</value>
+  </data>
+  <data name="AddTrackInvalidLinkDialogMessage" xml:space="preserve">
+    <value>Der Track konnte nicht hinzugefügt werden weil {0} kein gültiger Spotify Track Link ist</value>
+  </data>
+  <data name="AddTrackProcessingDialogMessage" xml:space="preserve">
+    <value>Bitte warte während Loadify den Track zu Playlist {0} hinzufügt</value>
+  </data>
+  <data name="EstimatedDownloadTimeInfo" xml:space="preserve">
+    <value>Geschätzte Downloadzeit</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Suchen</value>
+  </data>
+  <data name="RemovePlaylistProcessingDialogMessage" xml:space="preserve">
+    <value>Bitte warte während Loadify die Playlist {0} von deinem Account entfernt</value>
+  </data>
+  <data name="Tracks" xml:space="preserve">
+    <value>Tracks</value>
+  </data>
+  <data name="TracksSelectedInfo" xml:space="preserve">
+    <value>Tracks ausgewählt</value>
   </data>
 </root>

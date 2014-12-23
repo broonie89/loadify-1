@@ -61,7 +61,7 @@ namespace loadify.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Downloading.
+        ///   Looks up a localized string similar to Downloading {0} ({1}/{2}).
         /// </summary>
         public static string Downloading {
             get {

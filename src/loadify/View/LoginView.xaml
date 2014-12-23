@@ -4,7 +4,7 @@
                         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                         xmlns:cal="http://www.caliburnproject.org"
-                        Title="Loadify - Login" Height="280" Width="350"
+                        Title="Loadify" Height="280" Width="350"
                         WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen"
                         GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize"
                         cal:Message.Attach="[Event KeyUp] = [Action OnKeyUp($pressedkey)]"

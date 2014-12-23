@@ -117,10 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Contributors" xml:space="preserve">
-    <value>Mitwirkende</value>
+  <data name="Behavior" xml:space="preserve">
+    <value>Verhalten</value>
   </data>
-  <data name="License" xml:space="preserve">
-    <value>Lizenz</value>
+  <data name="CacheDirectory" xml:space="preserve">
+    <value>Cache Verzeichnis</value>
+  </data>
+  <data name="CacheDirectoryInfo" xml:space="preserve">
+    <value>Verzeichnis in dem der Cache und andere temporäre Datein gespeichert werden</value>
+  </data>
+  <data name="CleanupAfterConversion" xml:space="preserve">
+    <value>Unkomprimierte Audiodatei nach dem konvertieren entfernen</value>
+  </data>
+  <data name="Directories" xml:space="preserve">
+    <value>Verzeichnisse</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="DownloadDirectory" xml:space="preserve">
+    <value>Download Verzeichnis</value>
+  </data>
+  <data name="DownloadDirectoryInfo" xml:space="preserve">
+    <value>Verzeichnis in dem die heruntergeladenen Tracks gespeichert werden</value>
+  </data>
+  <data name="FileManagement" xml:space="preserve">
+    <value>Dateiverwaltung</value>
+  </data>
+  <data name="LocalTrackDetection" xml:space="preserve">
+    <value>Lokale Track Erkennung</value>
+  </data>
+  <data name="NotifyLocalTrackDetections" xml:space="preserve">
+    <value>Mich fragen wenn sich zum Download ausgewählte Tracks bereits im Download Verzeichnis befinden</value>
+  </data>
+  <data name="SkipOnDownloadFailures" xml:space="preserve">
+    <value>Automatisch den Download von Tracks überspringen, wenn diese nicht heruntergeladen werden können</value>
   </data>
 </root>

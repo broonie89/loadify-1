@@ -4,7 +4,7 @@
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         WindowStartupLocation="CenterScreen"
         GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize"
-        Title="About Loadify" Height="210" Width="370"
+        Title="Loadify" Height="210" Width="370"
         ResxExtension.DefaultResxName="loadify.Localization.About" Language="{UICulture}">
     <Grid>
         <Grid.RowDefinitions>
