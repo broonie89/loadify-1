@@ -194,6 +194,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Menu.resx</DependentUpon>
     </Compile>
+    <Compile Include="Localization\Playlists.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Playlists.resx</DependentUpon>
+    </Compile>
     <Compile Include="Localization\ResxLocalizationManager.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\Log4NetLogger.cs" />
@@ -301,6 +306,10 @@
     <EmbeddedResource Include="Localization\Menu.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Menu.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\Playlists.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Playlists.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
