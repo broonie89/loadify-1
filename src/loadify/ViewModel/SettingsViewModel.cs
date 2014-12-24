@@ -93,10 +93,11 @@ namespace loadify.ViewModel
             set
             {
                 if (_SettingsManager.LocalizationSetting.UILanguage == value) return;
-                _Logger.Debug(String.Format("UILanguage setting has been changed. Old value: {0}, new value: {1}",
-                                            _SettingsManager.LocalizationSetting.UILanguage, value));
-
+                var oldLanguage = _SettingsManager.LocalizationSetting.UILanguage;
                 _SettingsManager.LocalizationSetting.UILanguage = value;
+                _Logger.Debug(String.Format("UILanguage setting has been changed. Old value: {0}, new value: {1}",
+                                            oldLanguage, value));
+                _EventAggregator.PublishOnUIThread(new LanguageChangedEvent(oldLanguage, value));
                 NotifyOfPropertyChange(() => UILanguage);
             }
         }

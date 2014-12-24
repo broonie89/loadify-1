@@ -20,7 +20,8 @@ namespace loadify.ViewModel
                                                      IHandle<DownloadContractCompletedEvent>,
                                                      IHandle<TrackSelectedChangedEvent>,
                                                      IHandle<TrackDownloadComplete>,
-                                                     IHandle<RemovePlaylistReplyEvent>
+                                                     IHandle<RemovePlaylistReplyEvent>,
+                                                     IHandle<LanguageChangedEvent>
     {
         private ObservableCollection<PlaylistViewModel> _Playlists = new ObservableCollection<PlaylistViewModel>();
         public ObservableCollection<PlaylistViewModel> Playlists
@@ -284,6 +285,15 @@ namespace loadify.ViewModel
                 _Logger.Info(String.Format("Removed playlist {0} permanently from the logged-in Spotify account", message.Playlist.Name));
                 _EventAggregator.PublishOnUIThread(new HideProgressEvent());
             }
+        }
+
+        public void Handle(LanguageChangedEvent message)
+        {
+            // hack that copies the already existing playlist and reassigns it to the collection in order to completely notify all elements 
+            // in the bound view for pulling the information again
+            // this is required because the currently used ResxExtension is removing the binding to TreeView controls for some reason
+            // and then updates the TreeView with invalid/empty data
+            Playlists = new ObservableCollection<PlaylistViewModel>(Playlists);
         }
     }
 }

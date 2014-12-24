@@ -151,6 +151,7 @@
     <Compile Include="Event\DisplayProgressEvent.cs" />
     <Compile Include="Event\DownloadContractCancelledEvent.cs" />
     <Compile Include="Event\HideProgressEvent.cs" />
+    <Compile Include="Event\LanguageChangedEvent.cs" />
     <Compile Include="Event\RemovePlaylistRequestEvent.cs" />
     <Compile Include="Event\RemovePlaylistReplyEvent.cs" />
     <Compile Include="Event\SelectedTracksChangedEvent.cs" />

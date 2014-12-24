@@ -12,6 +12,10 @@ namespace loadify.Localization
 {
     public class ResxLocalizationManager : ILocalizationManager
     {
+        /// <summary>
+        /// Gets the current language
+        /// </summary>
+        /// <returns> The current language </returns>
         public Language GetCurrentLanguage()
         {
             return new Language(CultureManager.UICulture);
@@ -34,11 +38,18 @@ namespace loadify.Localization
             }
             catch (CultureNotFoundException)
             {
-                // set the language to english if the specified language was not found
-                SetLanguage(Language.English);
+                // set the language to the default language if the specified language was not found
+                SetLanguage(Language.Default);
             }
         }
 
+        /// <summary>
+        /// Iterates through all resource dll files that ship with the application
+        /// in order to query implemented and translated languages.
+        /// Once resource files containing the extension <languageCode>.resx are included in the project,
+        /// the corresponding resource dll files are created while compiling.
+        /// </summary>
+        /// <returns> <c>IEnumerable</c> of <c>Language</c> objects representing all currently supported languages </returns>
         public IEnumerable<Language> GetSupportedLanguages()
         {
             var results = new List<Language>()
