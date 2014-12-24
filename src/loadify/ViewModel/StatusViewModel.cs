@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 
 namespace loadify.ViewModel
 {
@@ -26,6 +27,11 @@ namespace loadify.ViewModel
                 _Downloader = value;
                 NotifyOfPropertyChange(() => Downloader);
             }
+        }
+
+        public string ConnectedUserInfo
+        {
+            get { return String.Format(Localization.Status.ConnectedUserInfo, LoggedInUser.Name); }
         }
 
         public StatusViewModel(UserViewModel loggedInUser, DownloaderViewModel downloaderViewModel, IEventAggregator eventAggregator):
