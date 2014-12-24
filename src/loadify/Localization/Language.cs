@@ -23,6 +23,11 @@ namespace loadify.Localization
             get { return Culture.Name; }
         }
 
+        public static Language Default
+        {
+            get { return English; }
+        }
+
         public static Language English
         {
             get { return new Language("en"); }
@@ -53,6 +58,16 @@ namespace loadify.Localization
         public override string ToString()
         {
             return Culture.ToString();
+        }
+
+        public static bool operator ==(Language lhs, Language rhs)
+        {
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(Language lhs, Language rhs)
+        {
+            return !lhs.Equals(rhs);
         }
 
         public override bool Equals(object obj)

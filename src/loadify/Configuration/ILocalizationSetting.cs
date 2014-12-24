@@ -10,5 +10,6 @@ namespace loadify.Configuration
     public interface ILocalizationSetting
     {
         ILocalizationManager LocalizationManager { get; set; }
+        Language UILanguage { get; set; }
     }
 }

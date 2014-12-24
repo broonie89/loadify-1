@@ -55,8 +55,7 @@ namespace loadify.ViewModel
             base(eventAggregator, windowManager, settingsManager)
         {
             _User = new UserViewModel();
-            _Session = new LoadifySession();
-            _SettingsManager.LocalizationSetting.LocalizationManager.SetLanguage(Language.German);
+            _Session = new LoadifySession();         
         }
 
 

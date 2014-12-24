@@ -142,6 +142,15 @@ namespace loadify.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Local Track Detection.
         /// </summary>
         public static string LocalTrackDetection {
@@ -165,6 +174,15 @@ namespace loadify.Localization {
         public static string SkipOnDownloadFailures {
             get {
                 return ResourceManager.GetString("SkipOnDownloadFailures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Interface Language.
+        /// </summary>
+        public static string UILanguage {
+            get {
+                return ResourceManager.GetString("UILanguage", resourceCulture);
             }
         }
     }

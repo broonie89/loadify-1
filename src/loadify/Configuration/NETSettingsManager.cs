@@ -1,4 +1,6 @@
-﻿namespace loadify.Configuration
+﻿using loadify.Localization;
+
+namespace loadify.Configuration
 {
     public class NETSettingsManager : ISettingsManager
     {

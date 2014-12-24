@@ -106,5 +106,17 @@ namespace loadify.Properties {
                 this["SkipOnDownloadFailures"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("en")]
+        public string UILanguage {
+            get {
+                return ((string)(this["UILanguage"]));
+            }
+            set {
+                this["UILanguage"] = value;
+            }
+        }
     }
 }

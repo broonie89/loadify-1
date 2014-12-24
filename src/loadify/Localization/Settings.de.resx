@@ -144,6 +144,9 @@
   <data name="FileManagement" xml:space="preserve">
     <value>Dateiverwaltung</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
   <data name="LocalTrackDetection" xml:space="preserve">
     <value>Lokale Track Erkennung</value>
   </data>
@@ -152,5 +155,8 @@
   </data>
   <data name="SkipOnDownloadFailures" xml:space="preserve">
     <value>Automatisch den Download von Tracks überspringen, wenn diese nicht heruntergeladen werden können</value>
+  </data>
+  <data name="UILanguage" xml:space="preserve">
+    <value>Sprache der Benutzeroberfläche</value>
   </data>
 </root>

@@ -8,6 +8,7 @@ namespace loadify.Localization
 {
     public interface ILocalizationManager
     {
+        Language GetCurrentLanguage();
         void SetLanguage(Language language);
         IEnumerable<Language> GetSupportedLanguages();
     }

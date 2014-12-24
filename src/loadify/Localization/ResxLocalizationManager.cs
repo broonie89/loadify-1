@@ -12,6 +12,11 @@ namespace loadify.Localization
 {
     public class ResxLocalizationManager : ILocalizationManager
     {
+        public Language GetCurrentLanguage()
+        {
+            return new Language(CultureManager.UICulture);
+        }
+
         /// <summary> 
         /// Sets the specified language for the current thread and enables the dynamic Resx extension to transform all bindings to the new language 
         /// </summary>
@@ -36,7 +41,10 @@ namespace loadify.Localization
 
         public IEnumerable<Language> GetSupportedLanguages()
         {
-            var results = new List<Language>();
+            var results = new List<Language>()
+            {
+                Language.Default
+            };
 
             foreach (var dir in Directory.GetDirectories(System.Windows.Forms.Application.StartupPath))
             {

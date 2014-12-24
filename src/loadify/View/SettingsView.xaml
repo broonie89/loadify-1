@@ -6,7 +6,7 @@
              xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="320" d:DesignWidth="400"
+             d:DesignHeight="320" d:DesignWidth="450"
              ResxExtension.DefaultResxName="loadify.Localization.Settings" Language="{UICulture}">
     <Grid>
         <TabControl Margin="5">
@@ -53,7 +53,21 @@
                     <Label Grid.Row="4" Content="{Resx Download}" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="Customization settings of the track detection system" />
                     <CheckBox Grid.Row="5"  x:Name="SkipOnDownloadFailures" Content="{Resx SkipOnDownloadFailures}" Margin="7 5"/>
                 </Grid>
-            </TabItem> 
+            </TabItem>
+            <TabItem Header="{Resx Language}">
+                <Grid Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="{Resx UILanguage}" FontSize="16" Foreground="{StaticResource AccentColorBrush}"/>
+                    <ComboBox x:Name="SupportedLanguages" SelectedItem="{Binding UILanguage, Mode=TwoWay}" DisplayMemberPath="Name" Grid.Row="1" Margin="5 0"/>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </UserControl>
