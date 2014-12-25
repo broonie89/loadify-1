@@ -151,7 +151,8 @@
     <value>Download Paused</value>
   </data>
   <data name="ExistingTracksRemovalDialogMessage" xml:space="preserve">
-    <value>Loadify detected that you already have {0} of the selected tracks in your download directory.\nDo you want to remove them from your download contract?</value>
+    <value>Loadify detected that you already have {0} of the selected tracks in your download directory. 
+Do you want to remove them from your download contract?</value>
   </data>
   <data name="ExistingTracksRemovalDialogTitle" xml:space="preserve">
     <value>Detected existing Tracks</value>

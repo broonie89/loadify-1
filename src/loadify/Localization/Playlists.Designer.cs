@@ -124,6 +124,24 @@ namespace loadify.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please wait while Loadify is retrieving playlists from your Spotify account..
+        /// </summary>
+        public static string RetrievingPlaylistsDialogMessage {
+            get {
+                return ResourceManager.GetString("RetrievingPlaylistsDialogMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retrieving Playlists....
+        /// </summary>
+        public static string RetrievingPlaylistsDialogTitle {
+            get {
+                return ResourceManager.GetString("RetrievingPlaylistsDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tracks.
         /// </summary>
         public static string Tracks {

@@ -160,7 +160,8 @@ namespace loadify.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loadify detected that you already have {0} of the selected tracks in your download directory.\nDo you want to remove them from your download contract?.
+        ///   Looks up a localized string similar to Loadify detected that you already have {0} of the selected tracks in your download directory. 
+        ///Do you want to remove them from your download contract?.
         /// </summary>
         public static string ExistingTracksRemovalDialogMessage {
             get {

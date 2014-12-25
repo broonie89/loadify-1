@@ -151,7 +151,8 @@
     <value>Download pausiert</value>
   </data>
   <data name="ExistingTracksRemovalDialogMessage" xml:space="preserve">
-    <value>Loadify hat festgestellt dass sich {0} der ausgewählten Tracks in deinem Download Verzeichnis befinden.\nMöchtest du diese Tracks abwählen?</value>
+    <value>Loadify hat festgestellt dass sich {0} der ausgewählten Tracks in deinem Download Verzeichnis befinden.
+Möchtest du diese Tracks abwählen?</value>
   </data>
   <data name="ExistingTracksRemovalDialogTitle" xml:space="preserve">
     <value>Existierende Tracks erkannt</value>

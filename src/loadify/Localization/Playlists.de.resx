@@ -138,6 +138,12 @@
   <data name="RemovePlaylistProcessingDialogMessage" xml:space="preserve">
     <value>Bitte warte während Loadify die Playlist {0} von deinem Account entfernt</value>
   </data>
+  <data name="RetrievingPlaylistsDialogMessage" xml:space="preserve">
+    <value>Bitte warte während Loadify deine Playlists einbindet</value>
+  </data>
+  <data name="RetrievingPlaylistsDialogTitle" xml:space="preserve">
+    <value>Playlists einbinden...</value>
+  </data>
   <data name="Tracks" xml:space="preserve">
     <value>Tracks</value>
   </data>

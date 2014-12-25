@@ -138,6 +138,12 @@
   <data name="RemovePlaylistProcessingDialogMessage" xml:space="preserve">
     <value>Please wait while Loadify is removing playlist {0} from your account</value>
   </data>
+  <data name="RetrievingPlaylistsDialogMessage" xml:space="preserve">
+    <value>Please wait while Loadify is retrieving playlists from your Spotify account.</value>
+  </data>
+  <data name="RetrievingPlaylistsDialogTitle" xml:space="preserve">
+    <value>Retrieving Playlists...</value>
+  </data>
   <data name="Tracks" xml:space="preserve">
     <value>Tracks</value>
   </data>

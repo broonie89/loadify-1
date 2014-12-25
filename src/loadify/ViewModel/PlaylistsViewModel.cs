@@ -149,7 +149,8 @@ namespace loadify.ViewModel
         public async void Handle(DataRefreshAuthorizedEvent message)
         {
             _Logger.Info("Retrieving playlists of the logged-in Spotify user...");
-            _EventAggregator.PublishOnUIThread(new DisplayProgressEvent("Retrieving Playlists...", "Please wait while Loadify is retrieving playlists from your Spotify account."));
+            _EventAggregator.PublishOnUIThread(new DisplayProgressEvent(Localization.Playlists.RetrievingPlaylistsDialogTitle,
+                                                                        Localization.Playlists.RetrievingPlaylistsDialogMessage));
             var playlistCollection = await message.Session.GetPlaylistCollection();
             var playlists = new List<Playlist>(await playlistCollection.GetPlaylists());
 
@@ -179,7 +180,7 @@ namespace loadify.ViewModel
         {
             if (String.IsNullOrEmpty(message.Content)) return;
 
-            var invalidUrlEvent = new NotificationEvent("Error",
+            var invalidUrlEvent = new NotificationEvent(Localization.Common.Error,
                                                         String.Format(Localization.Playlists.AddPlaylistInvalidLinkDialogMessage, message.Content));
             if (!Regex.IsMatch(message.Content,
                 @"((?:(?:http|https)://open.spotify.com/user/[a-zA-Z0-9]+/playlist/[a-zA-Z0-9]+)|(?:spotify:user:[a-zA-Z0-9]+:playlist:[a-zA-Z0-9]+))"))
@@ -220,7 +221,7 @@ namespace loadify.ViewModel
         {
             if (String.IsNullOrEmpty(message.Content)) return;
 
-            var invalidUrlEvent = new NotificationEvent("Error",
+            var invalidUrlEvent = new NotificationEvent(Localization.Common.Error,
                                                         String.Format(Localization.Playlists.AddTrackInvalidLinkDialogMessage, message.Content));
             if (!Regex.IsMatch(message.Content,
                 @"((?:(?:http|https)://open.spotify.com/track/[a-zA-Z0-9]+)|(?:spotify:track:[a-zA-Z0-9]+))"))

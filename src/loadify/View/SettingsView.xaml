@@ -43,19 +43,19 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="65*"/>
                     </Grid.RowDefinitions>
-                    <Label Content="{Resx LocalTrackDetection}" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="Customization settings of the track detection system" Grid.ColumnSpan="2" />
+                    <Label Content="{Resx LocalTrackDetection}" FontSize="16" Foreground="{StaticResource AccentColorBrush}" Grid.ColumnSpan="2" />
                     <CheckBox x:Name="NotifyLocalTrackDetections" Grid.Row="1" Margin="7 5">
                         <CheckBox.Content>
                             <TextBlock TextWrapping="Wrap" Text="{Resx NotifyLocalTrackDetections}"/>
                         </CheckBox.Content>
                     </CheckBox>
-                    <Label Grid.Row="2" Content="{Resx FileManagement}" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="Customization settings of the track detection system" Grid.ColumnSpan="2" />
+                    <Label Grid.Row="2" Content="{Resx FileManagement}" FontSize="16" Foreground="{StaticResource AccentColorBrush}" Grid.ColumnSpan="2" />
                     <CheckBox x:Name="CleanupAfterConversion" Grid.Row="3" Margin="7 5">
                         <CheckBox.Content>
                             <TextBlock TextWrapping="Wrap" Text="{Resx CleanupAfterConversion}"/>
                         </CheckBox.Content>
                     </CheckBox>
-                    <Label Grid.Row="4" Content="{Resx Download}" FontSize="16" Foreground="{StaticResource AccentColorBrush}" ToolTip="Customization settings of the track detection system" Grid.ColumnSpan="2" />
+                    <Label Grid.Row="4" Content="{Resx Download}" FontSize="16" Foreground="{StaticResource AccentColorBrush}" Grid.ColumnSpan="2" />
                     <CheckBox x:Name="SkipOnDownloadFailures" Grid.Row="5" Margin="7 5">
                         <CheckBox.Content>
                             <TextBlock TextWrapping="Wrap" Text="{Resx SkipOnDownloadFailures}"/>
