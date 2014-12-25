@@ -5,5 +5,6 @@
         IDirectorySetting DirectorySetting { get; set; }
         IBehaviorSetting BehaviorSetting { get; set; }
         ICredentialsSetting CredentialsSetting { get; set; }
+        ILocalizationSetting LocalizationSetting { get; set; }
     }
 }

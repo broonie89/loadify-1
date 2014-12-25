@@ -11,7 +11,8 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:converter="clr-namespace:loadify.ValueConverter"
              mc:Ignorable="d" 
-             d:DesignHeight="371" d:DesignWidth="300">
+             d:DesignHeight="371" d:DesignWidth="300"
+             ResxExtension.DefaultResxName="loadify.Localization.Playlists" Language="{UICulture}">
     <UserControl.Resources>
         <converter:ExistsToImageSourceConverter x:Key="ExistsToImageSourceConverter"/>
         <converter:ArtistsToStringConverter x:Key="ArtistsToStringConverter"/>
@@ -75,7 +76,7 @@
             <RowDefinition Height="38*"/>
         </Grid.RowDefinitions>
         <Border BorderBrush="{StaticResource AccentColorBrush}" BorderThickness="0 1 0 0" Grid.Row="2"></Border>
-        <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}}"
+        <TreeView d:DataContext="{Binding Source={StaticResource PlaylistsMock}, Path=PlaylistsViewModel}"
                   ItemsSource="{Binding Playlists}" 
                   ItemTemplate="{StaticResource PlaylistTemplate}" 
                   Grid.Row="1" IsEnabled="{Binding Enabled}"
@@ -109,16 +110,16 @@
             <Image Source="/Resources/search.png" Height="18" Width="19" Margin="5 0 0 2"></Image>
             <TextBox Text="{Binding SearchTerm, UpdateSourceTrigger=Explicit, Mode=TwoWay}" 
                  behavior:InputBindingsManager.UpdateSourceWhenEnterPressed="TextBox.Text"
-                 TextWrapping="Wrap" BorderThickness="0" controls:TextboxHelper.Watermark="Filter..."
+                 TextWrapping="Wrap" BorderThickness="0" controls:TextboxHelper.Watermark="{Resx Filter}"
                   />
         </DockPanel>
-        <Grid Grid.Row="2" Margin="0 2" d:DataContext="{Binding Source={StaticResource PlaylistsMock}}">
+        <Grid Grid.Row="2" Margin="0 2" d:DataContext="{Binding Source={StaticResource PlaylistsMock}, Path=PlaylistsViewModel}">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" FontSize="12" Padding="8 1" Content="{Binding SelectedTracks.Count}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" ContentStringFormat="{}{0} Tracks selected"/>
-            <Label Grid.Row="1" FontSize="12" Padding="8 1" Content="{Binding EstimatedDownloadTime}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left" ContentStringFormat="{}Estimated download time: {0}"/>
+            <Label Grid.Row="0" FontSize="12" Padding="8 1" Content="{Binding SelectedTracksInfo}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
+            <Label Grid.Row="1" FontSize="12" Padding="8 1" Content="{Binding EstimatedDownloadTimeInfo}" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
         </Grid>
     </Grid>
 </UserControl>

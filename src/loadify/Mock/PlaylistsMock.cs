@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using loadify.Configuration;
@@ -15,31 +16,24 @@ namespace loadify.Mock
     {
         public PlaylistsMock()
         {
-            SelectedTracks = new List<TrackViewModel>
-            {
-                new TrackViewModel(new TrackModel() {Name = "Test"}, new EventAggregator(), new NETSettingsManager())
-            };
-
-            EstimatedDownloadTime = "48:54:22";
-            Playlists = new List<PlaylistViewModel>
-            {
-                new PlaylistViewModel(new EventAggregator(), new NETSettingsManager())
+            PlaylistsViewModel = new PlaylistsViewModel(
+                new ObservableCollection<PlaylistViewModel>
                 {
-                    Creator = "Mostey",
-                    Description = "Test",
-                    Name = "Rock",
-                    Tracks = new ObservableCollection<TrackViewModel>
+                    new PlaylistViewModel(new EventAggregator(), new NETSettingsManager())
                     {
-                        new TrackViewModel(new EventAggregator(), new NETSettingsManager()) {Name = "Rock this Shit"},
-                        new TrackViewModel(new EventAggregator(), new NETSettingsManager()) {Name = "Could it be"}
-                    }
-                },
-                new PlaylistViewModel(new EventAggregator(), new NETSettingsManager()) {Creator = "Mostey", Description = "Test2", Name = "Hardcore"}
-            };
+                        Creator = "Mostey",
+                        Description = "Test",
+                        Name = "Rock",
+                        Tracks = new ObservableCollection<TrackViewModel>
+                        {
+                            new TrackViewModel(new EventAggregator(), new NETSettingsManager()) {Name = "Rock this Shit", Selected = true, Duration = new TimeSpan(0,0,4,26)},
+                            new TrackViewModel(new EventAggregator(), new NETSettingsManager()) {Name = "Could it be"}
+                        }
+                    },
+                    new PlaylistViewModel(new EventAggregator(), new NETSettingsManager()) {Creator = "Mostey", Description = "Test2", Name = "Hardcore"}
+                }, new EventAggregator(), new NETSettingsManager());
         }
 
-        public List<PlaylistViewModel> Playlists { get; set; }
-        public List<TrackViewModel> SelectedTracks { get; set; }
-        public string EstimatedDownloadTime { get; set; }
+        public PlaylistsViewModel PlaylistsViewModel { get; set; }
     }
 }

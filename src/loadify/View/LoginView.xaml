@@ -4,37 +4,38 @@
                         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                         xmlns:cal="http://www.caliburnproject.org"
-                        Title="Loadify - Login" Height="250" Width="278"
+                        Title="Loadify" Height="280" Width="350"
                         WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen"
                         GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize"
                         cal:Message.Attach="[Event KeyUp] = [Action OnKeyUp($pressedkey)]"
-                        FocusManager.FocusedElement="{Binding ElementName=Username}">
+                        FocusManager.FocusedElement="{Binding ElementName=Username}"
+                        ResxExtension.DefaultResxName="loadify.Localization.Login" Language="{UICulture}">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50*"/>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="30*"/>
+            <RowDefinition Height="60*"/>
+            <RowDefinition Height="15*"/>
             <RowDefinition Height="28*"/>
-            <RowDefinition Height="12*"/>
+            <RowDefinition Height="28*"/>
+            <RowDefinition Height="28*"/>
+            <RowDefinition Height="26*"/>
+            <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="13*"/>
-            <ColumnDefinition Width="24*"/>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="30*"/>
             <ColumnDefinition Width="8*"/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="Username" Text="{Binding User.Name, Mode=TwoWay}" controls:TextboxHelper.Watermark="Spotify username" 
+        <TextBox x:Name="Username" Text="{Binding User.Name, Mode=TwoWay}" controls:TextboxHelper.Watermark="{Resx SpotifyUsername}" 
                  VerticalContentAlignment="Center" TabIndex="0" Margin="3" Grid.Column="1" Grid.Row="2" />
         <PasswordBox x:Name="Password" Grid.Column="1"
-                     controls:TextboxHelper.Watermark="Spotify password" VerticalContentAlignment="Center" TabIndex="1"
+                     controls:TextboxHelper.Watermark="{Resx SpotifyPassword}" VerticalContentAlignment="Center" TabIndex="1"
                      Margin="3" Grid.Row="3"/>
-        <Button x:Name="Login" Content="Login" Margin="20 3" Grid.Row="5" Grid.ColumnSpan="3" TabIndex="2"/>
-        <Label Grid.Column="0" Content="Username:" HorizontalContentAlignment="Right" Grid.Row="2"/>
-        <Label Grid.Column="0" Content="Passwort:" HorizontalContentAlignment="Right" Grid.Row="3"/>
+        <Button x:Name="Login" Content="{Resx LogIn}" Margin="30 3" Grid.Row="5" Grid.ColumnSpan="3" TabIndex="2"/>
+        <Label Grid.Column="0" Content="{Resx Username}" ContentStringFormat="{}{0}:" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Grid.Row="2"/>
+        <Label Grid.Column="0" Content="{Resx Password}" ContentStringFormat="{}{0}:" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Grid.Row="3"/>
         <Label Grid.Column="0" Content="LOADIFY " HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-               Grid.ColumnSpan="3" FontFamily="MV Boli" FontSize="42" Margin="0,0,10,10" HorizontalAlignment="Right" Width="252" Grid.RowSpan="2"/>
+               Grid.ColumnSpan="3" FontFamily="MV Boli" FontSize="50" Grid.RowSpan="2"/>
         <controls:MetroProgressBar IsIndeterminate="{Binding LoginProcessActive}" Foreground="{StaticResource AccentColorBrush}" Background="Transparent" Margin="3" Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Stretch"/>
-        <CheckBox x:Name="RememberMe" Margin="22 0" Content="Remember me" ToolTip="Password is stored unencrypted, please use with caution" Grid.Row="4" Grid.ColumnSpan="2"/>
+        <CheckBox x:Name="RememberMe" Margin="32 0" Content="{Resx RememberMe}" ToolTip="{Resx RememberMeDescription}" Grid.Row="4" Grid.ColumnSpan="2"/>
     </Grid>
 </controls:MetroWindow>

@@ -20,7 +20,8 @@ namespace loadify.ViewModel
                                                      IHandle<DownloadContractCompletedEvent>,
                                                      IHandle<TrackSelectedChangedEvent>,
                                                      IHandle<TrackDownloadComplete>,
-                                                     IHandle<RemovePlaylistReplyEvent>
+                                                     IHandle<RemovePlaylistReplyEvent>,
+                                                     IHandle<LanguageChangedEvent>
     {
         private ObservableCollection<PlaylistViewModel> _Playlists = new ObservableCollection<PlaylistViewModel>();
         public ObservableCollection<PlaylistViewModel> Playlists
@@ -33,7 +34,8 @@ namespace loadify.ViewModel
 
                 NotifyOfPropertyChange(() => Playlists);
                 NotifyOfPropertyChange(() => SelectedTracks);
-                NotifyOfPropertyChange(() => EstimatedDownloadTime);
+                NotifyOfPropertyChange(() => SelectedTracksInfo);
+                NotifyOfPropertyChange(() => EstimatedDownloadTimeInfo);
             }
         }
 
@@ -85,19 +87,25 @@ namespace loadify.ViewModel
             }
         }
 
-        public IEnumerable<TrackViewModel> SelectedTracks
+        public List<TrackViewModel> SelectedTracks
         {
-            get { return new ObservableCollection<TrackViewModel>(Playlists.SelectMany(playlist => playlist.SelectedTracks)); }
+            get { return new List<TrackViewModel>(Playlists.SelectMany(playlist => playlist.SelectedTracks)); }
         }
 
-        public string EstimatedDownloadTime
+        public string SelectedTracksInfo
+        {
+            get { return String.Format("{0} {1}", SelectedTracks.Count, Localization.Playlists.TracksSelectedInfo); }
+        }
+
+        public string EstimatedDownloadTimeInfo
         {
             get
             {
                 var totalDuration = new TimeSpan();
                 totalDuration = SelectedTracks.Aggregate(totalDuration, (current, selectedTrack) => current + selectedTrack.Duration);
                 var estimatedTime = new TimeSpan((long) (((double) 100/165)*totalDuration.Ticks));
-                return String.Format("{0}:{1}:{2}",
+                return String.Format("{0}: {1}:{2}:{3}",
+                                    Localization.Playlists.EstimatedDownloadTimeInfo,
                                     ((int) estimatedTime.TotalHours).ToString("00"),
                                     estimatedTime.Minutes.ToString("00"),
                                     estimatedTime.Seconds.ToString("00"));
@@ -141,7 +149,8 @@ namespace loadify.ViewModel
         public async void Handle(DataRefreshAuthorizedEvent message)
         {
             _Logger.Info("Retrieving playlists of the logged-in Spotify user...");
-            _EventAggregator.PublishOnUIThread(new DisplayProgressEvent("Retrieving Playlists...", "Please wait while Loadify is retrieving playlists from your Spotify account."));
+            _EventAggregator.PublishOnUIThread(new DisplayProgressEvent(Localization.Playlists.RetrievingPlaylistsDialogTitle,
+                                                                        Localization.Playlists.RetrievingPlaylistsDialogMessage));
             var playlistCollection = await message.Session.GetPlaylistCollection();
             var playlists = new List<Playlist>(await playlistCollection.GetPlaylists());
 
@@ -171,8 +180,8 @@ namespace loadify.ViewModel
         {
             if (String.IsNullOrEmpty(message.Content)) return;
 
-            var invalidUrlEvent = new NotificationEvent("Error",
-                                                        String.Format("The playlist could not be added because {0} is not a valid Spotify playlist link", message.Content));
+            var invalidUrlEvent = new NotificationEvent(Localization.Common.Error,
+                                                        String.Format(Localization.Playlists.AddPlaylistInvalidLinkDialogMessage, message.Content));
             if (!Regex.IsMatch(message.Content,
                 @"((?:(?:http|https)://open.spotify.com/user/[a-zA-Z0-9]+/playlist/[a-zA-Z0-9]+)|(?:spotify:user:[a-zA-Z0-9]+:playlist:[a-zA-Z0-9]+))"))
             {
@@ -183,8 +192,8 @@ namespace loadify.ViewModel
             {
                 try
                 {
-                    _EventAggregator.PublishOnUIThread(new DisplayProgressEvent("Adding Playlist...", 
-                                                                                "Please wait while Loadify is adding the playlist to your playlist collection"));
+                    _EventAggregator.PublishOnUIThread(new DisplayProgressEvent("Adding Playlist...",
+                                                                                Localization.Playlists.AddPlaylistProcessingDialogMessage));
                     _Logger.Debug(String.Format("Resolving playlist link {0}...", message.Content));
                     var playlist = await PlaylistModel.FromLibrary(message.Session.GetPlaylist(message.Content), message.Session);
                     _Logger.Info(String.Format("Playlist {0} ({1} tracks) was resolved and added to the playlist collection", playlist.Name, playlist.Tracks.Count));
@@ -212,8 +221,8 @@ namespace loadify.ViewModel
         {
             if (String.IsNullOrEmpty(message.Content)) return;
 
-            var invalidUrlEvent = new NotificationEvent("Error",
-                                                        String.Format("The track could not be added because {0} is not a valid Spotify track link", message.Content));
+            var invalidUrlEvent = new NotificationEvent(Localization.Common.Error,
+                                                        String.Format(Localization.Playlists.AddTrackInvalidLinkDialogMessage, message.Content));
             if (!Regex.IsMatch(message.Content,
                 @"((?:(?:http|https)://open.spotify.com/track/[a-zA-Z0-9]+)|(?:spotify:track:[a-zA-Z0-9]+))"))
             {
@@ -225,7 +234,7 @@ namespace loadify.ViewModel
                 try
                 {
                     _EventAggregator.PublishOnUIThread(new DisplayProgressEvent("Adding Track...",
-                                                        String.Format("Please wait while Loadify is adding the track to playlist {0}", message.Playlist.Name)));
+                                                        String.Format(Localization.Playlists.AddTrackProcessingDialogMessage, message.Playlist.Name)));
                     _Logger.Debug(String.Format("Resolving track link {0}...", message.Content));
                     var track = await TrackModel.FromLibrary(message.Session.GetTrack(message.Content), message.Session);
                     track.Playlist = message.Playlist.Playlist;
@@ -249,7 +258,8 @@ namespace loadify.ViewModel
         public void Handle(TrackSelectedChangedEvent message)
         {
             NotifyOfPropertyChange(() => SelectedTracks);
-            NotifyOfPropertyChange(() => EstimatedDownloadTime);
+            NotifyOfPropertyChange(() => EstimatedDownloadTimeInfo);
+            NotifyOfPropertyChange(() => SelectedTracksInfo);
 
             _EventAggregator.PublishOnUIThread(new SelectedTracksChangedEvent(new List<TrackViewModel>(SelectedTracks)));
         }
@@ -269,13 +279,22 @@ namespace loadify.ViewModel
             if (message.Permanent)
             {
                 _EventAggregator.PublishOnUIThread(new DisplayProgressEvent("Removing Playlist...",
-                                                    String.Format("Please wait while Loadify is removing playlist {0} from your account", message.Playlist.Name)));
+                                                    String.Format(Localization.Playlists.RemovePlaylistProcessingDialogMessage, message.Playlist.Name)));
                 _Logger.Debug(String.Format("Removing playlist {0} permanently from the logged-in Spotify account...", message.Playlist.Name));
                 var playlistCollection = await message.Session.GetPlaylistCollection();
                 await playlistCollection.Remove(message.Playlist.Playlist.UnmanagedPlaylist);
                 _Logger.Info(String.Format("Removed playlist {0} permanently from the logged-in Spotify account", message.Playlist.Name));
                 _EventAggregator.PublishOnUIThread(new HideProgressEvent());
             }
+        }
+
+        public void Handle(LanguageChangedEvent message)
+        {
+            // hack that copies the already existing playlist and reassigns it to the collection in order to completely notify all elements 
+            // in the bound view for pulling the information again
+            // this is required because the currently used ResxExtension is removing the binding to TreeView controls for some reason
+            // and then updates the TreeView with invalid/empty data
+            Playlists = new ObservableCollection<PlaylistViewModel>(Playlists);
         }
     }
 }

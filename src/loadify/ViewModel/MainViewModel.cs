@@ -163,15 +163,16 @@ namespace loadify.ViewModel
             }
 
             var view = GetView() as MainView;
-            var dialogResult = await view.ShowMessageAsync("Download Paused", 
-                                                            message.Reason
-                                                            + "\nPlease resolve this issue before continuing downloading.",
+            var dialogResult = await view.ShowMessageAsync(Localization.Main.DownloadPausedDialogTitle, 
+                                                            String.Format("{0}\n{1}", 
+                                                            message.Reason,
+                                                            Localization.Main.DownloadPausedDialogMessage),
                                                             MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, 
                                                             new MetroDialogSettings()
                                                             {
-                                                                AffirmativeButtonText = "retry",
-                                                                NegativeButtonText = "skip",
-                                                                FirstAuxiliaryButtonText = "cancel download"
+                                                                AffirmativeButtonText = Localization.Main.DownloadPausedDialogRetry,
+                                                                NegativeButtonText = Localization.Main.DownloadPausedDialogSkip,
+                                                                FirstAuxiliaryButtonText = Localization.Main.DownloadPausedDialogCancelDownload
                                                             });
 
             switch (dialogResult) // pressed "retry"
@@ -201,17 +202,17 @@ namespace loadify.ViewModel
         {
             _Logger.Debug("User requested to manually add a playlist");
             var view = GetView() as MainView;
-            var response = await view.ShowInputAsync("Add Playlist", "Please insert the link to the Spotify playlist you want to add.");
+            var response = await view.ShowInputAsync(Localization.Main.AddPlaylistInsertLinkDialogTitle, Localization.Main.AddPlaylistInsertLinkDialogMessage);
             if (!String.IsNullOrEmpty(response))
             {
                 _Logger.Debug(String.Format("Following text was entered by the user: {0}", response));
-                var dialogResult =  await view.ShowMessageAsync("Add Playlist",
-                                                                "Do you want to permanently add this playlist to your account?",
+                var dialogResult = await view.ShowMessageAsync(Localization.Main.AddPlaylistConfirmationDialogTitle,
+                                                                Localization.Main.AddPlaylistConfirmationDialogMessage,
                                                                 MessageDialogStyle.AffirmativeAndNegative,
                                                                 new MetroDialogSettings()
                                                                 {
-                                                                    AffirmativeButtonText = "yes",
-                                                                    NegativeButtonText = "no"
+                                                                    AffirmativeButtonText = Localization.Common.Yes,
+                                                                    NegativeButtonText = Localization.Common.No
                                                                 });
                 _Logger.Debug(dialogResult == MessageDialogResult.Affirmative
                             ? "The playlist will be permanently added to the logged-in Spotify account"
@@ -289,10 +290,14 @@ namespace loadify.ViewModel
 
             _Logger.Debug(String.Format("{0} tracks were detected as existing, awaiting user instructions...", message.ExistingTracks.Count));
             var view = GetView() as MainView;
-            var dialogResult = await view.ShowMessageAsync("Detected existing Tracks", 
-                                                            String.Format("Loadify detected that you already have {0} of the selected tracks in your download directory.\n" +
-                                                            "Do you want to remove them from your download contract?",
-                                                            message.ExistingTracks.Count), MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings() { AffirmativeButtonText = "yes", NegativeButtonText = "no" });
+            var dialogResult = await view.ShowMessageAsync(Localization.Main.ExistingTracksRemovalDialogTitle, 
+                                                            String.Format(Localization.Main.ExistingTracksRemovalDialogMessage,message.ExistingTracks.Count),
+                                                            MessageDialogStyle.AffirmativeAndNegative, 
+                                                            new MetroDialogSettings()
+                                                            {
+                                                                AffirmativeButtonText = "yes",
+                                                                NegativeButtonText = "no"
+                                                            });
             
             _Logger.Debug("User requested to remove existing tracks");
             _EventAggregator.PublishOnUIThread(new UnselectExistingTracksReplyEvent(dialogResult == MessageDialogResult.Affirmative));
@@ -302,13 +307,13 @@ namespace loadify.ViewModel
         {
             _Logger.Debug(String.Format("User requested to manually remove playlist {0}", message.Playlist.Name));
             var view = GetView() as MainView;
-            var dialogResult = await view.ShowMessageAsync("Remove Playlist",
-                                                            "Do you want to permanently remove this playlist from your account?",
+            var dialogResult = await view.ShowMessageAsync(Localization.Main.RemovePlaylistConfirmationDialogTitle,
+                                                            Localization.Main.RemovePlaylistConfirmationDialogMessage,
                                                             MessageDialogStyle.AffirmativeAndNegative,
                                                             new MetroDialogSettings()
                                                             {
-                                                                AffirmativeButtonText = "yes",
-                                                                NegativeButtonText = "no"
+                                                                AffirmativeButtonText = Localization.Common.Yes,
+                                                                NegativeButtonText = Localization.Common.No
                                                             });
             _Logger.Debug(dialogResult == MessageDialogResult.Affirmative
                         ? String.Format("Playlist {0} will be removed permanently from the logged-in Spotify account",

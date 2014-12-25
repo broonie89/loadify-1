@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cal="http://www.caliburnproject.org"
              mc:Ignorable="d" 
-             d:DesignHeight="32" d:DesignWidth="850">
+             d:DesignHeight="32" d:DesignWidth="850"
+             ResxExtension.DefaultResxName="loadify.Localization.Playlists" Language="{UICulture}">
     <UserControl.Resources>
         <BitmapImage x:Key="RefreshIcon" UriSource="/Resources/refresh_icon.png"/>
     </UserControl.Resources>
@@ -17,6 +18,6 @@
         </Grid.ColumnDefinitions>
         <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0 1 0 0" Grid.ColumnSpan="3"/>
         <ContentControl Grid.Column="0" x:Name="Downloader"/>
-        <Label Content="{Binding LoggedInUser.Name}" Foreground="#FF7D7D7D" Margin="10 0" ContentStringFormat="Connected as {0}" HorizontalContentAlignment="Right" Grid.Column="2"/>
+        <Label Content="{Binding ConnectedUserInfo}" Foreground="#FF7D7D7D" Margin="10 0" HorizontalContentAlignment="Right" Grid.Column="2"/>
     </Grid>
 </UserControl>

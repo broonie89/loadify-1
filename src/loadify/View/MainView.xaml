@@ -5,7 +5,8 @@
         xmlns:local="clr-namespace:loadify.View"
         Title="Loadify" Height="470" Width="880"
         WindowTransitionsEnabled="False" WindowStartupLocation="CenterScreen"
-        GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize">
+        GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize"
+        ResxExtension.DefaultResxName="loadify.Localization.Main" Language="{UICulture}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="14*"/>
@@ -37,8 +38,8 @@
                         <ColumnDefinition Width="Auto" MinWidth="130"/>
                         <ColumnDefinition Width="324*"/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="StartDownload" Content="Download" Margin="5 10"/>
-                    <Button x:Name="CancelDownload" Content="Cancel Download" Margin="5 10" Grid.Column="1"/>
+                    <Button x:Name="StartDownload" Content="{Resx Download}" Margin="5 10"/>
+                    <Button x:Name="CancelDownload" Content="{Resx CancelDownload}" Margin="5 10" Grid.Column="1"/>
                 </Grid>
             </Grid>
         </Grid>

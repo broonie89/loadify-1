@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Caliburn.Micro;
 using loadify.Configuration;
 using loadify.Event;
+using loadify.Localization;
 
 namespace loadify.ViewModel
 {
@@ -80,7 +82,25 @@ namespace loadify.ViewModel
             }
         }
 
+        public IEnumerable<Language> SupportedLanguages
+        {
+            get { return _SettingsManager.LocalizationSetting.LocalizationManager.GetSupportedLanguages(); }
+        }
 
+        public Language UILanguage
+        {
+            get { return _SettingsManager.LocalizationSetting.UILanguage; }
+            set
+            {
+                if (_SettingsManager.LocalizationSetting.UILanguage == value) return;
+                var oldLanguage = _SettingsManager.LocalizationSetting.UILanguage;
+                _SettingsManager.LocalizationSetting.UILanguage = value;
+                _Logger.Debug(String.Format("UILanguage setting has been changed. Old value: {0}, new value: {1}",
+                                            oldLanguage, value));
+                _EventAggregator.PublishOnUIThread(new LanguageChangedEvent(oldLanguage, value));
+                NotifyOfPropertyChange(() => UILanguage);
+            }
+        }
 
         public SettingsViewModel(IEventAggregator eventAggregator, ISettingsManager settingsManager) :
             base(eventAggregator, settingsManager)

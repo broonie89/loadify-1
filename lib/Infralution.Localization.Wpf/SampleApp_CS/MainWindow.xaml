@@ -1,0 +1,50 @@
+<Window ResxExtension.DefaultResxName="WpfApp.MainWindow" Language="{UICulture}" 
+        x:Class="WpfApp.MainWindow" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:src="clr-namespace:WpfApp"
+        Title="{Resx Window.Title}" Height="300" Width="300" Icon="{Resx Window.Icon}">
+    <Grid>
+        <Grid.Resources>
+            <src:SampleEnumConverter x:Key="sampleEnumConverter"/>
+        </Grid.Resources>
+        <Menu Height="22" Name="_mainMenu" VerticalAlignment="Top">
+            <MenuItem Header="{Resx _fileMenuItem.Header}" Name="_fileMenuItem">
+                <MenuItem Header="{Resx _newMenuItem.Header}" Icon="{Resx _newMenuItem.Icon}" Name="_newMenuItem" />
+                <MenuItem Header="{Resx _openMenuItem.Header}" Icon="{Resx _openMenuItem.Icon}" Name="_openMenuItem" />
+                <Separator />
+                <MenuItem Header="{Resx _exitMenuItem.Header}" Icon="{Resx _exitMenuItem.Icon}" Name="_exitMenuItem" Click="_exitMenuItem_Click" />
+            </MenuItem>
+            <MenuItem Header="{Resx _languageMenuItem.Header}" Name="_languageMenuItem">
+                <MenuItem Header="{Resx _englishMenuItem.Header}" IsCheckable="True" Name="_englishMenuItem" Click="_englishMenuItem_Click" />
+                <MenuItem Header="{Resx _frenchMenuItem.Header}" Name="_frenchMenuItem" Click="_frenchMenuItem_Click" />
+            </MenuItem>
+            <MenuItem Header="{Resx _helpMenuItem.Header}" Name="_helpMenuItem">
+                <MenuItem Header="{Resx _aboutMenuItem.Header}" Icon="{Resx _aboutMenuItem.Icon}" Name="_aboutMenuItem" />
+            </MenuItem>
+        </Menu>
+        <TabControl Margin="10,40,10,10" Name="_tabControl">
+            <TabItem Header="{Resx _fileTab.Header}" Name="_fileTab">
+                <Grid>
+                    <Button Content="{Resx _addButton.Content}" Height="21" HorizontalAlignment="Left" Margin="11,26,0,0" Name="_addButton" VerticalAlignment="Top" Width="97" />
+                    <Button Content="{Resx _removeButton.Content}" Height="21" HorizontalAlignment="Left" Margin="11,53,0,0" Name="_removeButton" VerticalAlignment="Top" Width="97" />
+                    <ListBox Margin="122,28,13,38" Name="_fileListBox">
+                    </ListBox>
+                    <TextBlock Height="26" Margin="6,0,6,6" Name="_selectedTextBlock" VerticalAlignment="Bottom">
+                        <TextBlock.Text>
+                            <Resx Key="_selectedTextBlock.Text" 
+                                  BindingElementName="_fileListBox" 
+                                  BindingPath="SelectedItem" 
+                                  BindingConverter="{StaticResource sampleEnumConverter}" />
+                        </TextBlock.Text>
+                    </TextBlock>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{Resx _directoryTab.Header}" Name="_directoryTab">
+                <Grid>
+                    <TextBox Height="21" Margin="14,16,24,0" Name="_dirTextBox" VerticalAlignment="Top" />
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

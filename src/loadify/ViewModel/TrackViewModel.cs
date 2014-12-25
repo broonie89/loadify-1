@@ -141,7 +141,7 @@ namespace loadify.ViewModel
             }
             catch (InvalidOperationException exception)
             {
-                _EventAggregator.PublishOnUIThread(new NotificationEvent("Error", "The folder cannot be opened because there was an unhandled error"));
+                _EventAggregator.PublishOnUIThread(new NotificationEvent(Localization.Common.Error, "The folder cannot be opened because there was an unhandled error"));
                 _Logger.Error("The folder cannot be opened because there was an unhandled error", exception);
             }
         }
