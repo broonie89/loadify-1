@@ -9,7 +9,7 @@ namespace loadify.ViewModel
     {
         public string License
         {
-            get { return "The MIT License (MIT) - Copyright (c) 2014"; }
+            get { return "The MIT License (MIT) - Copyright (c) 2014-2015"; }
         }
 
         public string Contributors

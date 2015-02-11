@@ -4,7 +4,7 @@
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         WindowStartupLocation="CenterScreen"
         GlowBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanMinimize"
-        Title="Loadify" Height="210" Width="370"
+        Title="Loadify" Height="210" Width="380"
         ResxExtension.DefaultResxName="loadify.Localization.About" Language="{UICulture}">
     <Grid>
         <Grid.RowDefinitions>
@@ -14,9 +14,9 @@
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Content="LOADIFY " HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
                FontFamily="MV Boli" FontSize="46"/>
-        <Grid Grid.Row="1" Margin="20 5">
+        <Grid Grid.Row="1" Margin="15 5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40*"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="100*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -25,9 +25,9 @@
                 <RowDefinition Height="33*"/>
             </Grid.RowDefinitions>
             <Label Content="Version" FontSize="12" Grid.ColumnSpan="2"/>
-            <Label Content="{Resx Contributors}" FontSize="12" Grid.Row="1" Grid.ColumnSpan="2"/>
+            <Label Content="{Resx Contributors}" FontSize="12" Grid.Row="1"/>
             <Label Content="{Resx License}" FontSize="12" Grid.Row="2"/>
-            <Label x:Name="License" FontSize="12" Foreground="Gray" Grid.Row="2" Grid.Column="1"/>
+            <Label x:Name="License" FontSize="12" Foreground="Gray" HorizontalContentAlignment="Right" Grid.Row="2" Grid.Column="1"/>
             <Label x:Name="Version" FontSize="12" Foreground="Gray" Grid.Column="1" HorizontalContentAlignment="Right" Grid.Row="0"/>
             <Label x:Name="Contributors" FontSize="12" Foreground="Gray" Grid.Column="1" HorizontalContentAlignment="Right" Grid.Row="1"/>
         </Grid>
