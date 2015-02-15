@@ -3,32 +3,27 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Loadify</title>
+    <title>Loadify by Mostey</title>
+
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-	<style>
-		.backlink{
-			color: #777;
-			text-decoration: none;
-		}
-		.backlink:hover{
-			color: #777;
-			text-decoration: underline;
-		}
-	</style>
   </head>
   <body>
     <div class="wrapper">
       <header>
         <h1>Loadify</h1>
         <p>Spotify Downloader written in .NET for downloading playlists and tracks from Spotify</p>
+
+        <p class="view"><a href="https://github.com/Mostey/loadify">View the Project on GitHub <small>Mostey/loadify</small></a></p>
+
+
         <ul>
-          <li><a href="https://github.com/Mostey/loadify/releases/download/1.0/loadify-1.0.zip">Download <strong>1.0</strong></a></li>
-          <li><a href="https://github.com/Mostey/loadify/tarball/master">Download <strong>Source</strong></a></li>
+          <li><a href="https://github.com/Mostey/loadify/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/Mostey/loadify/tarball/master">Download <strong>TAR Ball</strong></a></li>
           <li><a href="https://github.com/Mostey/loadify">View On <strong>GitHub</strong></a></li>
         </ul>
       </header>
@@ -54,6 +49,13 @@ Please keep in mind that the software is currently a work-in-progress. Please le
 <p>Since audio files supplied by the client are encrypted, we needed to jump in a little bit earlier and thus used <strong>libspotify</strong>, the official Spotify library written in C (we actually use a C# wrapper that manages the transition from unmanaged to managed by marshalling). Since audio data is streamed into some type of callback once we told the API to load a certain track into the audio player, we just need to capture the data flying into this callback. The track is currently saved as <code>wave</code> file into the specified folder and then immediately gets converted to a <code>MP3</code> file.</p>
 
 <h2>
+<a id="contributions" class="anchor" href="#contributions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributions</h2>
+
+<p>Feel free to contribute by adding new features or translating Loadify into your native language.
+Don't know how to help with translating? No problem, we've set up a <a href="https://github.com/Mostey/loadify/wiki/Translations-and-Localization">wiki page</a><br>
+that should help you with getting started. Please create an issue if you've any questions.</p>
+
+<h2>
 <a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
 
 <h3>
@@ -75,7 +77,7 @@ Please keep in mind that the software is currently a work-in-progress. Please le
 <h3>
 <a id="dashboard" class="anchor" href="#dashboard" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dashboard</h3>
 
-<p>After logging in, a new window containing your dashboard will open up. The software will start to fetch your playlists and display them in the left pane. </p>
+<p>After logging in, a new window containing your dashboard will open up. The software will start to fetch your playlists and display them in the left pane.</p>
 
 <p><a href="url"><img src="http://i.epvpimg.com/yQNWf.jpg" align="center" height="100%" width="700"></a></p>
 
@@ -118,7 +120,7 @@ Please keep in mind that the software is currently a work-in-progress. Please le
 
 <p>You might have also noted the red crosses before each track listing. This is an indicator that signals if the track already exists on the local file system in the specified download directory.</p>
 
-<p>Once you have started the download contract, the download status bar in the lower left corner will become visible informing you about the current download status: </p>
+<p>Once you have started the download contract, the download status bar in the lower left corner will become visible informing you about the current download status:</p>
 
 <ul>
 <li>The progress bar represents the status of the track being download.</li>
@@ -133,7 +135,7 @@ Please keep in mind that the software is currently a work-in-progress. Please le
 <h3>
 <a id="local-track-detection" class="anchor" href="#local-track-detection" aria-hidden="true"><span class="octicon octicon-link"></span></a>Local Track detection</h3>
 
-<p>Once you've downloaded some tracks, you probably don't want to download them again on the next time you use Loadify. And since you won't have the time to check each file on your file system if you've already downloaded that particular track, Loadify will do this automatically for you. </p>
+<p>Once you've downloaded some tracks, you probably don't want to download them again on the next time you use Loadify. And since you won't have the time to check each file on your file system if you've already downloaded that particular track, Loadify will do this automatically for you.</p>
 
 <p>Tracks will be detected as existing if:</p>
 
@@ -182,7 +184,7 @@ Please keep in mind that the software is currently a work-in-progress. Please le
 </ul>
 
 <p>Note the <code>/playlist/</code> and <code>:playlist:</code> section of the url.
-If the url provided is a valid url to a playlist, Loadify will fetch all of it's tracks and add the new playlist in the left panel. </p>
+If the url provided is a valid url to a playlist, Loadify will fetch all of it's tracks and add the new playlist in the left panel.</p>
 
 <p><a href="url"><img src="http://i.epvpimg.com/8qh1g.jpg" align="center" height="100%" width="650"></a></p>
 
@@ -195,7 +197,7 @@ If the url provided is a valid url to a playlist, Loadify will fetch all of it's
 <h4>
 <a id="tracks" class="anchor" href="#tracks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tracks</h4>
 
-<p>For adding single tracks into an existing playlist, you need to right click one of the playlists and select <strong>Add Track</strong>. </p>
+<p>For adding single tracks into an existing playlist, you need to right click one of the playlists and select <strong>Add Track</strong>.</p>
 
 <p><a href="url"><img src="http://i.epvpimg.com/GAbHc.jpg" align="center" height="100%" width="350"></a></p>
 
@@ -220,11 +222,11 @@ If the url provided is a valid url to a playlist, Loadify will fetch all of it's
 <p><a href="url"><img src="http://i.epvpimg.com/eIHUe.jpg" align="center" height="100%" width="600"></a></p>
       </section>
       <footer>
-        <p>This project is maintained by <a class="backlink" href="https://github.com/Mostey">Mostey</a></p>
-        <p><small>Proudly powered by <a class="backlink" href="http://github.io">GitHub Pages</a></small></p>
+        <p>This project is maintained by <a href="https://github.com/Mostey">Mostey</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
-
+    
   </body>
 </html>
